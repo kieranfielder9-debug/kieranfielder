@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+moon_riza/output/still_*.png
+moon_riza/output/check_*.png
+moon_riza/output/sheet*.png
+moon_riza/output/draft.mp4
+moon_riza/output/soundtrack.wav
