@@ -1,0 +1,122 @@
+{
+  "$description": "Storehouse design tokens — W3C Design Tokens format ($value/$type). Extracted from the mid-fi wireframe and DESIGN-DECISIONS.md. Colors are the grayscale placeholder palette; swap `color.*` for a brand palette in hi-fi without touching spacing, type or radius.",
+
+  "color": {
+    "$description": "Base palette is neutral/grayscale. `flow` is reserved exclusively for money-in-motion visuals (Stream Splitter, Wellspring) — nothing else may use it. `fill` is reserved for primary/active (primary buttons, filled progress, the Home nav button).",
+    "bg": { "$value": "#F4F4F5", "$type": "color" },
+    "surface": { "$value": "#FFFFFF", "$type": "color" },
+    "border": { "$value": "#D4D4D8", "$type": "color" },
+    "border-strong": { "$value": "#A1A1AA", "$type": "color" },
+    "ink": { "$value": "#18181B", "$type": "color" },
+    "ink-soft": { "$value": "#3F3F46", "$type": "color" },
+    "muted": { "$value": "#71717A", "$type": "color" },
+    "fill": { "$value": "#27272A", "$type": "color" },
+    "fill-text": { "$value": "#FAFAFA", "$type": "color" },
+    "track": { "$value": "#E4E4E7", "$type": "color" },
+    "track-fill": { "$value": "#52525B", "$type": "color" },
+    "flow": {
+      "100": { "$value": "#CBD5E1", "$type": "color" },
+      "300": { "$value": "#94A3B8", "$type": "color" },
+      "500": { "$value": "#64748B", "$type": "color" },
+      "700": { "$value": "{color.ink-soft}", "$type": "color" }
+    }
+  },
+
+  "spacing": {
+    "$description": "8pt scale. lg (16px) is the screen's outer horizontal margin and card padding; md (12px) is row-container padding.",
+    "xs": { "$value": "4px", "$type": "dimension" },
+    "sm": { "$value": "8px", "$type": "dimension" },
+    "md": { "$value": "12px", "$type": "dimension" },
+    "lg": { "$value": "16px", "$type": "dimension" },
+    "xl": { "$value": "24px", "$type": "dimension" },
+    "xxl": { "$value": "32px", "$type": "dimension" }
+  },
+
+  "radius": {
+    "$description": "Rounder = more interactive: cards < buttons < circular icon buttons.",
+    "sm": { "$value": "8px", "$type": "dimension" },
+    "md": { "$value": "10px", "$type": "dimension" },
+    "lg": { "$value": "12px", "$type": "dimension" },
+    "xl": { "$value": "14px", "$type": "dimension" },
+    "pill": { "$value": "20px", "$type": "dimension" },
+    "full": { "$value": "9999px", "$type": "dimension" }
+  },
+
+  "border-width": {
+    "default": { "$value": "1px", "$type": "dimension" }
+  },
+
+  "typography": {
+    "font-family": {
+      "$value": "-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif",
+      "$type": "fontFamily",
+      "$description": "System stack placeholder — no brand typeface chosen yet."
+    },
+    "t1": {
+      "$type": "typography",
+      "$description": "Hero numbers only — max one per screen.",
+      "$value": { "fontFamily": "{typography.font-family}", "fontSize": "34px", "fontWeight": 700, "letterSpacing": "-0.02em", "lineHeight": 1.1 }
+    },
+    "t2": {
+      "$type": "typography",
+      "$description": "Section titles — one per major section.",
+      "$value": { "fontFamily": "{typography.font-family}", "fontSize": "17px", "fontWeight": 700, "letterSpacing": "normal", "lineHeight": 1.3 }
+    },
+    "t3": {
+      "$type": "typography",
+      "$description": "Card/module labels.",
+      "$value": { "fontFamily": "{typography.font-family}", "fontSize": "11px", "fontWeight": 700, "letterSpacing": "0.07em", "lineHeight": 1.3, "textCase": "uppercase" }
+    },
+    "t3n": {
+      "$type": "typography",
+      "$description": "Secondary numeric emphasis inside a card (Est. Yield, vault balances) — between T2 and T4.",
+      "$value": { "fontFamily": "{typography.font-family}", "fontSize": "15px", "fontWeight": 700, "letterSpacing": "normal", "lineHeight": 1.3 }
+    },
+    "t4": {
+      "$type": "typography",
+      "$description": "Body copy, meta, list details.",
+      "$value": { "fontFamily": "{typography.font-family}", "fontSize": "12px", "fontWeight": 400, "letterSpacing": "normal", "lineHeight": 1.4 }
+    }
+  },
+
+  "shadow": {
+    "elevated": {
+      "$type": "shadow",
+      "$description": "Default card treatment — depth cue, no border.",
+      "$value": { "offsetX": "0px", "offsetY": "4px", "blur": "14px", "spread": "0px", "color": "rgba(24,24,27,0.10)" }
+    },
+    "nav-floating": {
+      "$type": "shadow",
+      "$description": "The one shadow signaling 'floats above the bar' — the Home nav button only.",
+      "$value": { "offsetX": "0px", "offsetY": "4px", "blur": "10px", "spread": "0px", "color": "rgba(0,0,0,0.25)" }
+    },
+    "sheet-lift": {
+      "$type": "shadow",
+      "$description": "Bottom sheet / modal lift off the backdrop.",
+      "$value": { "offsetX": "0px", "offsetY": "-10px", "blur": "30px", "spread": "0px", "color": "rgba(0,0,0,0.25)" }
+    },
+    "neomorphic-raised": {
+      "$type": "shadow",
+      "$description": "Reserved for exactly three personal-metric surfaces (Health Score bar, Expense Categorisation bars, its 1W/1M/1Y control) — rare on purpose.",
+      "$value": [
+        { "offsetX": "7px", "offsetY": "7px", "blur": "14px", "spread": "0px", "color": "rgba(24,24,27,0.10)" },
+        { "offsetX": "-7px", "offsetY": "-7px", "blur": "14px", "spread": "0px", "color": "rgba(255,255,255,0.75)" }
+      ]
+    },
+    "neomorphic-inset": {
+      "$type": "shadow",
+      "$description": "Pressed/inset variant of neomorphic-raised, e.g. a track behind a filled bar.",
+      "$value": [
+        { "offsetX": "3px", "offsetY": "3px", "blur": "6px", "spread": "0px", "color": "rgba(24,24,27,0.12)", "inset": true },
+        { "offsetX": "-3px", "offsetY": "-3px", "blur": "6px", "spread": "0px", "color": "rgba(255,255,255,0.7)", "inset": true }
+      ]
+    }
+  },
+
+  "icon": {
+    "stroke-width": { "$value": "2px", "$type": "dimension" },
+    "size-sm": { "$value": "14px", "$type": "dimension" },
+    "size-md": { "$value": "16px", "$type": "dimension" },
+    "size-lg": { "$value": "20px", "$type": "dimension" }
+  }
+}
