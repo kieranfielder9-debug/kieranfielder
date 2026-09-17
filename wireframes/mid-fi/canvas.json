@@ -1,0 +1,16 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-09-17T00:00:00Z" },
+  "title": "Storehouse — Mid-Fi Wireframes",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Home.dc.html": { "x": 0, "y": 0, "w": 390, "h": 1000, "title": "1. Home / Overview", "is_interactive": true },
+    "Watchtower.dc.html": { "x": 470, "y": 0, "w": 390, "h": 840, "title": "2. Watchtower", "is_interactive": true },
+    "Planning.dc.html": { "x": 940, "y": 0, "w": 390, "h": 960, "title": "3. Planning", "is_interactive": true },
+    "Allocation.dc.html": { "x": 1410, "y": 0, "w": 390, "h": 760, "title": "4. Allocation", "is_interactive": true },
+    "Measurement.dc.html": { "x": 1880, "y": 0, "w": 390, "h": 700, "title": "5. Measurement", "is_interactive": true }
+  },
+  "order": ["Home.dc.html", "Watchtower.dc.html", "Planning.dc.html", "Allocation.dc.html", "Measurement.dc.html"],
+  "notes": {}
+}

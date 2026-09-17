@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    :root{
+      --bg:#F4F4F5; --surface:#FFFFFF; --border:#D4D4D8; --border-strong:#A1A1AA;
+      --ink:#18181B; --ink-soft:#3F3F46; --muted:#71717A;
+      --fill:#27272A; --fill-text:#FAFAFA; --track:#E4E4E7; --track-fill:#52525B;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);}
+    a{color:inherit;text-decoration:none;}
+    button{font-family:inherit;cursor:pointer;}
+    .t2{font-size:17px;font-weight:700;color:var(--ink);margin:0;}
+    .t3{font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-soft);margin:0;}
+    .t4{font-size:12px;font-weight:400;color:var(--muted);margin:0;line-height:1.4;}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;}
+    .btn-primary{background:var(--fill);color:var(--fill-text);border:1px solid var(--fill);border-radius:20px;padding:10px 14px;font-size:12px;font-weight:600;white-space:nowrap;}
+    .btn-outline{background:transparent;color:var(--ink);border:1px solid var(--border-strong);border-radius:20px;padding:10px 14px;font-size:12px;font-weight:600;white-space:nowrap;}
+    .step-circle{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:0 0 auto;}
+    .step-done{background:var(--fill);color:var(--fill-text);}
+    .step-current{background:var(--surface);color:var(--ink);border:2px solid var(--fill);}
+    .step-line{flex:1;height:2px;background:var(--border-strong);}
+    .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 6px;font-size:10px;}
+  </style>
+</helmet>
+<div style="width:390px;height:700px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--surface);flex:0 0 auto;">
+    <button aria-label="Go back" style="background:none;border:none;padding:4px;display:flex;align-items:center;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="t3" style="letter-spacing:0.1em;">MEASUREMENT</div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      <div aria-hidden="true" style="width:22px;height:22px;border-radius:50%;background:var(--track);border:1px solid var(--border-strong);"></div>
+    </div>
+  </div>
+
+  <div style="flex:1 1 auto;padding:16px;display:flex;flex-direction:column;gap:16px;overflow:hidden;">
+
+    <div class="t2">Growth Tracker &amp; Impact</div>
+
+    <div class="card" style="display:flex;flex-direction:column;gap:12px;">
+      <div class="t3">Milestone Stepper</div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div class="step-circle step-done">1</div>
+        <div class="step-line"></div>
+        <div class="step-circle step-done">2</div>
+        <div class="step-line"></div>
+        <div class="step-circle step-current">3</div>
+      </div>
+      <div class="t4">Current Milestone: Jubilee Readiness</div>
+    </div>
+
+    <div class="card" style="display:flex;flex-direction:column;gap:10px;">
+      <div class="t3">Kingdom Impact Metrics</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <div class="t4" style="color:var(--ink-soft);">Total Tithed / Given</div>
+          <div class="t4" style="color:var(--ink-soft);font-weight:600;">£1,200</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <div class="t4" style="color:var(--ink-soft);">Offerings Disbursed</div>
+          <div class="t4" style="color:var(--ink-soft);font-weight:600;">£450</div>
+        </div>
+      </div>
+      <button class="btn-primary" style="align-self:stretch;">+ Log Kingdom Impact / Giving</button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="t3">Automation Flow Triggers</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <button class="btn-outline">Automate</button>
+        <button class="btn-outline">Offerings</button>
+        <button class="btn-outline">Emergency Fund</button>
+        <button class="btn-outline">Wellspring</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="display:flex;align-items:stretch;justify-content:space-around;border-top:1px solid var(--border);background:var(--surface);padding:8px 4px 14px;flex:0 0 auto;">
+    <a href="Home.dc.html" class="nav-item" style="color:var(--muted);font-weight:500;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
+      Home
+    </a>
+    <a href="Watchtower.dc.html" class="nav-item" style="color:var(--muted);font-weight:500;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20V13M21 20H3"/></svg>
+      Watchtower
+    </a>
+    <a href="Planning.dc.html" class="nav-item" style="color:var(--muted);font-weight:500;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+      Planning
+    </a>
+    <a href="Allocation.dc.html" class="nav-item" style="color:var(--muted);font-weight:500;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l7 4"/></svg>
+      Alloc
+    </a>
+    <a href="Measurement.dc.html" class="nav-item" style="color:var(--ink);font-weight:700;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>
+      Measure
+    </a>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
