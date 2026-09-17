@@ -33,7 +33,7 @@
     .icon-btn{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;padding:0;}
   </style>
 </helmet>
-<div style="width:390px;height:1620px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
+<div style="width:390px;height:1720px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
 
   <div style="flex:0 0 auto;background:var(--surface);border-bottom:1px solid var(--border);">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;">
@@ -66,26 +66,39 @@
 
     <div class="t2">Growth Tracker &amp; Impact</div>
 
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      <div class="t3">Growth Trackers</div>
-      <div style="display:flex;gap:18px;overflow-x:auto;padding:4px 2px 8px;">
-        <button style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;">
-          <span style="width:28px;height:28px;border-radius:50%;background:var(--track-fill);color:#FAFAFA;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">1</span>
+    <div class="card" style="display:flex;flex-direction:column;gap:14px;">
+      <div class="t2" style="font-size:14px;">Growth Trackers</div>
+      <div style="display:flex;align-items:flex-end;gap:24px;overflow-x:auto;padding:8px 6px 8px;">
+        <button style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;">
+          <svg width="48" height="48" viewBox="0 0 48 48">
+            <circle cx="24" cy="24" r="21" fill="none" stroke="#E4E4E7" stroke-width="6"/>
+            <circle cx="24" cy="24" r="21" fill="none" stroke="#52525B" stroke-width="6" stroke-linecap="round" stroke-dasharray="131.9" stroke-dashoffset="0" transform="rotate(-90 24 24)"/>
+            <text x="24" y="29" text-anchor="middle" font-size="13" font-weight="700" fill="#18181B" font-family="-apple-system,Helvetica,Arial,sans-serif">1</text>
+          </svg>
           <span class="t4">Tracker 1</span>
         </button>
-        <button style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;">
-          <span style="width:40px;height:40px;border-radius:50%;background:var(--track-fill);color:#FAFAFA;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">2</span>
-          <span class="t4">Tracker 2</span>
+        <button style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;">
+          <svg width="68" height="68" viewBox="0 0 68 68">
+            <circle cx="34" cy="34" r="30.5" fill="none" stroke="#E4E4E7" stroke-width="7"/>
+            <circle cx="34" cy="34" r="30.5" fill="none" stroke="#52525B" stroke-width="7" stroke-linecap="round" stroke-dasharray="191.6" stroke-dashoffset="0" transform="rotate(-90 34 34)"/>
+            <text x="34" y="40" text-anchor="middle" font-size="17" font-weight="700" fill="#18181B" font-family="-apple-system,Helvetica,Arial,sans-serif">2</text>
+          </svg>
+          <span class="t4" style="color:var(--ink-soft);font-weight:600;">Tracker 2</span>
         </button>
-        <button style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;">
-          <span style="width:52px;height:52px;border-radius:50%;background:var(--fill);color:#FAFAFA;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;">3</span>
-          <span class="t4" style="color:var(--ink-soft);font-weight:600;">Tracker 3</span>
+        <button style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;">
+          <svg width="96" height="96" viewBox="0 0 96 96">
+            <circle cx="48" cy="48" r="44" fill="none" stroke="#E4E4E7" stroke-width="8"/>
+            <circle cx="48" cy="48" r="44" fill="none" stroke="#27272A" stroke-width="8" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="105.1" transform="rotate(-90 48 48)"/>
+            <text x="48" y="57" text-anchor="middle" font-size="24" font-weight="700" fill="#18181B" font-family="-apple-system,Helvetica,Arial,sans-serif">3</text>
+          </svg>
+          <span class="t4" style="color:var(--ink-soft);font-weight:700;">Tracker 3</span>
         </button>
-        <button style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;opacity:0.5;">
-          <span style="width:60px;height:60px;border-radius:50%;border:2px dashed var(--border-strong);color:var(--muted);font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;">4</span>
+        <button style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;opacity:0.5;">
+          <span style="width:76px;height:76px;border-radius:50%;border:2px dashed var(--border-strong);color:var(--muted);font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;">4</span>
           <span class="t4">Locked</span>
         </button>
       </div>
+      <div class="t4" style="text-align:center;">Tap a tracker to explore that season's growth in detail</div>
     </div>
 
     <div class="card" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
@@ -234,7 +247,7 @@
 
 </div>
 </x-dc>
-<script data-dc-script data-props='{"$preview":{"width":390,"height":1620}}'>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":1720}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

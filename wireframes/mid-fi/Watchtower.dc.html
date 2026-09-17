@@ -33,7 +33,7 @@
     .icon-btn{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;padding:0;}
   </style>
 </helmet>
-<div style="width:390px;height:1200px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
+<div style="width:390px;height:1300px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
 
   <div style="flex:0 0 auto;background:var(--surface);border-bottom:1px solid var(--border);">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;">
@@ -66,16 +66,41 @@
 
     <div class="t2">Watchtower Analytics</div>
 
-    <div class="card" style="display:flex;flex-direction:column;gap:8px;">
-      <div class="t3">Expense Categorisation</div>
-      <div class="placeholder" style="height:120px;gap:10px;align-items:flex-end;padding:14px;">
-        <div style="width:20px;height:40%;background:#D4D4D8;border-radius:3px 3px 0 0;"></div>
-        <div style="width:20px;height:75%;background:#A1A1AA;border-radius:3px 3px 0 0;"></div>
-        <div style="width:20px;height:55%;background:#D4D4D8;border-radius:3px 3px 0 0;"></div>
-        <div style="width:20px;height:90%;background:#52525B;border-radius:3px 3px 0 0;"></div>
-        <div style="width:20px;height:30%;background:#D4D4D8;border-radius:3px 3px 0 0;"></div>
+    <div class="card" style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;">
+        <div class="t3">Expense Categorisation</div>
+        <div class="t4">This month</div>
       </div>
-      <div class="t4">Bar / Donut Chart Breakdown by Category</div>
+      <div style="border-bottom:1px solid var(--border);display:flex;gap:14px;align-items:flex-end;justify-content:center;height:190px;padding:10px 8px 0;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+          <span class="t4" style="font-weight:700;color:var(--ink-soft);">£320</span>
+          <div style="width:28px;height:40%;background:#D4D4D8;border-radius:4px 4px 0 0;"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+          <span class="t4" style="font-weight:700;color:var(--ink-soft);">£440</span>
+          <div style="width:28px;height:55%;background:#A1A1AA;border-radius:4px 4px 0 0;"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+          <span class="t4" style="font-weight:700;color:var(--ink-soft);">£240</span>
+          <div style="width:28px;height:30%;background:#D4D4D8;border-radius:4px 4px 0 0;"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+          <span class="t4" style="font-weight:700;color:var(--ink);">£720</span>
+          <div style="width:28px;height:90%;background:#27272A;border-radius:4px 4px 0 0;"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+          <span class="t4" style="font-weight:700;color:var(--ink-soft);">£600</span>
+          <div style="width:28px;height:75%;background:#A1A1AA;border-radius:4px 4px 0 0;"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;justify-content:center;padding:0 8px;">
+        <span class="t4" style="width:28px;text-align:center;font-size:10px;">Groc.</span>
+        <span class="t4" style="width:28px;text-align:center;font-size:10px;">Util.</span>
+        <span class="t4" style="width:28px;text-align:center;font-size:10px;">Trans.</span>
+        <span class="t4" style="width:28px;text-align:center;font-size:10px;font-weight:700;color:var(--ink-soft);">Subs.</span>
+        <span class="t4" style="width:28px;text-align:center;font-size:10px;">Give</span>
+      </div>
+      <div class="t4" style="text-align:center;">Subscriptions is your largest category this month</div>
     </div>
 
     <div class="card" style="display:flex;flex-direction:column;gap:10px;">
@@ -189,7 +214,7 @@
 
 </div>
 </x-dc>
-<script data-dc-script data-props='{"$preview":{"width":390,"height":1200}}'>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":1300}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

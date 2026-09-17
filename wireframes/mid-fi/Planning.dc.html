@@ -36,7 +36,7 @@
     .icon-btn{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;padding:0;}
   </style>
 </helmet>
-<div style="width:390px;height:1240px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
+<div style="width:390px;height:1350px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
 
   <div style="flex:0 0 auto;background:var(--surface);border-bottom:1px solid var(--border);">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;">
@@ -79,13 +79,31 @@
       </div>
     </div>
 
-    <div class="card" style="display:flex;flex-direction:column;gap:10px;">
-      <div class="placeholder" style="height:110px;">
-        <svg width="100%" height="90" viewBox="0 0 300 90" preserveAspectRatio="none">
-          <polyline points="0,80 50,65 100,68 150,45 200,50 250,25 300,15" fill="none" stroke="#52525B" stroke-width="2.5"/>
-        </svg>
+    <div class="card" style="display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;">
+        <div class="t3">Harvest Yield Curve</div>
+        <div class="t4">Standard mode</div>
       </div>
-      <div class="t4" style="text-align:center;">Yield Curve Chart Placeholder</div>
+      <svg width="100%" height="180" viewBox="0 0 300 180" preserveAspectRatio="none">
+        <line x1="0" y1="20" x2="300" y2="20" stroke="#E4E4E7" stroke-width="1"/>
+        <line x1="0" y1="60" x2="300" y2="60" stroke="#E4E4E7" stroke-width="1"/>
+        <line x1="0" y1="100" x2="300" y2="100" stroke="#E4E4E7" stroke-width="1"/>
+        <line x1="0" y1="140" x2="300" y2="140" stroke="#E4E4E7" stroke-width="1"/>
+        <polygon points="0,140 50,115 100,120 150,80 200,88 250,45 300,25 300,160 0,160" fill="#3F3F46" fill-opacity="0.08"/>
+        <polyline points="0,140 50,115 100,120 150,80 200,88 250,45 300,25" fill="none" stroke="#27272A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="0" cy="140" r="3.2" fill="#27272A"/>
+        <circle cx="100" cy="120" r="3.2" fill="#27272A"/>
+        <circle cx="200" cy="88" r="3.2" fill="#27272A"/>
+        <circle cx="300" cy="25" r="4" fill="#27272A" stroke="#FAFAFA" stroke-width="1.5"/>
+        <line x1="0" y1="160" x2="300" y2="160" stroke="#D4D4D8" stroke-width="1"/>
+      </svg>
+      <div style="display:flex;justify-content:space-between;padding:0 2px;">
+        <span class="t4" style="font-size:10px;">Now</span>
+        <span class="t4" style="font-size:10px;">6 Mo</span>
+        <span class="t4" style="font-size:10px;">12 Mo</span>
+        <span class="t4" style="font-size:10px;">18 Mo</span>
+        <span class="t4" style="font-size:10px;">24 Mo</span>
+      </div>
       <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--border);padding-top:10px;">
         <div class="t3-val">Est. Yield: £12,500</div>
         <div class="t4">Harvest Horizon: 24 Mos</div>
@@ -252,7 +270,7 @@
 
 </div>
 </x-dc>
-<script data-dc-script data-props='{"$preview":{"width":390,"height":1240}}'>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":1350}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};
