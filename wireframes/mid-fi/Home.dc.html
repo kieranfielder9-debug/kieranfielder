@@ -32,6 +32,8 @@
     .btn-square.primary{background:var(--fill);border-color:var(--fill);color:var(--fill-text);}
     .icon-btn{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;padding:0;}
     .list-row{display:flex;justify-content:space-between;align-items:baseline;}
+    .no-scrollbar{scrollbar-width:none;-ms-overflow-style:none;}
+    .no-scrollbar::-webkit-scrollbar{display:none;}
     .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 6px;font-size:10px;}
     .placeholder{border:1px dashed var(--border-strong);border-radius:10px;background:#FAFAFA;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;text-align:center;padding:8px;}
   </style>
@@ -81,7 +83,7 @@
     </div>
   </div>
 
-  <div style="flex:1 1 auto;padding:16px;display:flex;flex-direction:column;gap:18px;overflow:hidden;">
+  <div class="no-scrollbar" style="flex:1 1 auto;padding:16px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;">
 
     <div style="display:flex;flex-direction:column;gap:4px;">
       <div class="t3">Total Storehouse Value</div>

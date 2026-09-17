@@ -27,10 +27,21 @@
     .cross-btn.primary{background:var(--fill);border-color:var(--fill);color:var(--fill-text);}
     .vault-row{display:flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:12px;padding:10px 12px;background:var(--surface);width:100%;text-align:left;}
     .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 6px;font-size:10px;}
+    .no-scrollbar{scrollbar-width:none;-ms-overflow-style:none;}
+    .no-scrollbar::-webkit-scrollbar{display:none;}
+    summary{list-style:none;cursor:pointer;}
+    summary::-webkit-details-marker{display:none;}
+    .show-more-row{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 0 0;font-size:12px;font-weight:600;color:var(--ink-soft);}
+    .show-more-row svg{transition:transform 0.15s;}
+    details[open] .lbl-more{display:none;}
+    details:not([open]) .lbl-less{display:none;}
+    details[open] .show-more-row svg{transform:rotate(180deg);}
+    .hidden-items{display:none;flex-direction:column;gap:8px;margin-top:8px;}
+    details[open] .hidden-items{display:flex;}
     .icon-btn{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;padding:0;}
   </style>
 </helmet>
-<div style="width:390px;height:1400px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
+<div style="width:390px;height:1490px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
 
   <div style="flex:0 0 auto;background:var(--surface);border-bottom:1px solid var(--border);">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;">
@@ -59,7 +70,7 @@
     </div>
   </div>
 
-  <div style="flex:1 1 auto;padding:16px;display:flex;flex-direction:column;gap:16px;overflow:hidden;">
+  <div class="no-scrollbar" style="flex:1 1 auto;padding:16px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;">
 
     <div class="t2">Portfolio &amp; Allocation Strategy</div>
 
@@ -174,7 +185,44 @@
           </span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </button>
+        <button class="vault-row">
+          <span style="width:36px;height:36px;border-radius:10px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex:0 0 auto;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3.5"/><path d="M12 10.5v0.01"/></svg>
+          </span>
+          <span style="flex:1;">
+            <div class="t4" style="color:var(--ink-soft);font-weight:700;">Kingdom Fund</div>
+            <div class="t4">Manual</div>
+          </span>
+          <span style="text-align:right;">
+            <div class="t3-val">£1,200.00</div>
+          </span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
       </div>
+
+      <details>
+        <summary class="show-more-row">
+          <span class="lbl-more">Show More (1)</span>
+          <span class="lbl-less">Show Less</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#71717A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="hidden-items">
+          <button class="vault-row">
+            <span style="width:36px;height:36px;border-radius:10px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex:0 0 auto;">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3.5"/><path d="M12 10.5v0.01"/></svg>
+            </span>
+            <span style="flex:1;">
+              <div class="t4" style="color:var(--ink-soft);font-weight:700;">Manse Fund</div>
+              <div class="t4">Manual</div>
+            </span>
+            <span style="text-align:right;">
+              <div class="t3-val">£1,000.00</div>
+            </span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </details>
+
       <a href="Modal-NewAllocationRule.dc.html" class="btn-outline" style="align-self:stretch;text-align:center;">+ Create New Allocation Rule</a>
     </div>
 

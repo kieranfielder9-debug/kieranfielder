@@ -32,6 +32,15 @@
     .impact-item{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--border);border-radius:10px;padding:10px 11px;flex:0 0 auto;}
     .no-scrollbar{scrollbar-width:none;-ms-overflow-style:none;}
     .no-scrollbar::-webkit-scrollbar{display:none;}
+    summary{list-style:none;cursor:pointer;}
+    summary::-webkit-details-marker{display:none;}
+    .show-more-row{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 0 0;font-size:12px;font-weight:600;color:var(--ink-soft);}
+    .show-more-row svg{transition:transform 0.15s;}
+    details[open] .lbl-more{display:none;}
+    details:not([open]) .lbl-less{display:none;}
+    details[open] .show-more-row svg{transform:rotate(180deg);}
+    .hidden-items{display:none;flex-direction:column;gap:8px;margin-top:8px;}
+    details[open] .hidden-items{display:flex;}
     .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 6px;font-size:10px;}
     .icon-btn{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;padding:0;}
   </style>
@@ -65,7 +74,7 @@
     </div>
   </div>
 
-  <div style="flex:1 1 auto;padding:16px;display:flex;flex-direction:column;gap:18px;overflow:hidden;">
+  <div class="no-scrollbar" style="flex:1 1 auto;padding:16px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;">
 
     <div class="t2">Growth Tracker &amp; Impact</div>
 
@@ -139,7 +148,7 @@
 
     <div class="card" style="display:flex;flex-direction:column;gap:10px;">
       <div class="t3">Kingdom Impact</div>
-      <div style="display:flex;flex-direction:column;gap:8px;max-height:230px;overflow-y:auto;padding-right:2px;">
+      <div style="display:flex;flex-direction:column;gap:8px;">
         <div class="impact-item">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:1px;"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
           <span style="flex:1;">
@@ -164,23 +173,34 @@
           </span>
           <div class="t4" style="color:var(--ink-soft);font-weight:600;white-space:nowrap;">£180</div>
         </div>
-        <div class="impact-item">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:1px;"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
-          <span style="flex:1;">
-            <div class="t4" style="color:var(--ink-soft);font-weight:700;">Widow &amp; Orphan Care</div>
-            <div class="t4">Monthly support commitment fulfilled</div>
-          </span>
-          <div class="t4" style="color:var(--ink-soft);font-weight:600;white-space:nowrap;">£75/mo</div>
-        </div>
-        <div class="impact-item">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:1px;"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
-          <span style="flex:1;">
-            <div class="t4" style="color:var(--ink-soft);font-weight:700;">Disaster Relief Response</div>
-            <div class="t4">One-time gift to the relief fund</div>
-          </span>
-          <div class="t4" style="color:var(--ink-soft);font-weight:600;white-space:nowrap;">£120</div>
-        </div>
       </div>
+
+      <details>
+        <summary class="show-more-row">
+          <span class="lbl-more">Show More (2)</span>
+          <span class="lbl-less">Show Less</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#71717A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="hidden-items">
+          <div class="impact-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:1px;"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+            <span style="flex:1;">
+              <div class="t4" style="color:var(--ink-soft);font-weight:700;">Widow &amp; Orphan Care</div>
+              <div class="t4">Monthly support commitment fulfilled</div>
+            </span>
+            <div class="t4" style="color:var(--ink-soft);font-weight:600;white-space:nowrap;">£75/mo</div>
+          </div>
+          <div class="impact-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:1px;"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+            <span style="flex:1;">
+              <div class="t4" style="color:var(--ink-soft);font-weight:700;">Disaster Relief Response</div>
+              <div class="t4">One-time gift to the relief fund</div>
+            </span>
+            <div class="t4" style="color:var(--ink-soft);font-weight:600;white-space:nowrap;">£120</div>
+          </div>
+        </div>
+      </details>
+
       <a href="Modal-LogImpact.dc.html" style="display:flex;align-items:center;justify-content:center;gap:6px;border:1px dashed var(--border-strong);border-radius:10px;padding:9px;color:var(--muted);font-size:12px;font-weight:600;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#71717A" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
         Add Your Own Impact

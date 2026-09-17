@@ -34,9 +34,20 @@
     .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 6px;font-size:10px;}
     .placeholder{border:1px dashed var(--border-strong);border-radius:10px;background:#FAFAFA;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;text-align:center;padding:8px;}
     .icon-btn{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;padding:0;}
+    .no-scrollbar{scrollbar-width:none;-ms-overflow-style:none;}
+    .no-scrollbar::-webkit-scrollbar{display:none;}
+    summary{list-style:none;cursor:pointer;}
+    summary::-webkit-details-marker{display:none;}
+    .show-more-row{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 0 0;font-size:12px;font-weight:600;color:var(--ink-soft);}
+    .show-more-row svg{transition:transform 0.15s;}
+    details[open] .lbl-more{display:none;}
+    details:not([open]) .lbl-less{display:none;}
+    details[open] .show-more-row svg{transform:rotate(180deg);}
+    .hidden-items{display:none;flex-direction:column;gap:16px;margin-top:0;}
+    details[open] .hidden-items{display:flex;}
   </style>
 </helmet>
-<div style="width:390px;height:1390px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
+<div style="width:390px;height:1430px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
 
   <div style="flex:0 0 auto;background:var(--surface);border-bottom:1px solid var(--border);">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;">
@@ -65,7 +76,7 @@
     </div>
   </div>
 
-  <div style="flex:1 1 auto;padding:16px;display:flex;flex-direction:column;gap:18px;overflow:hidden;">
+  <div class="no-scrollbar" style="flex:1 1 auto;padding:16px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;">
 
     <div class="t2">Harvest Projections</div>
 
@@ -179,12 +190,43 @@
         </div>
       </div>
 
+      <details>
+        <summary class="show-more-row">
+          <span class="lbl-more">Show More (1)</span>
+          <span class="lbl-less">Show Less</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#71717A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="hidden-items">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;">
+              <div class="t3">Home Deposit</div>
+              <div class="t4">15% · Target £15,000</div>
+            </div>
+            <div class="dial-track">
+              <div style="position:absolute;left:0;right:0;top:50%;height:2px;background:var(--border);transform:translateY(-50%);"></div>
+              <div class="tick" style="left:0%;"></div>
+              <div class="tick" style="left:25%;"></div>
+              <div class="tick" style="left:50%;"></div>
+              <div class="tick" style="left:75%;"></div>
+              <div class="tick" style="left:100%;"></div>
+              <div style="position:absolute;left:0;top:50%;height:3px;width:15%;background:var(--track-fill);transform:translateY(-50%);border-radius:2px;"></div>
+              <div style="position:absolute;left:15%;top:50%;transform:translate(-50%,-50%);">
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="9" fill="var(--surface)" stroke="#D4D4D8" stroke-width="2"/>
+                  <circle cx="12" cy="12" r="9" fill="none" stroke="#27272A" stroke-width="2" stroke-dasharray="56.5" stroke-dashoffset="48.0" transform="rotate(-90 12 12)"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
     </div>
 
     <div style="display:flex;flex-direction:column;gap:12px;">
       <div class="t2">Giving Targets</div>
-      <div style="display:flex;gap:8px;">
-        <div class="card" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <div class="no-scrollbar" style="display:flex;gap:10px;overflow-x:auto;padding:2px 2px 6px;">
+        <div class="card" style="flex:0 0 110px;display:flex;flex-direction:column;align-items:center;gap:6px;">
           <svg width="60" height="60" viewBox="0 0 60 60">
             <circle cx="30" cy="30" r="26" fill="#52525B"/>
             <circle cx="30" cy="30" r="20" fill="#71717A"/>
@@ -192,9 +234,9 @@
             <circle cx="30" cy="30" r="7" fill="#18181B"/>
           </svg>
           <div class="t3">Tithe</div>
-          <div class="t4">£1,200 / £1,200</div>
+          <div class="t4" style="text-align:center;">£1,200 / £1,200</div>
         </div>
-        <div class="card" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div class="card" style="flex:0 0 110px;display:flex;flex-direction:column;align-items:center;gap:6px;">
           <svg width="60" height="60" viewBox="0 0 60 60">
             <circle cx="30" cy="30" r="26" fill="#52525B"/>
             <circle cx="30" cy="30" r="20" fill="#71717A"/>
@@ -202,9 +244,9 @@
             <circle cx="30" cy="30" r="7" fill="#E4E4E7"/>
           </svg>
           <div class="t3">Offerings</div>
-          <div class="t4">£450 / £600</div>
+          <div class="t4" style="text-align:center;">£450 / £600</div>
         </div>
-        <div class="card" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div class="card" style="flex:0 0 110px;display:flex;flex-direction:column;align-items:center;gap:6px;">
           <svg width="60" height="60" viewBox="0 0 60 60">
             <circle cx="30" cy="30" r="26" fill="#52525B"/>
             <circle cx="30" cy="30" r="20" fill="#71717A"/>
@@ -212,7 +254,17 @@
             <circle cx="30" cy="30" r="7" fill="#E4E4E7"/>
           </svg>
           <div class="t3">Kingdom Fund</div>
-          <div class="t4">£1,000 / £2,000</div>
+          <div class="t4" style="text-align:center;">£1,000 / £2,000</div>
+        </div>
+        <div class="card" style="flex:0 0 110px;display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <svg width="60" height="60" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="26" fill="#52525B"/>
+            <circle cx="30" cy="30" r="20" fill="#E4E4E7"/>
+            <circle cx="30" cy="30" r="14" fill="#E4E4E7"/>
+            <circle cx="30" cy="30" r="7" fill="#E4E4E7"/>
+          </svg>
+          <div class="t3">Mission Fund</div>
+          <div class="t4" style="text-align:center;">£200 / £800</div>
         </div>
       </div>
     </div>
@@ -270,7 +322,7 @@
 
 </div>
 </x-dc>
-<script data-dc-script data-props='{"$preview":{"width":390,"height":1390}}'>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":1430}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

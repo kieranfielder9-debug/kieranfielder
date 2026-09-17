@@ -3,7 +3,7 @@
   "attachments": {},
   "boards": {
     "Allocation.dc.html": {
-      "h": 1400,
+      "h": 1490,
       "is_interactive": true,
       "title": "4. Allocation",
       "w": 390,
@@ -18,12 +18,12 @@
       "y": -305
     },
     "Container-Styles-Taster.dc.html": {
-      "h": 1211,
+      "h": 1825,
       "is_interactive": true,
       "title": "Taster: Container Styles",
-      "w": 968,
-      "x": 752,
-      "y": 855
+      "w": 2236,
+      "x": 207,
+      "y": 791
     },
     "Home.dc.html": {
       "h": 1520,
@@ -41,16 +41,48 @@
       "x": 1880,
       "y": 0
     },
-    "Piece-cr01.dc.html": {
-      "frameless": true,
-      "h": 971.890625,
-      "title": "Div",
-      "w": 844,
-      "x": 2876,
-      "y": -185
+    "Modal-DeployCapital.dc.html": {
+      "h": 660,
+      "is_interactive": true,
+      "title": "Modal: Deploy Capital",
+      "w": 390,
+      "x": 860,
+      "y": 2150
+    },
+    "Modal-LogImpact.dc.html": {
+      "h": 700,
+      "is_interactive": true,
+      "title": "Modal: Log Kingdom Impact",
+      "w": 390,
+      "x": 1720,
+      "y": 2150
+    },
+    "Modal-NewAllocationRule.dc.html": {
+      "h": 730,
+      "is_interactive": true,
+      "title": "Modal: New Allocation Rule",
+      "w": 390,
+      "x": 1290,
+      "y": 2150
+    },
+    "Modal-PrunePayments.dc.html": {
+      "h": 640,
+      "is_interactive": true,
+      "title": "Modal: Prune Payments",
+      "w": 390,
+      "x": 430,
+      "y": 2150
+    },
+    "Modal-Transfer.dc.html": {
+      "h": 700,
+      "is_interactive": true,
+      "title": "Modal: Transfer",
+      "w": 390,
+      "x": 0,
+      "y": 2150
     },
     "Planning.dc.html": {
-      "h": 1390,
+      "h": 1430,
       "is_interactive": true,
       "title": "3. Planning",
       "w": 390,
@@ -64,46 +96,6 @@
       "w": 390,
       "x": 470,
       "y": 0
-    },
-    "Modal-Transfer.dc.html": {
-      "h": 700,
-      "is_interactive": true,
-      "title": "Modal: Transfer",
-      "w": 390,
-      "x": 0,
-      "y": 2150
-    },
-    "Modal-PrunePayments.dc.html": {
-      "h": 640,
-      "is_interactive": true,
-      "title": "Modal: Prune Payments",
-      "w": 390,
-      "x": 430,
-      "y": 2150
-    },
-    "Modal-DeployCapital.dc.html": {
-      "h": 660,
-      "is_interactive": true,
-      "title": "Modal: Deploy Capital",
-      "w": 390,
-      "x": 860,
-      "y": 2150
-    },
-    "Modal-NewAllocationRule.dc.html": {
-      "h": 660,
-      "is_interactive": true,
-      "title": "Modal: New Allocation Rule",
-      "w": 390,
-      "x": 1290,
-      "y": 2150
-    },
-    "Modal-LogImpact.dc.html": {
-      "h": 700,
-      "is_interactive": true,
-      "title": "Modal: Log Kingdom Impact",
-      "w": 390,
-      "x": 1720,
-      "y": 2150
     }
   },
   "createdOnFiles": {
@@ -123,7 +115,6 @@
     "Measurement.dc.html",
     "Artboard-5lx6.dc.html",
     "Container-Styles-Taster.dc.html",
-    "Piece-cr01.dc.html",
     "Modal-Transfer.dc.html",
     "Modal-PrunePayments.dc.html",
     "Modal-DeployCapital.dc.html",
