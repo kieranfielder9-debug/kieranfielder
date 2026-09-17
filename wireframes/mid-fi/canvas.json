@@ -3,7 +3,7 @@
   "attachments": {},
   "boards": {
     "Allocation.dc.html": {
-      "h": 1340,
+      "h": 1400,
       "is_interactive": true,
       "title": "4. Allocation",
       "w": 390,
@@ -18,7 +18,7 @@
       "y": -305
     },
     "Home.dc.html": {
-      "h": 1470,
+      "h": 1520,
       "is_interactive": true,
       "title": "1. Home / Overview",
       "w": 390,
@@ -26,7 +26,7 @@
       "y": 0
     },
     "Measurement.dc.html": {
-      "h": 1720,
+      "h": 1750,
       "is_interactive": true,
       "title": "5. Measurement",
       "w": 390,
@@ -34,7 +34,7 @@
       "y": 0
     },
     "Planning.dc.html": {
-      "h": 1350,
+      "h": 1390,
       "is_interactive": true,
       "title": "3. Planning",
       "w": 390,
@@ -42,7 +42,7 @@
       "y": 0
     },
     "Watchtower.dc.html": {
-      "h": 1300,
+      "h": 1340,
       "is_interactive": true,
       "title": "2. Watchtower",
       "w": 390,
