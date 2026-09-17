@@ -20,16 +20,16 @@
     .t2{font-size:17px;font-weight:700;color:var(--ink);margin:0;}
     .t3{font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-soft);margin:0;}
     .t4{font-size:12px;font-weight:400;color:var(--muted);margin:0;line-height:1.4;}
-    .card{background:var(--surface);border:none;border-radius:14px;padding:14px;box-shadow:0 4px 14px rgba(24,24,27,0.10);}
-    .callout{display:flex;gap:8px;background:var(--bg);border:1px solid var(--border);border-left:4px solid var(--ink);border-radius:8px;padding:9px 11px;}
+    .card{background:var(--surface);border:none;border-radius:14px;padding:16px;box-shadow:0 4px 14px rgba(24,24,27,0.10);}
+    .callout{display:flex;gap:8px;background:var(--bg);border:1px solid var(--border);border-left:4px solid var(--ink);border-radius:8px;padding:12px 12px;}
     .btn-primary{background:var(--fill);color:var(--fill-text);border:1px solid var(--fill);border-radius:20px;padding:10px 14px;font-size:12px;font-weight:600;white-space:nowrap;}
     .chip{border:1px solid var(--border-strong);background:var(--surface);color:var(--ink-soft);border-radius:14px;padding:6px 12px;font-size:11px;font-weight:600;white-space:nowrap;}
     .chip.active{background:var(--fill);border-color:var(--fill);color:var(--fill-text);}
-    .list-item{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
+    .list-item{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:10px;padding:12px 12px;}
     .lcd-digit{display:flex;flex-direction:column;align-items:center;gap:1px;}
     .lcd-num{font-family:"Courier New",Courier,monospace;font-size:24px;font-weight:700;color:#FAFAFA;line-height:1;}
     .lcd-unit{font-size:8px;font-weight:700;letter-spacing:0.1em;color:#A1A1AA;}
-    .impact-item{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--border);border-radius:10px;padding:10px 11px;flex:0 0 auto;}
+    .impact-item{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--border);border-radius:10px;padding:12px 12px;flex:0 0 auto;}
     .no-scrollbar{scrollbar-width:none;-ms-overflow-style:none;}
     .no-scrollbar::-webkit-scrollbar{display:none;}
     summary{list-style:none;cursor:pointer;}
@@ -45,7 +45,7 @@
     .icon-btn{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;padding:0;}
   </style>
 </helmet>
-<div style="width:390px;height:1780px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
+<div style="width:390px;height:1815px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
 
   <div style="flex:0 0 auto;background:var(--surface);border-bottom:1px solid var(--border);">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;">
@@ -74,7 +74,7 @@
     </div>
   </div>
 
-  <div class="no-scrollbar" style="flex:1 1 auto;padding:16px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;">
+  <div class="no-scrollbar" style="flex:1 1 auto;padding:16px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;">
 
     <div class="t2">Growth Tracker &amp; Impact</div>
 
@@ -282,7 +282,7 @@
 
 </div>
 </x-dc>
-<script data-dc-script data-props='{"$preview":{"width":390,"height":1780}}'>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":1815}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

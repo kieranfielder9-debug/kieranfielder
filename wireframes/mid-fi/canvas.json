@@ -3,7 +3,7 @@
   "attachments": {},
   "boards": {
     "Allocation.dc.html": {
-      "h": 1490,
+      "h": 1520,
       "is_interactive": true,
       "title": "4. Allocation",
       "w": 390,
@@ -22,11 +22,11 @@
       "is_interactive": true,
       "title": "Taster: Container Styles",
       "w": 2236,
-      "x": 207,
-      "y": 791
+      "x": 3712,
+      "y": -45
     },
     "Home.dc.html": {
-      "h": 1520,
+      "h": 1540,
       "is_interactive": true,
       "title": "1. Home / Overview",
       "w": 390,
@@ -34,7 +34,7 @@
       "y": 0
     },
     "Measurement.dc.html": {
-      "h": 1780,
+      "h": 1815,
       "is_interactive": true,
       "title": "5. Measurement",
       "w": 390,
@@ -42,7 +42,7 @@
       "y": 0
     },
     "Modal-DeployCapital.dc.html": {
-      "h": 660,
+      "h": 670,
       "is_interactive": true,
       "title": "Modal: Deploy Capital",
       "w": 390,
@@ -50,7 +50,7 @@
       "y": 2150
     },
     "Modal-LogImpact.dc.html": {
-      "h": 700,
+      "h": 710,
       "is_interactive": true,
       "title": "Modal: Log Kingdom Impact",
       "w": 390,
@@ -58,7 +58,7 @@
       "y": 2150
     },
     "Modal-NewAllocationRule.dc.html": {
-      "h": 730,
+      "h": 740,
       "is_interactive": true,
       "title": "Modal: New Allocation Rule",
       "w": 390,
@@ -66,7 +66,7 @@
       "y": 2150
     },
     "Modal-PrunePayments.dc.html": {
-      "h": 640,
+      "h": 650,
       "is_interactive": true,
       "title": "Modal: Prune Payments",
       "w": 390,
@@ -74,7 +74,7 @@
       "y": 2150
     },
     "Modal-Transfer.dc.html": {
-      "h": 700,
+      "h": 710,
       "is_interactive": true,
       "title": "Modal: Transfer",
       "w": 390,
@@ -82,7 +82,7 @@
       "y": 2150
     },
     "Planning.dc.html": {
-      "h": 1430,
+      "h": 1460,
       "is_interactive": true,
       "title": "3. Planning",
       "w": 390,
@@ -90,7 +90,7 @@
       "y": 0
     },
     "Watchtower.dc.html": {
-      "h": 1400,
+      "h": 1430,
       "is_interactive": true,
       "title": "2. Watchtower",
       "w": 390,

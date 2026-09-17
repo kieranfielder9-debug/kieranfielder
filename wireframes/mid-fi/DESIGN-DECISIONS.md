@@ -11,9 +11,16 @@ them per screen.
   iPhone 12–15 width class).
 - **8pt spacing scale**: `4 (xs) · 8 (sm) · 12 (md) · 16 (lg) · 24 (xl) · 32 (xxl)`.
   - Page horizontal margin: `16px` (lg) on every screen.
-  - Card internal padding: `16px` (lg).
-  - Section-to-section vertical gap: `16–18px` (lg), rounding to `16px` going
-    forward.
+  - Card internal padding: `16px` (lg) — fixed from a `14px` drift that had
+    crept into every screen's `.card` class; now uniform.
+  - Section-to-section vertical gap: `16px` (lg) — fixed from a `16/18px`
+    split across screens; now uniform everywhere.
+  - **Row-type container padding** (vault rows, assessment rows, list
+    items, impact items, divided rows): `12px` (md) on all sides — replaces
+    an inconsistent mix of `9–11px` values that had no scale token.
+  - **Modal sheet padding**: `24px` (xl) top, `16px` (lg) sides — matching
+    the same horizontal margin as every screen, so a sheet's content aligns
+    with the page behind it — `32px` (xxl) bottom, as safe-area cushion.
   - List item gap inside a card: `8px` (sm).
   - Icon-to-label gap: `6–8px` (xs/sm).
 - **Header exception**: the icon row uses `24px` side padding (tighter
