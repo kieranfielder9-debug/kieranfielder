@@ -19,16 +19,17 @@
     button{font-family:inherit;cursor:pointer;}
     .t2{font-size:17px;font-weight:700;color:var(--ink);margin:0;}
     .t3{font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-soft);margin:0;}
+    .t3-val{font-size:15px;font-weight:700;color:var(--ink);margin:0;}
     .t4{font-size:12px;font-weight:400;color:var(--muted);margin:0;line-height:1.4;}
     .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;}
-    .badge{display:inline-block;background:var(--track);color:var(--ink-soft);font-size:10px;font-weight:600;padding:3px 8px;border-radius:8px;white-space:nowrap;}
     .btn-outline{background:transparent;color:var(--ink);border:1px solid var(--border-strong);border-radius:20px;padding:10px 14px;font-size:12px;font-weight:600;white-space:nowrap;}
     .cross-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--surface);border:1px solid var(--border-strong);border-radius:16px;font-size:11px;font-weight:600;color:var(--ink-soft);padding:10px 4px;}
     .cross-btn.primary{background:var(--fill);border-color:var(--fill);color:var(--fill-text);}
+    .vault-row{display:flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:12px;padding:10px 12px;background:var(--surface);width:100%;text-align:left;}
     .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 6px;font-size:10px;}
   </style>
 </helmet>
-<div style="width:390px;height:1150px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
+<div style="width:390px;height:1180px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
 
   <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--surface);flex:0 0 auto;">
     <button aria-label="Go back" style="background:none;border:none;padding:4px;display:flex;align-items:center;">
@@ -48,10 +49,14 @@
     <div class="card" style="display:flex;flex-direction:column;gap:6px;">
       <div class="t3">Stream Splitter</div>
       <svg width="100%" height="180" viewBox="0 0 350 200" preserveAspectRatio="xMidYMid meet">
-        <path d="M175,6 C175,40 175,55 175,70" fill="none" stroke="#94A3B8" stroke-width="26" stroke-linecap="round"/>
-        <path d="M175,70 C140,110 90,140 60,182" fill="none" stroke="#64748B" stroke-width="22" stroke-linecap="round"/>
-        <path d="M175,70 C175,115 175,150 175,182" fill="none" stroke="#94A3B8" stroke-width="18" stroke-linecap="round"/>
-        <path d="M175,70 C210,110 260,140 290,182" fill="none" stroke="#CBD5E1" stroke-width="13" stroke-linecap="round"/>
+        <path d="M175,6 C170,30 180,50 175,70" fill="none" stroke="#94A3B8" stroke-width="26" stroke-linecap="round"/>
+        <path d="M175,70 C155,95 100,90 80,120 C65,145 70,165 60,182" fill="none" stroke="#64748B" stroke-width="22" stroke-linecap="round"/>
+        <path d="M175,70 C180,100 165,130 175,155 C180,170 172,178 175,182" fill="none" stroke="#94A3B8" stroke-width="18" stroke-linecap="round"/>
+        <path d="M175,70 C195,95 250,90 270,120 C285,145 280,165 290,182" fill="none" stroke="#CBD5E1" stroke-width="13" stroke-linecap="round"/>
+        <path d="M175,6 C170,30 180,50 175,70" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="4" stroke-linecap="round"/>
+        <path d="M175,70 C155,95 100,90 80,120 C65,145 70,165 60,182" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="4" stroke-linecap="round"/>
+        <path d="M175,70 C180,100 165,130 175,155 C180,170 172,178 175,182" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="3" stroke-linecap="round"/>
+        <path d="M175,70 C195,95 250,90 270,120 C285,145 280,165 290,182" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="3" stroke-linecap="round"/>
       </svg>
       <div style="display:flex;justify-content:space-between;gap:6px;padding-top:2px;">
         <div style="flex:1;text-align:left;">
@@ -75,7 +80,7 @@
         <div class="t4">Not yet assigned to a stream</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
-        <div class="t3-val" style="font-size:16px;font-weight:700;color:var(--ink);">£600.00</div>
+        <div class="t3-val">£600.00</div>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
       </div>
     </button>
@@ -110,18 +115,45 @@
     <div class="card" style="display:flex;flex-direction:column;gap:10px;">
       <div class="t3">Vaults</div>
       <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:10px;padding:10px 12px;">
-          <div class="t4" style="color:var(--ink-soft);font-weight:600;">Emergency Fund</div>
-          <span class="badge">10% Auto-Split</span>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:10px;padding:10px 12px;">
-          <div class="t4" style="color:var(--ink-soft);font-weight:600;">Wellspring Fund</div>
-          <span class="badge">5% Auto-Split</span>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:10px;padding:10px 12px;">
-          <div class="t4" style="color:var(--ink-soft);font-weight:600;">Gold Vault</div>
-          <span class="badge">Manual</span>
-        </div>
+        <button class="vault-row">
+          <span style="width:36px;height:36px;border-radius:10px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex:0 0 auto;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3.5"/><path d="M12 10.5v0.01"/></svg>
+          </span>
+          <span style="flex:1;">
+            <div class="t4" style="color:var(--ink-soft);font-weight:700;">Emergency Fund</div>
+            <div class="t4">10% Auto-Split</div>
+          </span>
+          <span style="text-align:right;">
+            <div class="t3-val">£1,800.00</div>
+          </span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button class="vault-row">
+          <span style="width:36px;height:36px;border-radius:10px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex:0 0 auto;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3.5"/><path d="M12 10.5v0.01"/></svg>
+          </span>
+          <span style="flex:1;">
+            <div class="t4" style="color:var(--ink-soft);font-weight:700;">Wellspring Fund</div>
+            <div class="t4">5% Auto-Split</div>
+          </span>
+          <span style="text-align:right;">
+            <div class="t3-val">£900.00</div>
+          </span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button class="vault-row">
+          <span style="width:36px;height:36px;border-radius:10px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex:0 0 auto;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="12" r="3.5"/><path d="M12 10.5v0.01"/></svg>
+          </span>
+          <span style="flex:1;">
+            <div class="t4" style="color:var(--ink-soft);font-weight:700;">Gold Vault</div>
+            <div class="t4">Manual</div>
+          </span>
+          <span style="text-align:right;">
+            <div class="t3-val">£2,400.00</div>
+          </span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
       </div>
       <button class="btn-outline" style="align-self:stretch;">+ Create New Allocation Rule</button>
     </div>
@@ -155,7 +187,7 @@
 
 </div>
 </x-dc>
-<script data-dc-script data-props='{"$preview":{"width":390,"height":1150}}'>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":1180}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

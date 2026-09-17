@@ -23,30 +23,60 @@
     .t3{font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-soft);margin:0;}
     .t4{font-size:12px;font-weight:400;color:var(--muted);margin:0;line-height:1.4;}
     .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;}
-    .subcard{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px;}
     .btn-square{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;aspect-ratio:1;background:var(--surface);border:1px solid var(--border-strong);border-radius:16px;font-size:10px;font-weight:600;color:var(--ink-soft);text-align:center;padding:6px;}
     .btn-square.primary{background:var(--fill);border-color:var(--fill);color:var(--fill-text);}
+    .banner-btn{flex:0 0 auto;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border-strong);border-radius:16px;padding:7px 11px;font-size:11px;font-weight:600;color:var(--ink-soft);white-space:nowrap;}
     .list-row{display:flex;justify-content:space-between;align-items:baseline;}
     .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 6px;font-size:10px;}
     .placeholder{border:1px dashed var(--border-strong);border-radius:10px;background:#FAFAFA;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;text-align:center;padding:8px;}
   </style>
 </helmet>
-<div style="width:390px;height:1980px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
+<div style="width:390px;height:1380px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
 
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--surface);flex:0 0 auto;">
-    <button aria-label="Go back" style="background:none;border:none;padding:4px;display:flex;align-items:center;">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-    <div style="display:flex;align-items:center;gap:6px;">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#18181B" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/></svg>
-      <div style="font-size:14px;font-weight:800;letter-spacing:0.16em;color:var(--ink);">STOREHOUSE</div>
+  <div style="flex:0 0 auto;background:var(--surface);border-bottom:1px solid var(--border);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;">
+      <button aria-label="Go back" style="background:none;border:none;padding:4px;display:flex;align-items:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#18181B" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/></svg>
+        <div style="font-size:14px;font-weight:800;letter-spacing:0.16em;color:var(--ink);">STOREHOUSE</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="position:relative;display:flex;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span style="position:absolute;top:-4px;right:-5px;width:8px;height:8px;border-radius:50%;background:#3F3F46;border:1.5px solid var(--surface);"></span>
+        </span>
+        <div aria-hidden="true" style="width:22px;height:22px;border-radius:50%;background:var(--track);border:1px solid var(--border-strong);"></div>
+      </div>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span style="position:relative;display:flex;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#18181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-        <span style="position:absolute;top:-4px;right:-5px;width:8px;height:8px;border-radius:50%;background:#3F3F46;border:1.5px solid var(--surface);"></span>
-      </span>
-      <div aria-hidden="true" style="width:22px;height:22px;border-radius:50%;background:var(--track);border:1px solid var(--border-strong);"></div>
+
+    <div style="padding:0 16px 12px;">
+      <div style="display:flex;align-items:center;gap:8px;border:1px solid var(--border-strong);border-radius:22px;padding:10px 14px;background:var(--bg);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#71717A" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <label for="ai-search" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Ask the AI about your inventory</label>
+        <input id="ai-search" type="text" placeholder="Do I have enough money to buy bread?" style="flex:1;border:none;outline:none;background:transparent;font-size:12px;color:var(--ink-soft);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#71717A" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 19v3"/></svg>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;overflow-x:auto;padding:0 16px 14px;">
+      <button class="banner-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M4.5 20c0-4.2 3.4-6.5 7.5-6.5s7.5 2.3 7.5 6.5"/></svg>
+        Identity &amp; Values
+      </button>
+      <button class="banner-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg>
+        Card
+      </button>
+      <button class="banner-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20V13M21 20H3"/></svg>
+        Watchtower
+      </button>
+      <button class="banner-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12l3 3 6-6"/></svg>
+        Objectives
+      </button>
     </div>
   </div>
 
@@ -65,48 +95,14 @@
       </div>
     </div>
 
-    <div class="card" style="display:flex;flex-direction:column;gap:12px;">
-      <div class="t2">Identity &amp; Values</div>
-
-      <div style="border-radius:14px;padding:14px;background:var(--fill);color:var(--fill-text);display:flex;flex-direction:column;gap:22px;">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-          <div style="width:26px;height:18px;border-radius:4px;background:rgba(250,250,250,0.85);"></div>
-          <div style="font-size:10px;font-weight:800;letter-spacing:0.14em;">STOREHOUSE</div>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;">
-          <div style="font-size:11px;font-weight:600;letter-spacing:0.06em;">STEWARD ACCOUNT</div>
-          <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;color:#D4D4D8;">•••• 4821</div>
-        </div>
-      </div>
-
-      <div style="display:flex;gap:10px;">
-        <div class="subcard" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
-          <div class="t3" style="align-self:flex-start;">Watchtower Snapshot</div>
-          <svg width="60" height="60" viewBox="0 0 72 72">
-            <circle cx="36" cy="36" r="30" fill="none" stroke="#E4E4E7" stroke-width="8"/>
-            <circle cx="36" cy="36" r="30" fill="none" stroke="#52525B" stroke-width="8" stroke-linecap="round" stroke-dasharray="188.4" stroke-dashoffset="28.3" transform="rotate(-90 36 36)"/>
-            <text x="36" y="41" text-anchor="middle" font-size="16" font-weight="700" fill="#18181B" font-family="-apple-system,Helvetica,Arial,sans-serif">85</text>
-          </svg>
-          <div class="t4">Health Score</div>
-        </div>
-        <div class="subcard" style="flex:1;display:flex;flex-direction:column;gap:8px;">
-          <div class="t3">Kingdom Objectives</div>
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <div style="display:flex;align-items:center;gap:6px;">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-              <span class="t4">Expense Audit</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-              <span class="t4">Kingdom Obligations</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#D4D4D8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/></svg>
-              <span class="t4">Identity Profile</span>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="card" style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div class="t3" style="align-self:flex-start;">Health Score</div>
+      <svg width="92" height="92" viewBox="0 0 72 72">
+        <circle cx="36" cy="36" r="30" fill="none" stroke="#E4E4E7" stroke-width="8"/>
+        <circle cx="36" cy="36" r="30" fill="none" stroke="#52525B" stroke-width="8" stroke-linecap="round" stroke-dasharray="188.4" stroke-dashoffset="28.3" transform="rotate(-90 36 36)"/>
+        <text x="36" y="41" text-anchor="middle" font-size="17" font-weight="700" fill="#18181B" font-family="-apple-system,Helvetica,Arial,sans-serif">85</text>
+      </svg>
+      <div class="t4" style="text-align:center;">85 / 100 — Your stewardship health this month</div>
     </div>
 
     <div style="display:flex;gap:10px;">
@@ -141,16 +137,6 @@
       </div>
     </div>
 
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      <div class="t3">AI Search Inventory</div>
-      <div style="display:flex;align-items:center;gap:8px;border:1px solid var(--border-strong);border-radius:22px;padding:10px 14px;background:var(--surface);">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#71717A" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        <label for="ai-search" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Ask the AI about your inventory</label>
-        <input id="ai-search" type="text" placeholder="Do I have enough money to buy bread?" style="flex:1;border:none;outline:none;background:transparent;font-size:12px;color:var(--ink-soft);">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#71717A" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 19v3"/></svg>
-      </div>
-    </div>
-
     <div class="card" style="display:flex;flex-direction:column;gap:14px;">
       <div class="t2">Recent Activity Stream</div>
 
@@ -168,8 +154,14 @@
 
       <div style="display:flex;flex-direction:column;gap:7px;border-top:1px solid var(--border);padding-top:12px;">
         <div class="t3">Stream Allocations</div>
-        <div class="list-row"><span class="t4" style="color:var(--ink-soft);">→ Gold Vault</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">£200.00</span></div>
-        <div class="list-row"><span class="t4" style="color:var(--ink-soft);">→ Wellspring Fund</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">£150.00</span></div>
+        <div class="list-row" style="align-items:center;">
+          <span class="t4" style="color:var(--ink-soft);display:flex;align-items:center;gap:6px;"><svg width="16" height="10" viewBox="0 0 24 14" fill="none" stroke="#71717A" stroke-width="2" stroke-linecap="round"><path d="M1 7c2.5-5 5 5 7.5 0s5-5 7.5 0 5 5 7.5 0"/></svg>Gold Vault</span>
+          <span class="t4" style="color:var(--ink-soft);font-weight:600;">£200.00</span>
+        </div>
+        <div class="list-row" style="align-items:center;">
+          <span class="t4" style="color:var(--ink-soft);display:flex;align-items:center;gap:6px;"><svg width="16" height="10" viewBox="0 0 24 14" fill="none" stroke="#71717A" stroke-width="2" stroke-linecap="round"><path d="M1 7c2.5-5 5 5 7.5 0s5-5 7.5 0 5 5 7.5 0"/></svg>Wellspring Fund</span>
+          <span class="t4" style="color:var(--ink-soft);font-weight:600;">£150.00</span>
+        </div>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:7px;border-top:1px solid var(--border);padding-top:12px;">
@@ -208,7 +200,7 @@
 
 </div>
 </x-dc>
-<script data-dc-script data-props='{"$preview":{"width":390,"height":1980}}'>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":1380}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};

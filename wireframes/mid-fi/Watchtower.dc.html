@@ -22,7 +22,9 @@
     .t4{font-size:12px;font-weight:400;color:var(--muted);margin:0;line-height:1.4;}
     .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;}
     .badge{display:inline-block;background:var(--track);color:var(--ink-soft);font-size:10px;font-weight:600;padding:3px 8px;border-radius:8px;white-space:nowrap;}
+    .badge-active{display:inline-block;background:transparent;border:1px solid var(--ink-soft);color:var(--ink-soft);font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px;white-space:nowrap;}
     .btn-primary{background:var(--fill);color:var(--fill-text);border:1px solid var(--fill);border-radius:20px;padding:10px 14px;font-size:12px;font-weight:600;white-space:nowrap;}
+    .assessment-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--border);border-radius:12px;padding:10px 12px;background:var(--surface);text-align:left;width:100%;}
     .seg{display:flex;background:var(--track);border-radius:16px;padding:3px;gap:2px;}
     .seg button{flex:1;border:none;background:transparent;border-radius:13px;padding:6px 0;font-size:11px;font-weight:600;color:var(--muted);}
     .seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,0.08);}
@@ -30,7 +32,7 @@
     .placeholder{border:1px dashed var(--border-strong);border-radius:10px;background:#FAFAFA;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;text-align:center;padding:8px;}
   </style>
 </helmet>
-<div style="width:390px;height:1060px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
+<div style="width:390px;height:1140px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
 
   <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--surface);flex:0 0 auto;">
     <button aria-label="Go back" style="background:none;border:none;padding:4px;display:flex;align-items:center;">
@@ -98,19 +100,46 @@
 
     <div class="card" style="display:flex;flex-direction:column;gap:10px;">
       <div class="t3">Stewardship Profile Assessment</div>
-      <div style="display:flex;flex-direction:column;gap:9px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div class="t4" style="color:var(--ink-soft);">Expense Audit</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button class="assessment-row">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="width:32px;height:32px;border-radius:9px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex:0 0 auto;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h11"/></svg>
+            </span>
+            <span>
+              <div class="t4" style="color:var(--ink-soft);font-weight:700;">Expense Audit</div>
+              <div class="t4">Reviewed your last 30 days of spending</div>
+            </span>
+          </div>
           <span class="badge">Completed</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div class="t4" style="color:var(--ink-soft);">Kingdom Obligations</div>
+        </button>
+        <button class="assessment-row">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="width:32px;height:32px;border-radius:9px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex:0 0 auto;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h11"/></svg>
+            </span>
+            <span>
+              <div class="t4" style="color:var(--ink-soft);font-weight:700;">Kingdom Obligations</div>
+              <div class="t4">Confirmed tithe &amp; giving commitments</div>
+            </span>
+          </div>
           <span class="badge">Completed</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div class="t4" style="color:var(--ink-soft);">Identity Profile</div>
-          <span class="badge">Completed</span>
-        </div>
+        </button>
+        <button class="assessment-row" style="border-color:var(--border-strong);">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="width:32px;height:32px;border-radius:9px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex:0 0 auto;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#71717A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v5M12 16h.01"/></svg>
+            </span>
+            <span>
+              <div class="t4" style="color:var(--ink-soft);font-weight:700;">Identity Profile</div>
+              <div class="t4">3 of 5 questions answered — tap to continue</div>
+            </span>
+          </div>
+          <span style="display:flex;align-items:center;gap:6px;">
+            <span class="badge-active">Continue</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </span>
+        </button>
       </div>
     </div>
 
@@ -143,7 +172,7 @@
 
 </div>
 </x-dc>
-<script data-dc-script data-props='{"$preview":{"width":390,"height":1060}}'>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":1140}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};
