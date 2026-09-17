@@ -22,7 +22,12 @@
     .t2{font-size:17px;font-weight:700;color:var(--ink);margin:0;}
     .t3{font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-soft);margin:0;}
     .t4{font-size:12px;font-weight:400;color:var(--muted);margin:0;line-height:1.4;}
-    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;}
+    .card{background:var(--surface);border:none;border-radius:14px;padding:14px;box-shadow:0 4px 14px rgba(24,24,27,0.10);}
+    .divided-list{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0 14px;}
+    .divided-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border);}
+    .divided-row:last-child{border-bottom:none;}
+    .neo{background:var(--bg);border-radius:16px;box-shadow:7px 7px 14px rgba(24,24,27,0.10), -7px -7px 14px rgba(255,255,255,0.75);}
+    .neo-inset{box-shadow:inset 3px 3px 6px rgba(24,24,27,0.12), inset -3px -3px 6px rgba(255,255,255,0.7);}
     .btn-square{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:60px;height:60px;background:var(--surface);border:1px solid var(--border-strong);border-radius:14px;font-size:9px;font-weight:600;color:var(--ink-soft);text-align:center;padding:4px;}
     .btn-square.primary{background:var(--fill);border-color:var(--fill);color:var(--fill-text);}
     .icon-btn{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;padding:0;}
@@ -110,13 +115,13 @@
       <div class="t4" style="text-align:center;">3D Storehouse — stocked with Gold, Streams &amp; Commodities</div>
     </div>
 
-    <div class="card" style="display:flex;flex-direction:column;gap:10px;">
+    <div class="neo" style="padding:14px;display:flex;flex-direction:column;gap:10px;">
       <div style="display:flex;justify-content:space-between;align-items:baseline;">
         <div class="t3">Health Score</div>
         <div style="font-size:20px;font-weight:700;color:var(--ink);">85<span style="font-size:12px;font-weight:600;color:var(--muted);">/100</span></div>
       </div>
-      <div style="height:14px;border-radius:7px;background:var(--track);overflow:hidden;">
-        <div style="height:100%;width:85%;background:var(--fill);border-radius:7px;"></div>
+      <div class="neo-inset" style="height:14px;border-radius:7px;background:var(--bg);overflow:hidden;">
+        <div style="height:100%;width:85%;background:var(--track-fill);border-radius:7px;"></div>
       </div>
       <div class="t4" style="text-align:center;">Your stewardship health this month</div>
     </div>
@@ -125,10 +130,10 @@
       <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
         <div class="t3">Primary Actions</div>
         <div style="display:grid;grid-template-columns:repeat(2,60px);gap:8px;justify-content:start;">
-          <button class="btn-square primary">
+          <a href="Modal-Transfer.dc.html" class="btn-square primary">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11M11 3l4 4-4 4"/><path d="M20 17H9M13 21l-4-4 4-4"/></svg>
             Transfer
-          </button>
+          </a>
           <button class="btn-square">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v6M12 9l-6 6M12 9l6 6M6 15v6M18 15v6"/></svg>
             Allocate
@@ -153,37 +158,27 @@
       </div>
     </div>
 
-    <div class="card" style="display:flex;flex-direction:column;gap:14px;">
+    <div style="display:flex;flex-direction:column;gap:10px;">
       <div class="t2">Recent Activity Stream</div>
-
-      <div style="display:flex;flex-direction:column;gap:7px;">
-        <div class="t3">Purchases</div>
-        <div class="list-row"><span class="t4" style="color:var(--ink-soft);">Groceries</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">-$45.00</span></div>
-        <div class="list-row"><span class="t4" style="color:var(--ink-soft);">Fuel</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">-$32.50</span></div>
-      </div>
-
-      <div style="display:flex;flex-direction:column;gap:7px;border-top:1px solid var(--border);padding-top:12px;">
-        <div class="t3">Cancelled Purchases</div>
-        <div class="list-row"><span class="t4" style="color:var(--ink-soft);">Subscription Refund</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">+$12.00</span></div>
-        <div class="list-row"><span class="t4" style="color:var(--ink-soft);">Duplicate Charge</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">+$9.99</span></div>
-      </div>
-
-      <div style="display:flex;flex-direction:column;gap:7px;border-top:1px solid var(--border);padding-top:12px;">
-        <div class="t3">Stream Allocations</div>
-        <div class="list-row" style="align-items:center;">
+      <div class="divided-list">
+        <div class="divided-row" style="border-bottom:none;padding-bottom:2px;"><span class="t3" style="font-size:10px;">Purchases</span></div>
+        <div class="divided-row"><span class="t4" style="color:var(--ink-soft);">Groceries</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">-$45.00</span></div>
+        <div class="divided-row"><span class="t4" style="color:var(--ink-soft);">Fuel</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">-$32.50</span></div>
+        <div class="divided-row" style="padding-bottom:2px;"><span class="t3" style="font-size:10px;">Cancelled Purchases</span></div>
+        <div class="divided-row"><span class="t4" style="color:var(--ink-soft);">Subscription Refund</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">+$12.00</span></div>
+        <div class="divided-row"><span class="t4" style="color:var(--ink-soft);">Duplicate Charge</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">+$9.99</span></div>
+        <div class="divided-row" style="padding-bottom:2px;"><span class="t3" style="font-size:10px;">Stream Allocations</span></div>
+        <div class="divided-row">
           <span class="t4" style="color:var(--ink-soft);display:flex;align-items:center;gap:6px;"><svg width="16" height="10" viewBox="0 0 24 14" fill="none" stroke="#71717A" stroke-width="2" stroke-linecap="round"><path d="M1 7c2.5-5 5 5 7.5 0s5-5 7.5 0 5 5 7.5 0"/></svg>Gold Vault</span>
           <span class="t4" style="color:var(--ink-soft);font-weight:600;">£200.00</span>
         </div>
-        <div class="list-row" style="align-items:center;">
+        <div class="divided-row">
           <span class="t4" style="color:var(--ink-soft);display:flex;align-items:center;gap:6px;"><svg width="16" height="10" viewBox="0 0 24 14" fill="none" stroke="#71717A" stroke-width="2" stroke-linecap="round"><path d="M1 7c2.5-5 5 5 7.5 0s5-5 7.5 0 5 5 7.5 0"/></svg>Wellspring Fund</span>
           <span class="t4" style="color:var(--ink-soft);font-weight:600;">£150.00</span>
         </div>
-      </div>
-
-      <div style="display:flex;flex-direction:column;gap:7px;border-top:1px solid var(--border);padding-top:12px;">
-        <div class="t3">Kingdom Impacts</div>
-        <div class="list-row"><span class="t4" style="color:var(--ink-soft);">Tithe</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">+£100.00</span></div>
-        <div class="list-row"><span class="t4" style="color:var(--ink-soft);">Offering</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">+£25.00</span></div>
+        <div class="divided-row" style="padding-bottom:2px;"><span class="t3" style="font-size:10px;">Kingdom Impacts</span></div>
+        <div class="divided-row"><span class="t4" style="color:var(--ink-soft);">Tithe</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">+£100.00</span></div>
+        <div class="divided-row"><span class="t4" style="color:var(--ink-soft);">Offering</span><span class="t4" style="color:var(--ink-soft);font-weight:600;">+£25.00</span></div>
       </div>
     </div>
 

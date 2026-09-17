@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    :root{
+      --bg:#F4F4F5; --surface:#FFFFFF; --border:#D4D4D8; --border-strong:#A1A1AA;
+      --ink:#18181B; --ink-soft:#3F3F46; --muted:#71717A;
+      --fill:#27272A; --fill-text:#FAFAFA; --track:#E4E4E7; --track-fill:#52525B;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;}
+    a{color:inherit;text-decoration:none;}
+    button{font-family:inherit;cursor:pointer;}
+    input,select{font-family:inherit;}
+    .t2{font-size:17px;font-weight:700;color:var(--ink);margin:0;}
+    .field-label{font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;display:block;}
+    .field{border:1px solid var(--border-strong);border-radius:10px;padding:10px 12px;font-size:14px;width:100%;color:var(--ink);}
+    .seg{display:flex;background:var(--track);border-radius:16px;padding:3px;gap:2px;}
+    .seg label{flex:1;text-align:center;border-radius:13px;padding:9px 4px;font-size:11px;font-weight:600;color:var(--muted);}
+    .seg input{display:none;}
+    .seg input:checked + label{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,0.08);}
+    .btn-primary{background:var(--fill);color:var(--fill-text);border:none;border-radius:20px;padding:12px 14px;font-size:13px;font-weight:600;width:100%;}
+  </style>
+</helmet>
+<div style="width:390px;height:660px;position:relative;background:rgba(24,24,27,0.45);overflow:hidden;">
+  <div style="padding:18px;">
+    <a href="Planning.dc.html" style="color:#FAFAFA;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FAFAFA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      Close
+    </a>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;background:var(--surface);border-radius:20px 20px 0 0;padding:20px 18px 30px;box-shadow:0 -10px 30px rgba(0,0,0,0.25);display:flex;flex-direction:column;gap:16px;">
+    <div style="width:36px;height:4px;border-radius:2px;background:var(--border-strong);align-self:center;"></div>
+    <div class="t2">Deploy Capital</div>
+
+    <div>
+      <span class="field-label">Destination</span>
+      <div class="seg" role="radiogroup" aria-label="Destination">
+        <input type="radio" name="dest" id="dest1" checked><label for="dest1">Gold &amp; Streams</label>
+        <input type="radio" name="dest" id="dest2"><label for="dest2">Kingdom Fund</label>
+      </div>
+    </div>
+
+    <div>
+      <label class="field-label" for="camt">Amount</label>
+      <input id="camt" class="field" type="text" placeholder="£0.00">
+    </div>
+
+    <button class="btn-primary">Deploy Capital</button>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":660}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

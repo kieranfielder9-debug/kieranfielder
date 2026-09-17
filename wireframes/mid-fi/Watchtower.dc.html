@@ -20,7 +20,7 @@
     .t2{font-size:17px;font-weight:700;color:var(--ink);margin:0;}
     .t3{font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-soft);margin:0;}
     .t4{font-size:12px;font-weight:400;color:var(--muted);margin:0;line-height:1.4;}
-    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;}
+    .card{background:var(--surface);border:none;border-radius:14px;padding:14px;box-shadow:0 4px 14px rgba(24,24,27,0.10);}
     .badge{display:inline-block;background:var(--track);color:var(--ink-soft);font-size:10px;font-weight:600;padding:3px 8px;border-radius:8px;white-space:nowrap;}
     .badge-active{display:inline-block;background:transparent;border:1px solid var(--ink-soft);color:var(--ink-soft);font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px;white-space:nowrap;}
     .btn-primary{background:var(--fill);color:var(--fill-text);border:1px solid var(--fill);border-radius:20px;padding:10px 14px;font-size:12px;font-weight:600;white-space:nowrap;}
@@ -28,12 +28,18 @@
     .seg{display:flex;background:var(--track);border-radius:16px;padding:3px;gap:2px;}
     .seg button{flex:1;border:none;background:transparent;border-radius:13px;padding:6px 0;font-size:11px;font-weight:600;color:var(--muted);}
     .seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,0.08);}
+    .seg-neo{display:flex;background:var(--surface);border-radius:16px;padding:4px;gap:4px;box-shadow:inset 2px 2px 5px rgba(24,24,27,0.12), inset -2px -2px 5px rgba(255,255,255,0.8);}
+    .seg-neo button{flex:1;border:none;background:transparent;border-radius:13px;padding:7px 0;font-size:11px;font-weight:600;color:var(--muted);}
+    .seg-neo button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:2px 2px 5px rgba(24,24,27,0.15), -2px -2px 5px rgba(255,255,255,0.9);}
+    .neo-bar{background:var(--surface);border-radius:4px 4px 0 0;box-shadow:3px 3px 7px rgba(24,24,27,0.16), -3px -3px 7px rgba(255,255,255,0.9);}
+    .neo-bar-active{background:var(--track);border-radius:4px 4px 0 0;box-shadow:inset 2px 2px 5px rgba(24,24,27,0.2), inset -2px -2px 5px rgba(255,255,255,0.7);}
+    .callout{display:flex;gap:8px;background:var(--bg);border:1px solid var(--border);border-left:4px solid var(--ink);border-radius:8px;padding:9px 11px;}
     .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 6px;font-size:10px;}
     .placeholder{border:1px dashed var(--border-strong);border-radius:10px;background:#FAFAFA;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;text-align:center;padding:8px;}
     .icon-btn{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;padding:0;}
   </style>
 </helmet>
-<div style="width:390px;height:1340px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
+<div style="width:390px;height:1400px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
 
   <div style="flex:0 0 auto;background:var(--surface);border-bottom:1px solid var(--border);">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;">
@@ -66,41 +72,63 @@
 
     <div class="t2">Watchtower Analytics</div>
 
-    <div class="card" style="display:flex;flex-direction:column;gap:10px;">
-      <div style="display:flex;justify-content:space-between;align-items:baseline;">
-        <div class="t3">Expense Categorisation</div>
-        <div class="t4">This month</div>
+    <div class="card" style="display:flex;flex-direction:column;gap:16px;">
+      <div class="t2" style="font-size:14px;">Spending Analytics</div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <div class="t3">Expense Categorisation</div>
+          <div class="t4">This month</div>
+        </div>
+        <div style="border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:flex-end;justify-content:center;height:230px;padding:10px 8px 0;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+            <span class="t4" style="font-weight:700;color:var(--ink-soft);">£320</span>
+            <div class="neo-bar" style="width:32px;height:40%;"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+            <span class="t4" style="font-weight:700;color:var(--ink-soft);">£440</span>
+            <div class="neo-bar" style="width:32px;height:55%;"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+            <span class="t4" style="font-weight:700;color:var(--ink-soft);">£240</span>
+            <div class="neo-bar" style="width:32px;height:30%;"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+            <span class="t4" style="font-weight:700;color:var(--ink);">£720</span>
+            <div class="neo-bar-active" style="width:32px;height:90%;"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+            <span class="t4" style="font-weight:700;color:var(--ink-soft);">£600</span>
+            <div class="neo-bar" style="width:32px;height:75%;"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;justify-content:center;padding:0 8px;">
+          <span class="t4" style="width:32px;text-align:center;font-size:10px;">Groc.</span>
+          <span class="t4" style="width:32px;text-align:center;font-size:10px;">Util.</span>
+          <span class="t4" style="width:32px;text-align:center;font-size:10px;">Trans.</span>
+          <span class="t4" style="width:32px;text-align:center;font-size:10px;font-weight:700;color:var(--ink-soft);">Subs.</span>
+          <span class="t4" style="width:32px;text-align:center;font-size:10px;">Give</span>
+        </div>
+        <div class="callout">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#18181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:1px;"><path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+          <span class="t4" style="color:var(--ink-soft);">Subscriptions is your largest category this month</span>
+        </div>
       </div>
-      <div style="border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:flex-end;justify-content:center;height:230px;padding:10px 8px 0;">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
-          <span class="t4" style="font-weight:700;color:var(--ink-soft);">£320</span>
-          <div style="width:32px;height:40%;background:#D4D4D8;border-radius:4px 4px 0 0;"></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border);padding-top:16px;">
+        <div class="t3">Analytics Engine</div>
+        <div class="seg-neo" role="group" aria-label="Timeframe">
+          <button aria-pressed="false">1W</button>
+          <button aria-pressed="true">1M</button>
+          <button aria-pressed="false">1Y</button>
         </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
-          <span class="t4" style="font-weight:700;color:var(--ink-soft);">£440</span>
-          <div style="width:32px;height:55%;background:#A1A1AA;border-radius:4px 4px 0 0;"></div>
+        <div class="placeholder" style="height:110px;">
+          <svg width="100%" height="90" viewBox="0 0 300 90" preserveAspectRatio="none">
+            <polyline points="0,70 40,55 80,60 120,35 160,45 200,20 240,30 300,10" fill="none" stroke="#52525B" stroke-width="2.5"/>
+          </svg>
         </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
-          <span class="t4" style="font-weight:700;color:var(--ink-soft);">£240</span>
-          <div style="width:32px;height:30%;background:#D4D4D8;border-radius:4px 4px 0 0;"></div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
-          <span class="t4" style="font-weight:700;color:var(--ink);">£720</span>
-          <div style="width:32px;height:90%;background:#27272A;border-radius:4px 4px 0 0;"></div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
-          <span class="t4" style="font-weight:700;color:var(--ink-soft);">£600</span>
-          <div style="width:32px;height:75%;background:#A1A1AA;border-radius:4px 4px 0 0;"></div>
-        </div>
+        <div class="t4">Line Graph: Expense Trends &amp; Outflow Patterns</div>
       </div>
-      <div style="display:flex;gap:16px;justify-content:center;padding:0 8px;">
-        <span class="t4" style="width:32px;text-align:center;font-size:10px;">Groc.</span>
-        <span class="t4" style="width:32px;text-align:center;font-size:10px;">Util.</span>
-        <span class="t4" style="width:32px;text-align:center;font-size:10px;">Trans.</span>
-        <span class="t4" style="width:32px;text-align:center;font-size:10px;font-weight:700;color:var(--ink-soft);">Subs.</span>
-        <span class="t4" style="width:32px;text-align:center;font-size:10px;">Give</span>
-      </div>
-      <div class="t4" style="text-align:center;">Subscriptions is your largest category this month</div>
     </div>
 
     <div class="card" style="display:flex;flex-direction:column;gap:10px;">
@@ -122,22 +150,7 @@
           <span class="t4" style="color:var(--ink-soft);font-weight:600;">£15.00/mo</span>
         </div>
       </div>
-      <button class="btn-primary" style="align-self:stretch;">Prune Payments</button>
-    </div>
-
-    <div class="card" style="display:flex;flex-direction:column;gap:10px;">
-      <div class="t3">Analytics Engine</div>
-      <div class="seg" role="group" aria-label="Timeframe">
-        <button aria-pressed="false">1W</button>
-        <button aria-pressed="true">1M</button>
-        <button aria-pressed="false">1Y</button>
-      </div>
-      <div class="placeholder" style="height:110px;">
-        <svg width="100%" height="90" viewBox="0 0 300 90" preserveAspectRatio="none">
-          <polyline points="0,70 40,55 80,60 120,35 160,45 200,20 240,30 300,10" fill="none" stroke="#52525B" stroke-width="2.5"/>
-        </svg>
-      </div>
-      <div class="t4">Line Graph: Expense Trends &amp; Outflow Patterns</div>
+      <a href="Modal-PrunePayments.dc.html" class="btn-primary" style="align-self:stretch;text-align:center;">Prune Payments</a>
     </div>
 
     <div class="card" style="display:flex;flex-direction:column;gap:10px;">
@@ -214,7 +227,7 @@
 
 </div>
 </x-dc>
-<script data-dc-script data-props='{"$preview":{"width":390,"height":1340}}'>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":1400}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};
