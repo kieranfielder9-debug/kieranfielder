@@ -22,15 +22,13 @@
     .t4{font-size:12px;font-weight:400;color:var(--muted);margin:0;line-height:1.4;}
     .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;}
     .btn-primary{background:var(--fill);color:var(--fill-text);border:1px solid var(--fill);border-radius:20px;padding:10px 14px;font-size:12px;font-weight:600;white-space:nowrap;}
-    .btn-outline{background:transparent;color:var(--ink);border:1px solid var(--border-strong);border-radius:20px;padding:10px 14px;font-size:12px;font-weight:600;white-space:nowrap;}
-    .step-circle{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:0 0 auto;}
-    .step-done{background:var(--fill);color:var(--fill-text);}
-    .step-current{background:var(--surface);color:var(--ink);border:2px solid var(--fill);}
-    .step-line{flex:1;height:2px;background:var(--border-strong);}
+    .chip{border:1px solid var(--border-strong);background:var(--surface);color:var(--ink-soft);border-radius:14px;padding:6px 12px;font-size:11px;font-weight:600;white-space:nowrap;}
+    .chip.active{background:var(--fill);border-color:var(--fill);color:var(--fill-text);}
+    .list-item{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
     .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 6px;font-size:10px;}
   </style>
 </helmet>
-<div style="width:390px;height:700px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
+<div style="width:390px;height:1450px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;">
 
   <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--surface);flex:0 0 auto;">
     <button aria-label="Go back" style="background:none;border:none;padding:4px;display:flex;align-items:center;">
@@ -43,54 +41,121 @@
     </div>
   </div>
 
-  <div style="flex:1 1 auto;padding:16px;display:flex;flex-direction:column;gap:16px;overflow:hidden;">
+  <div style="flex:1 1 auto;padding:16px;display:flex;flex-direction:column;gap:18px;overflow:hidden;">
 
     <div class="t2">Growth Tracker &amp; Impact</div>
 
-    <div class="card" style="display:flex;flex-direction:column;gap:12px;">
-      <div class="t3">Milestone Stepper</div>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <div class="step-circle step-done">1</div>
-        <div class="step-line"></div>
-        <div class="step-circle step-done">2</div>
-        <div class="step-line"></div>
-        <div class="step-circle step-current">3</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="t3">Growth Trackers</div>
+      <div style="display:flex;gap:18px;overflow-x:auto;padding:4px 2px 8px;">
+        <button style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;">
+          <span style="width:28px;height:28px;border-radius:50%;background:var(--track-fill);color:#FAFAFA;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">1</span>
+          <span class="t4">Tracker 1</span>
+        </button>
+        <button style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;">
+          <span style="width:40px;height:40px;border-radius:50%;background:var(--track-fill);color:#FAFAFA;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">2</span>
+          <span class="t4">Tracker 2</span>
+        </button>
+        <button style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;">
+          <span style="width:52px;height:52px;border-radius:50%;background:var(--fill);color:#FAFAFA;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;">3</span>
+          <span class="t4" style="color:var(--ink-soft);font-weight:600;">Tracker 3</span>
+        </button>
+        <button style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;opacity:0.5;">
+          <span style="width:60px;height:60px;border-radius:50%;border:2px dashed var(--border-strong);color:var(--muted);font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;">4</span>
+          <span class="t4">Locked</span>
+        </button>
       </div>
-      <div class="t4">Current Milestone: Jubilee Readiness</div>
+    </div>
+
+    <div class="card" style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+      <div class="t2" style="font-size:14px;align-self:flex-start;">Jubilee Countdown</div>
+      <svg width="150" height="150" viewBox="0 0 150 150">
+        <circle cx="75" cy="75" r="62" fill="none" stroke="#E4E4E7" stroke-width="10"/>
+        <circle cx="75" cy="75" r="62" fill="none" stroke="#3F3F46" stroke-width="10" stroke-linecap="round" stroke-dasharray="389.6" stroke-dashoffset="140.3" transform="rotate(-90 75 75)"/>
+        <line x1="75" y1="75" x2="75" y2="40" stroke="#18181B" stroke-width="3" stroke-linecap="round"/>
+        <line x1="75" y1="75" x2="98" y2="75" stroke="#18181B" stroke-width="3" stroke-linecap="round"/>
+        <text x="75" y="70" text-anchor="middle" font-size="26" font-weight="700" fill="#18181B" font-family="-apple-system,Helvetica,Arial,sans-serif">612</text>
+        <text x="75" y="90" text-anchor="middle" font-size="10" font-weight="600" fill="#71717A" font-family="-apple-system,Helvetica,Arial,sans-serif">DAYS TO JUBILEE</text>
+      </svg>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">
+        <button class="chip active">Metrics</button>
+        <button class="chip">Acceleration</button>
+        <button class="chip">Planning</button>
+        <button class="chip">Other</button>
+      </div>
     </div>
 
     <div class="card" style="display:flex;flex-direction:column;gap:10px;">
-      <div class="t3">Kingdom Impact Metrics</div>
+      <div class="t3">Kingdom Impact</div>
       <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;">
-          <div class="t4" style="color:var(--ink-soft);">Total Tithed / Given</div>
-          <div class="t4" style="color:var(--ink-soft);font-weight:600;">£1,200</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <span class="t4" style="color:var(--ink-soft);">Tithe Consistency</span>
         </div>
-        <div style="display:flex;justify-content:space-between;align-items:baseline;">
-          <div class="t4" style="color:var(--ink-soft);">Offerings Disbursed</div>
-          <div class="t4" style="color:var(--ink-soft);font-weight:600;">£450</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <span class="t4" style="color:var(--ink-soft);">Local Outreach Funded</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3F3F46" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <span class="t4" style="color:var(--ink-soft);">Mission Trip Supported</span>
         </div>
       </div>
-      <button class="btn-primary" style="align-self:stretch;">+ Log Kingdom Impact / Giving</button>
+      <button style="display:flex;align-items:center;justify-content:center;gap:6px;border:1px dashed var(--border-strong);border-radius:10px;padding:9px;background:none;color:var(--muted);font-size:12px;font-weight:600;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#71717A" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        Add Your Own Impact
+      </button>
     </div>
 
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      <div class="t3">Automation Flow Triggers</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;">
-        <button class="btn-outline">Automate</button>
-        <button class="btn-outline">Offerings</button>
-        <button class="btn-outline">Emergency Fund</button>
-        <button class="btn-outline">Wellspring</button>
+    <div class="card" style="display:flex;flex-direction:column;gap:10px;">
+      <div class="t3">Prune Suggestions</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L2.5 17a1.6 1.6 0 001.4 2.4h16.2a1.6 1.6 0 001.4-2.4L13.7 3.9a1.6 1.6 0 00-2.8 0z"/></svg>
+          <span class="t4" style="flex:1;color:var(--ink-soft);">Underperforming Growth Fund</span>
+          <span class="t4" style="color:var(--ink-soft);font-weight:600;">-3.2% YTD</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L2.5 17a1.6 1.6 0 001.4 2.4h16.2a1.6 1.6 0 001.4-2.4L13.7 3.9a1.6 1.6 0 00-2.8 0z"/></svg>
+          <span class="t4" style="flex:1;color:var(--ink-soft);">Idle Cash Reserve</span>
+          <span class="t4" style="color:var(--ink-soft);font-weight:600;">0.0% Yield</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:10px;padding:9px 11px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L2.5 17a1.6 1.6 0 001.4 2.4h16.2a1.6 1.6 0 001.4-2.4L13.7 3.9a1.6 1.6 0 00-2.8 0z"/></svg>
+          <span class="t4" style="flex:1;color:var(--ink-soft);">Duplicate Micro-Investment</span>
+          <span class="t4" style="color:var(--ink-soft);font-weight:600;">Redundant</span>
+        </div>
+      </div>
+      <button class="btn-primary" style="align-self:stretch;">Review &amp; Prune</button>
+    </div>
+
+    <div class="card" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <div class="t3" style="align-self:flex-start;">Wellspring</div>
+      <div style="position:relative;width:130px;height:130px;">
+        <div style="position:absolute;inset:0;border-radius:50%;background:conic-gradient(#94A3B8 0 45%, #64748B 45% 75%, #3F3F46 75% 100%);"></div>
+        <div style="position:absolute;inset:14px;border-radius:50%;background:#27272A;"></div>
+        <div style="position:absolute;inset:30px;border-radius:50%;background:#18181B;"></div>
+        <div style="position:absolute;inset:46px;border-radius:50%;background:#0A0A0A;"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;width:100%;">
+        <div class="list-item">
+          <span style="display:flex;align-items:center;gap:8px;"><span style="width:9px;height:9px;border-radius:2px;background:#94A3B8;"></span><span class="t4" style="color:var(--ink-soft);font-weight:600;">Emergency Fund</span></span>
+          <span class="t4" style="color:var(--ink-soft);font-weight:600;">£1,800</span>
+        </div>
+        <div class="list-item">
+          <span style="display:flex;align-items:center;gap:8px;"><span style="width:9px;height:9px;border-radius:2px;background:#64748B;"></span><span class="t4" style="color:var(--ink-soft);font-weight:600;">Insurance Buffer</span></span>
+          <span class="t4" style="color:var(--ink-soft);font-weight:600;">£1,200</span>
+        </div>
+        <div class="list-item">
+          <span style="display:flex;align-items:center;gap:8px;"><span style="width:9px;height:9px;border-radius:2px;background:#3F3F46;"></span><span class="t4" style="color:var(--ink-soft);font-weight:600;">Manse Fund</span></span>
+          <span class="t4" style="color:var(--ink-soft);font-weight:600;">£1,000</span>
+        </div>
       </div>
     </div>
 
   </div>
 
-  <div style="display:flex;align-items:stretch;justify-content:space-around;border-top:1px solid var(--border);background:var(--surface);padding:8px 4px 14px;flex:0 0 auto;">
-    <a href="Home.dc.html" class="nav-item" style="color:var(--muted);font-weight:500;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
-      Home
-    </a>
+  <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-around;border-top:1px solid var(--border);background:var(--surface);padding:8px 4px 14px;flex:0 0 auto;">
     <a href="Watchtower.dc.html" class="nav-item" style="color:var(--muted);font-weight:500;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20V13M21 20H3"/></svg>
       Watchtower
@@ -98,6 +163,12 @@
     <a href="Planning.dc.html" class="nav-item" style="color:var(--muted);font-weight:500;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
       Planning
+    </a>
+    <a href="Home.dc.html" style="display:flex;flex-direction:column;align-items:center;gap:2px;transform:translateY(-16px);">
+      <span style="width:52px;height:52px;border-radius:50%;background:var(--fill);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.25);border:3px solid var(--surface);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
+      </span>
+      <span style="font-size:10px;font-weight:700;color:var(--ink);">Home</span>
     </a>
     <a href="Allocation.dc.html" class="nav-item" style="color:var(--muted);font-weight:500;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l7 4"/></svg>
@@ -111,7 +182,7 @@
 
 </div>
 </x-dc>
-<script data-dc-script data-props='{"$preview":{"width":390,"height":700}}'>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":1450}}'>
 class Component extends DCLogic {
   renderVals() {
     return {};
