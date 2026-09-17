@@ -39,6 +39,19 @@ user has to scroll past the primary content.
 
 ## 3. Component Container Styles
 
+**Everything on screen is one of four things**: a **Card** (grouped content), a
+**Modal/Sheet** (one focused, interruptive task — kept concise on purpose; if
+it ever needs its own scroll or more than ~3 fields, it should be a screen
+instead), a **Row** (a single list item — a Grouping Panel is just a Card full
+of Rows, a Callout is a specialized single Row, a Segmented control is a Row
+of toggle items), or a **Visualization** (dial gauges, Stream Splitter,
+Wellspring, the Jubilee LCD, bar/line charts — these encode data spatially,
+not as text-in-a-box, and follow §10's rules instead of a container style).
+Elevated and neomorphic are **shadow treatments**, not container types —
+either can be applied to a Card, never on their own. Sticky/fixed is a
+*positioning behavior* (governing control stays visible while the data under
+it scrolls or grows), not a container either.
+
 Two container levels, used consistently:
 
 - **Level 1 — Card**: white surface, `1px solid var(--border)`, `14px`
@@ -105,9 +118,20 @@ named 5th style rather than leaving it a one-off class.
   - **Solid ink-black** (`var(--fill)`) — primary/active: primary buttons,
     the elevated Home nav button, filled progress/dial arcs.
 - Icons: 2px stroke, round caps/joins, outline-only (no fills except
-  progress arcs and the flow-family shapes). No emoji, no gradients, no
-  shadows — except the Home nav button's shadow, which exists specifically
-  to signal "this floats above the bar."
+  progress arcs and the flow-family shapes). No emoji, no gradients.
+- **Shadow treatments — and why they read as intentional, not decorative:**
+  - **Elevated cards**: shadow is the most primitive depth cue there is
+    (light + gravity) — it reads instantly as "this sits above the page."
+    Dropping the border when a card is elevated (rather than keeping both)
+    is what keeps it light instead of heavy: a hard outline competes with
+    the shadow's own soft edge. Used for every card, everywhere.
+  - **Neomorphic**: simulates a physical material under one consistent light
+    source (highlight top-left, shadow bottom-right), reading as pressed-in
+    or raised-out rather than drawn-on. It only works *because* it's rare —
+    reserved for exactly three personal-metric surfaces (Home's Health Score
+    bar, Watchtower's Expense Categorisation bars, its 1W/1M/1Y control) so
+    the softness stays meaningful (non-transactional, personal numbers)
+    instead of becoming a second competing visual system.
 
 ## 8. Visual Hierarchy
 
@@ -123,18 +147,42 @@ action in that section is outlined, so there's always exactly one obvious
 
 ## 9. Data Limits and Wrapping
 
-- **Unbounded lists** (Recent Activity sub-lists, Kingdom Impact, Prune
-  Suggestions, Expense Audit) show a fixed preview count rather than growing
-  the page: 2 items for Home's activity sub-lists, 3 for Expense
-  Audit/Prune, 5 for Kingdom Impact. Kingdom Impact's internal scroll
-  (`max-height` + `overflow-y`) is the standard pattern for any list expected
-  to exceed ~5 items — cap and scroll internally, don't let the page grow.
-- **Text**: single-line labels (vault names, list item names) truncate with
-  ellipsis to keep row heights consistent; two-line descriptions (assessment
-  subtitles, impact descriptions) may wrap to 2 lines, then truncate.
-- **Currency**: hero and precise values show pence (`£6,000.00`); dense list
-  rows may drop pence (`£1,800`) unless the row is itself a specific payment
-  amount, which should always read as exact.
+Six techniques cover every case, split into two groups:
+
+**Field-level** (one piece of text is too long):
+- **Truncation (ellipsis)** — single-line labels (vault names, list item
+  names) truncate to keep row heights consistent.
+- **Text wrapping** — two-line descriptions (assessment subtitles, impact
+  descriptions) wrap to 2 lines, then truncate.
+- **Fixed character cap** — applied upstream, on the *inputs* in modals (Log
+  Impact's description, New Allocation Rule's name), not on display text.
+  Capping entry length is what keeps the two rules above from ever meeting
+  something absurd.
+- **Scalable/shrinking text** — the fallback when a number simply won't fit:
+  the T1 hero, the Jubilee LCD digits, vault balance figures. Currency rule:
+  show pence below £100,000 (`£6,000.00`); drop pence at or above
+  (`£128,400`); if the integer part still doesn't fit, shrink the font
+  rather than wrap or clip.
+
+**Collection-level** (how many items show before the user acts):
+- **Horizontal scroll (no visible scrollbar)** — for anything already laid
+  out as a row of similar items: Growth Trackers, and Giving Targets (which
+  should move to this pattern rather than squeezing a 4th column).
+- **Show More / Show Less toggle** — preferred over nested internal scroll
+  wherever the surrounding page already scrolls (avoids two competing
+  scroll gestures on one screen, a common mobile pitfall). Applies to:
+  - **Vaults** — show 4, then "Show More."
+  - **Kingdom Impact** — should move from its current internal
+    `max-height`/`overflow-y` scroll to this pattern, for the same reason.
+  - **Financial Goal dials** — show 3, then "Show More."
+  - Expense Audit and Prune Suggestions stay as flat 3-item lists — small
+    enough that neither technique is needed yet.
+
+**Neither technique applies to a chart.** Wellspring and Stream Splitter are
+Visualizations (§10), not text or rows, so they get their own rule: hard cap
+at 4–5 wedges/branches (a radial shape stops being legible past that), with
+any overflow rolled into a single neutral "Other" slice. One rule, shared by
+both, since they're the same underlying shape.
 
 ## 10. Data Visualisations
 
@@ -151,4 +199,5 @@ reinvented per screen:
 Rule: a new screen reaches for one of these four before inventing a new
 chart type. Category-specific chart coloring is intentionally deferred to
 hi-fi (bars/lines stay monochrome for now, since no brand palette exists
-yet).
+yet). Data limit for the Flow family specifically: see §9 — cap at 4–5
+wedges/branches with overflow rolled into "Other."
