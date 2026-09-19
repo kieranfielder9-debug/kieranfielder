@@ -1,6 +1,9 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { fetchAccountsSnapshot } from '../services/plaid';
 import { useToast } from './ToastContext';
+import { loadJSON, saveJSON } from './persist';
+
+const STORAGE_KEY = 'storehouse.finance-data';
 
 export type Vault = { id: string; name: string; splitLabel: string; balance: number };
 export type ActivityGroup = 'purchases' | 'cancelledPurchases' | 'streamAllocations' | 'kingdomImpacts';
@@ -74,11 +77,21 @@ const initialImpactLog: KingdomImpactItem[] = [
   { id: 'k5', title: 'Disaster Relief Response', subtitle: 'One-time gift to the relief fund', amountLabel: '£120' },
 ];
 
+type PersistedFinanceData = {
+  vaults: Vault[];
+  recentActivity: ActivityItem[];
+  expenseAudit: ExpenseAuditItem[];
+  kingdomImpactLog: KingdomImpactItem[];
+  harvestMode: HarvestMode;
+  investmentMode: InvestmentMode;
+};
+
 type FinanceProviderProps = { children: ReactNode };
 
 export function FinanceProvider({ children }: FinanceProviderProps) {
   const { showToast } = useToast();
 
+  const [isHydrated, setIsHydrated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [totalValue, setTotalValue] = useState(6000);
   const [healthScore, setHealthScore] = useState(85);
@@ -105,6 +118,36 @@ export function FinanceProvider({ children }: FinanceProviderProps) {
   useEffect(() => {
     refresh();
   }, []);
+
+  // Restore whatever was saved from the previous launch. totalValue/
+  // healthScore/unallocatedFunds are deliberately left out here — those
+  // always come fresh from refresh() above, the same way a real balance
+  // would never be trusted from a stale local cache.
+  useEffect(() => {
+    loadJSON<PersistedFinanceData>(STORAGE_KEY).then((saved) => {
+      if (saved) {
+        setVaults(saved.vaults);
+        setRecentActivity(saved.recentActivity);
+        setExpenseAudit(saved.expenseAudit);
+        setKingdomImpactLog(saved.kingdomImpactLog);
+        setHarvestMode(saved.harvestMode);
+        setInvestmentMode(saved.investmentMode);
+      }
+      setIsHydrated(true);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!isHydrated) return;
+    saveJSON<PersistedFinanceData>(STORAGE_KEY, {
+      vaults,
+      recentActivity,
+      expenseAudit,
+      kingdomImpactLog,
+      harvestMode,
+      investmentMode,
+    });
+  }, [isHydrated, vaults, recentActivity, expenseAudit, kingdomImpactLog, harvestMode, investmentMode]);
 
   function transferFunds(amount: number, recipient: string) {
     setTotalValue((prev) => prev - amount);
@@ -142,7 +185,7 @@ export function FinanceProvider({ children }: FinanceProviderProps) {
   }
 
   const value: FinanceState = {
-    isLoading,
+    isLoading: isLoading || !isHydrated,
     totalValue,
     healthScore,
     unallocatedFunds,

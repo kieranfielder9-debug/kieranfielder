@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSecurity } from '../state/SecurityContext';
+import { SplashScreen } from '../components/SplashScreen';
 import { TabNavigator } from './TabNavigator';
 import { OnboardingScreen } from '../screens/onboarding/OnboardingScreen';
 import { LockScreen } from '../screens/auth/LockScreen';
@@ -13,7 +14,14 @@ import type { RootStackParamList } from './types';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootNavigator() {
-  const { hasCompletedOnboarding, isAppLocked } = useSecurity();
+  const { isHydrated, hasCompletedOnboarding, isAppLocked } = useSecurity();
+
+  // Wait for the saved settings to load before deciding which screen to
+  // show — otherwise a returning user would flash Onboarding for one
+  // frame before flipping to Tabs the moment hydration finishes.
+  if (!isHydrated) {
+    return <SplashScreen />;
+  }
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

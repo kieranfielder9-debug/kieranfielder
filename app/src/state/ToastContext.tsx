@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useRef, ReactNode } from 'react';
 
 type Toast = {
   message: string;
@@ -17,13 +17,19 @@ type ToastProviderProps = { children: ReactNode };
 
 export function ToastProvider({ children }: ToastProviderProps) {
   const [toast, setToast] = useState<Toast | null>(null);
+  // A ref, not state — changing it should never trigger a re-render, it's
+  // just a handle so a later call can cancel a timer an earlier call left
+  // running.
+  const dismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function showToast(message: string, type: Toast['type'] = 'info') {
+    if (dismissTimer.current) clearTimeout(dismissTimer.current);
     setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
+    dismissTimer.current = setTimeout(() => setToast(null), 3000);
   }
 
   function hideToast() {
+    if (dismissTimer.current) clearTimeout(dismissTimer.current);
     setToast(null);
   }
 
