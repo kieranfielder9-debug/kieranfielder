@@ -2,12 +2,24 @@ import { Text, Pressable } from 'react-native';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SecurityProvider, useSecurity } from '../SecurityContext';
+import { ToastProvider } from '../ToastContext';
+import { api } from '../../services/api';
 
-// Each test gets a clean slate — AsyncStorage's mock is in-memory and
-// shared across every test in this file, so a setting saved by one test
-// would otherwise leak into the next one's "starts with defaults" checks.
+jest.mock('../../services/api');
+const mockedApi = api as jest.Mocked<typeof api>;
+
+const DEFAULT_SETTINGS = {
+  isFaceIdSetUp: false,
+  stepUpThreshold: 500,
+  shouldBalancesBlur: false,
+  hasCompletedOnboarding: false,
+};
+
 beforeEach(async () => {
   await AsyncStorage.clear();
+  jest.clearAllMocks();
+  mockedApi.getSecurity.mockResolvedValue(DEFAULT_SETTINGS);
+  mockedApi.patchSecurity.mockImplementation(async (patch) => ({ ...DEFAULT_SETTINGS, ...patch }));
 });
 
 function TestHarness() {
@@ -27,56 +39,71 @@ function TestHarness() {
 }
 
 async function renderHydrated() {
-  const result = await render(
-    <SecurityProvider>
-      <TestHarness />
-    </SecurityProvider>
+  return render(
+    <ToastProvider>
+      <SecurityProvider>
+        <TestHarness />
+      </SecurityProvider>
+    </ToastProvider>
   );
-  // isHydrated flips true only after the AsyncStorage read resolves, so
-  // every test waits for that before pressing anything.
-  await waitFor(() => expect(screen.getByTestId('locked')).toBeTruthy());
-  return result;
 }
 
 test('starts unlocked, with balances visible and onboarding not complete', async () => {
   await renderHydrated();
+  await waitFor(() => expect(mockedApi.getSecurity).toHaveBeenCalled());
   expect(screen.getByTestId('locked').props.children).toBe('unlocked');
   expect(screen.getByTestId('blurred').props.children).toBe('visible');
   expect(screen.getByTestId('onboarded').props.children).toBe('pending');
 });
 
-test('lockApp and unlockApp flip isAppLocked', async () => {
+test('lockApp and unlockApp are purely local — never call the API', async () => {
   await renderHydrated();
+  await waitFor(() => expect(mockedApi.getSecurity).toHaveBeenCalled());
 
   await fireEvent.press(screen.getByTestId('lock'));
   expect(screen.getByTestId('locked').props.children).toBe('locked');
 
   await fireEvent.press(screen.getByTestId('unlock'));
   expect(screen.getByTestId('locked').props.children).toBe('unlocked');
+
+  expect(mockedApi.patchSecurity).not.toHaveBeenCalled();
 });
 
-test('toggleBalanceBlur flips shouldBalancesBlur', async () => {
+test('toggleBalanceBlur updates immediately, then confirms with the server', async () => {
   await renderHydrated();
+  await waitFor(() => expect(mockedApi.getSecurity).toHaveBeenCalled());
 
   await fireEvent.press(screen.getByTestId('toggle-blur'));
+
   expect(screen.getByTestId('blurred').props.children).toBe('blurred');
-
-  await fireEvent.press(screen.getByTestId('toggle-blur'));
-  expect(screen.getByTestId('blurred').props.children).toBe('visible');
+  await waitFor(() => expect(mockedApi.patchSecurity).toHaveBeenCalledWith({ shouldBalancesBlur: true }));
 });
 
-test('settings persist across a remount, simulating an app restart', async () => {
-  const { unmount } = await renderHydrated();
+test('falls back to defaults and still finishes loading when the server is unreachable', async () => {
+  mockedApi.getSecurity.mockRejectedValue(new Error('network error'));
+  await renderHydrated();
+  await waitFor(() => expect(screen.getByTestId('onboarded').props.children).toBe('pending'));
+});
 
+test('settings persist across a remount via the local cache', async () => {
+  const { unmount } = await renderHydrated();
+  await waitFor(() => expect(mockedApi.getSecurity).toHaveBeenCalled());
+
+  mockedApi.patchSecurity.mockResolvedValue({ ...DEFAULT_SETTINGS, hasCompletedOnboarding: true });
   await fireEvent.press(screen.getByTestId('complete-onboarding'));
   await waitFor(() => expect(screen.getByTestId('onboarded').props.children).toBe('done'));
 
   await unmount();
 
+  // Simulate a restart where the server is briefly unreachable — the
+  // cached value from the first render should still show immediately.
+  mockedApi.getSecurity.mockRejectedValue(new Error('network error'));
   await render(
-    <SecurityProvider>
-      <TestHarness />
-    </SecurityProvider>
+    <ToastProvider>
+      <SecurityProvider>
+        <TestHarness />
+      </SecurityProvider>
+    </ToastProvider>
   );
   await waitFor(() => expect(screen.getByTestId('onboarded').props.children).toBe('done'));
 });

@@ -1,15 +1,10 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { AppState } from 'react-native';
+import { api, SecuritySettings } from '../services/api';
+import { useToast } from './ToastContext';
 import { loadJSON, saveJSON } from './persist';
 
 const STORAGE_KEY = 'storehouse.security-settings';
-
-type PersistedSettings = {
-  isFaceIdSetUp: boolean;
-  stepUpThreshold: number;
-  shouldBalancesBlur: boolean;
-  hasCompletedOnboarding: boolean;
-};
 
 type SecurityState = {
   isHydrated: boolean;
@@ -28,43 +23,61 @@ type SecurityState = {
 
 const SecurityContext = createContext<SecurityState | undefined>(undefined);
 
+const DEFAULT_SETTINGS: SecuritySettings = {
+  isFaceIdSetUp: false,
+  stepUpThreshold: 500,
+  shouldBalancesBlur: false,
+  hasCompletedOnboarding: false,
+};
+
 type SecurityProviderProps = { children: ReactNode };
 
 export function SecurityProvider({ children }: SecurityProviderProps) {
-  const [isHydrated, setIsHydrated] = useState(false);
-  const [isAppLocked, setIsAppLocked] = useState(false);
-  const [isFaceIdSetUp, setIsFaceIdSetUp] = useState(false);
-  const [stepUpThreshold, setStepUpThreshold] = useState(500);
-  const [shouldBalancesBlur, setShouldBalancesBlur] = useState(false);
-  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
+  const { showToast } = useToast();
 
-  // Runs once on mount: read whatever was saved last time, before this
-  // provider ever renders real content off of it.
+  const [isHydrated, setIsHydrated] = useState(false);
+  // isAppLocked never touches the server — it's per-device Local state
+  // (per the state matrix), not something that should sync or persist.
+  const [isAppLocked, setIsAppLocked] = useState(false);
+  const [settings, setSettings] = useState<SecuritySettings>(DEFAULT_SETTINGS);
+
+  function applySettings(next: SecuritySettings) {
+    setSettings(next);
+    saveJSON(STORAGE_KEY, next);
+  }
+
+  // Same cache-then-network pattern as FinanceContext: show whatever was
+  // saved last time immediately, then reconcile with the server.
   useEffect(() => {
-    loadJSON<PersistedSettings>(STORAGE_KEY).then((saved) => {
-      if (saved) {
-        setIsFaceIdSetUp(saved.isFaceIdSetUp);
-        setStepUpThreshold(saved.stepUpThreshold);
-        setShouldBalancesBlur(saved.shouldBalancesBlur);
-        setHasCompletedOnboarding(saved.hasCompletedOnboarding);
+    loadJSON<SecuritySettings>(STORAGE_KEY).then((cached) => {
+      if (cached) {
+        setSettings(cached);
+        setIsHydrated(true);
       }
-      setIsHydrated(true);
+      api
+        .getSecurity()
+        .then((fresh) => {
+          setSettings(fresh);
+          saveJSON(STORAGE_KEY, fresh);
+          setIsHydrated(true);
+        })
+        .catch(() => {
+          // No server reachable — fall back to cached/default settings
+          // rather than blocking the app from ever finishing loading.
+          setIsHydrated(true);
+        });
     });
   }, []);
 
-  // Runs on every change after that — but the `isHydrated` guard stops it
-  // firing on the very first render, which would otherwise immediately
-  // overwrite the saved file with these defaults before the load above
-  // has had a chance to run.
-  useEffect(() => {
-    if (!isHydrated) return;
-    saveJSON<PersistedSettings>(STORAGE_KEY, {
-      isFaceIdSetUp,
-      stepUpThreshold,
-      shouldBalancesBlur,
-      hasCompletedOnboarding,
-    });
-  }, [isHydrated, isFaceIdSetUp, stepUpThreshold, shouldBalancesBlur, hasCompletedOnboarding]);
+  async function updateSettings(patch: Partial<SecuritySettings>) {
+    const optimistic = { ...settings, ...patch };
+    setSettings(optimistic); // feels instant; reconciled with the server's response below
+    try {
+      applySettings(await api.patchSecurity(patch));
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Could not save that setting', 'error');
+    }
+  }
 
   // Global privacy behavior: re-lock automatically the moment the app is
   // backgrounded (switching apps, the phone locking) — a standard banking-
@@ -74,26 +87,26 @@ export function SecurityProvider({ children }: SecurityProviderProps) {
   // which here removes the old listener before subscribing a new one.
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextState) => {
-      if (nextState === 'background' && isFaceIdSetUp) {
+      if (nextState === 'background' && settings.isFaceIdSetUp) {
         setIsAppLocked(true);
       }
     });
     return () => subscription.remove();
-  }, [isFaceIdSetUp]);
+  }, [settings.isFaceIdSetUp]);
 
   const value: SecurityState = {
     isHydrated,
     isAppLocked,
-    isFaceIdSetUp,
-    stepUpThreshold,
-    shouldBalancesBlur,
-    hasCompletedOnboarding,
+    isFaceIdSetUp: settings.isFaceIdSetUp,
+    stepUpThreshold: settings.stepUpThreshold,
+    shouldBalancesBlur: settings.shouldBalancesBlur,
+    hasCompletedOnboarding: settings.hasCompletedOnboarding,
     lockApp: () => setIsAppLocked(true),
     unlockApp: () => setIsAppLocked(false),
-    setFaceIdSetUp: (value) => setIsFaceIdSetUp(value),
-    setStepUpThreshold: (value) => setStepUpThreshold(value),
-    toggleBalanceBlur: () => setShouldBalancesBlur((prev) => !prev),
-    completeOnboarding: () => setHasCompletedOnboarding(true),
+    setFaceIdSetUp: (value) => updateSettings({ isFaceIdSetUp: value }),
+    setStepUpThreshold: (value) => updateSettings({ stepUpThreshold: value }),
+    toggleBalanceBlur: () => updateSettings({ shouldBalancesBlur: !settings.shouldBalancesBlur }),
+    completeOnboarding: () => updateSettings({ hasCompletedOnboarding: true }),
   };
 
   return <SecurityContext.Provider value={value}>{children}</SecurityContext.Provider>;

@@ -6,7 +6,7 @@ import { useSecurity } from '../state/SecurityContext';
 import { useFinance } from '../state/FinanceContext';
 import { useToast } from '../state/ToastContext';
 import { AppHeader } from '../components/AppHeader';
-import { Card, SectionTitle, Label, Meta, PrimaryButton, OutlineButton } from '../components/primitives';
+import { Card, SectionTitle, Label, Meta, Callout, PrimaryButton, OutlineButton } from '../components/primitives';
 import type { RootNavigationProp } from '../navigation/types';
 
 const ACTIVITY_GROUP_LABELS = {
@@ -19,7 +19,7 @@ const ACTIVITY_GROUP_LABELS = {
 export function HomeScreen() {
   const navigation = useNavigation<RootNavigationProp>();
   const { shouldBalancesBlur } = useSecurity();
-  const { isLoading, totalValue, healthScore, recentActivity } = useFinance();
+  const { isLoading, isOffline, totalValue, healthScore, recentActivity } = useFinance();
   const { showToast } = useToast();
 
   const groupedActivity = groupActivityByType(recentActivity);
@@ -40,6 +40,8 @@ export function HomeScreen() {
       <AppHeader alertCount={2} showSearch />
 
       <ScrollView contentContainerStyle={styles.content}>
+        {isOffline && <Callout>Can't reach the server right now — showing your last saved data.</Callout>}
+
         <View style={{ gap: theme.spacing.xs }}>
           <Label>Total Storehouse Value</Label>
           <Text style={styles.heroValue}>{shouldBalancesBlur ? '••••••' : `£${totalValue.toFixed(2)}`}</Text>

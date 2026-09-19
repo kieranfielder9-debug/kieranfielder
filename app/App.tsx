@@ -10,16 +10,16 @@ import { ToastBanner } from './src/components/ToastBanner';
 export default function App() {
   return (
     <SafeAreaProvider>
-      <SecurityProvider>
-        <ToastProvider>
+      <ToastProvider>
+        <SecurityProvider>
           <FinanceProvider>
             <NavigationContainer>
               <RootNavigator />
             </NavigationContainer>
           </FinanceProvider>
-          <ToastBanner />
-        </ToastProvider>
-      </SecurityProvider>
+        </SecurityProvider>
+        <ToastBanner />
+      </ToastProvider>
       <StatusBar style="auto" />
     </SafeAreaProvider>
   );

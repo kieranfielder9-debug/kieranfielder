@@ -1,21 +1,22 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { fetchAccountsSnapshot } from '../services/plaid';
+import { api, FinanceSnapshot } from '../services/api';
 import { useToast } from './ToastContext';
 import { loadJSON, saveJSON } from './persist';
 
 const STORAGE_KEY = 'storehouse.finance-data';
 
-export type Vault = { id: string; name: string; splitLabel: string; balance: number };
+export type Vault = FinanceSnapshot['vaults'][number];
 export type ActivityGroup = 'purchases' | 'cancelledPurchases' | 'streamAllocations' | 'kingdomImpacts';
-export type ActivityItem = { id: string; label: string; amount: number; group: ActivityGroup };
-export type Assessment = { id: string; title: string; subtitle: string; status: 'completed' | 'continue' };
-export type ExpenseAuditItem = { id: string; label: string; amountLabel: string };
-export type KingdomImpactItem = { id: string; title: string; subtitle: string; amountLabel: string };
+export type ActivityItem = FinanceSnapshot['recentActivity'][number];
+export type Assessment = FinanceSnapshot['assessments'][number];
+export type ExpenseAuditItem = FinanceSnapshot['expenseAudit'][number];
+export type KingdomImpactItem = FinanceSnapshot['kingdomImpactLog'][number];
 export type HarvestMode = 'Standard' | 'Bull' | 'Bear' | 'Jubilee';
 export type InvestmentMode = 'Standard' | 'Personalise' | 'Auto';
 
 type FinanceState = {
   isLoading: boolean;
+  isOffline: boolean;
   totalValue: number;
   healthScore: number;
   unallocatedFunds: number;
@@ -27,63 +28,29 @@ type FinanceState = {
   harvestMode: HarvestMode;
   investmentMode: InvestmentMode;
   refresh: () => Promise<void>;
-  transferFunds: (amount: number, recipient: string) => void;
-  createAllocationRule: (name: string, percent: number) => void;
-  deployCapital: (amount: number, product: string) => void;
-  prunePayment: (id: string) => void;
-  logImpact: (title: string, amountLabel: string) => void;
-  setHarvestMode: (mode: HarvestMode) => void;
-  setInvestmentMode: (mode: InvestmentMode) => void;
+  transferFunds: (amount: number, recipient: string) => Promise<void>;
+  createAllocationRule: (name: string, percent: number) => Promise<void>;
+  deployCapital: (amount: number, product: string) => Promise<void>;
+  prunePayment: (id: string) => Promise<void>;
+  logImpact: (title: string, amountLabel: string) => Promise<void>;
+  setHarvestMode: (mode: HarvestMode) => Promise<void>;
+  setInvestmentMode: (mode: InvestmentMode) => Promise<void>;
 };
 
 const FinanceContext = createContext<FinanceState | undefined>(undefined);
 
-const initialVaults: Vault[] = [
-  { id: 'emergency-fund', name: 'Emergency Fund', splitLabel: '10% Auto-Split', balance: 1800 },
-  { id: 'wellspring-fund', name: 'Wellspring Fund', splitLabel: '5% Auto-Split', balance: 900 },
-  { id: 'gold-vault', name: 'Gold Vault', splitLabel: 'Manual', balance: 2400 },
-  { id: 'kingdom-fund', name: 'Kingdom Fund', splitLabel: 'Manual', balance: 1200 },
-  { id: 'manse-fund', name: 'Manse Fund', splitLabel: 'Manual', balance: 1000 },
-];
-
-const initialActivity: ActivityItem[] = [
-  { id: 'a1', label: 'Groceries', amount: -45.0, group: 'purchases' },
-  { id: 'a2', label: 'Fuel', amount: -32.5, group: 'purchases' },
-  { id: 'a3', label: 'Subscription Refund', amount: 12.0, group: 'cancelledPurchases' },
-  { id: 'a4', label: 'Duplicate Charge', amount: 9.99, group: 'cancelledPurchases' },
-  { id: 'a5', label: 'Gold Vault', amount: 200.0, group: 'streamAllocations' },
-  { id: 'a6', label: 'Wellspring Fund', amount: 150.0, group: 'streamAllocations' },
-  { id: 'a7', label: 'Tithe', amount: 100.0, group: 'kingdomImpacts' },
-  { id: 'a8', label: 'Offering', amount: 25.0, group: 'kingdomImpacts' },
-];
-
-const initialExpenseAudit: ExpenseAuditItem[] = [
-  { id: 'streaming', label: 'Streaming Subscription', amountLabel: '£9.99/mo' },
-  { id: 'gym', label: 'Unused Gym Membership', amountLabel: '£24.99/mo' },
-  { id: 'insurance', label: 'Duplicate Insurance', amountLabel: '£15.00/mo' },
-];
-
-const initialAssessments: Assessment[] = [
-  { id: 'expense-audit', title: 'Expense Audit', subtitle: 'Reviewed your last 30 days of spending', status: 'completed' },
-  { id: 'kingdom-obligations', title: 'Kingdom Obligations', subtitle: 'Confirmed tithe & giving commitments', status: 'completed' },
-  { id: 'identity-profile', title: 'Identity Profile', subtitle: '3 of 5 questions answered — tap to continue', status: 'continue' },
-];
-
-const initialImpactLog: KingdomImpactItem[] = [
-  { id: 'k1', title: 'Tithe Consistency', subtitle: 'Gave 10%+ for 6 consecutive months', amountLabel: '£1,200' },
-  { id: 'k2', title: 'Local Outreach Funded', subtitle: 'Supported the City Mission food bank drive', amountLabel: '£250' },
-  { id: 'k3', title: 'Mission Trip Supported', subtitle: 'Contributed to the summer mission trip fund', amountLabel: '£180' },
-  { id: 'k4', title: 'Widow & Orphan Care', subtitle: 'Monthly support commitment fulfilled', amountLabel: '£75/mo' },
-  { id: 'k5', title: 'Disaster Relief Response', subtitle: 'One-time gift to the relief fund', amountLabel: '£120' },
-];
-
-type PersistedFinanceData = {
-  vaults: Vault[];
-  recentActivity: ActivityItem[];
-  expenseAudit: ExpenseAuditItem[];
-  kingdomImpactLog: KingdomImpactItem[];
-  harvestMode: HarvestMode;
-  investmentMode: InvestmentMode;
+const EMPTY_SNAPSHOT: FinanceSnapshot = {
+  isLoading: false,
+  totalValue: 0,
+  healthScore: 0,
+  unallocatedFunds: 0,
+  harvestMode: 'Standard',
+  investmentMode: 'Standard',
+  vaults: [],
+  recentActivity: [],
+  expenseAudit: [],
+  kingdomImpactLog: [],
+  assessments: [],
 };
 
 type FinanceProviderProps = { children: ReactNode };
@@ -91,111 +58,118 @@ type FinanceProviderProps = { children: ReactNode };
 export function FinanceProvider({ children }: FinanceProviderProps) {
   const { showToast } = useToast();
 
-  const [isHydrated, setIsHydrated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [totalValue, setTotalValue] = useState(6000);
-  const [healthScore, setHealthScore] = useState(85);
-  const [unallocatedFunds, setUnallocatedFunds] = useState(600);
-  const [vaults, setVaults] = useState<Vault[]>(initialVaults);
-  const [recentActivity, setRecentActivity] = useState<ActivityItem[]>(initialActivity);
-  const [expenseAudit, setExpenseAudit] = useState<ExpenseAuditItem[]>(initialExpenseAudit);
-  const [assessments] = useState<Assessment[]>(initialAssessments);
-  const [kingdomImpactLog, setKingdomImpactLog] = useState<KingdomImpactItem[]>(initialImpactLog);
-  const [harvestMode, setHarvestMode] = useState<HarvestMode>('Standard');
-  const [investmentMode, setInvestmentMode] = useState<InvestmentMode>('Standard');
+  const [isOffline, setIsOffline] = useState(false);
+  const [snapshot, setSnapshot] = useState<FinanceSnapshot>(EMPTY_SNAPSHOT);
+
+  function applySnapshot(next: FinanceSnapshot) {
+    setSnapshot(next);
+    saveJSON(STORAGE_KEY, next);
+  }
 
   async function refresh() {
-    setIsLoading(true);
-    const snapshot = await fetchAccountsSnapshot();
-    setTotalValue(snapshot.totalValue);
-    setHealthScore(snapshot.healthScore);
-    setUnallocatedFunds(snapshot.unallocatedFunds);
-    setIsLoading(false);
+    try {
+      const fresh = await api.getFinance();
+      applySnapshot(fresh);
+      setIsOffline(false);
+    } catch {
+      // The server might be asleep (Render's free tier spins down after
+      // idle) or unreachable — fall back to whatever's cached rather than
+      // showing an empty screen.
+      setIsOffline(true);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
-  // Runs once, right after this provider first mounts — the "load the
-  // starting data" effect every real screen like this needs.
+  // Show cached data instantly if there is any, then always try the real
+  // network request — this is the "cache now, confirm with the server"
+  // pattern real finance apps use so a balance isn't blank while waiting
+  // on a slow or sleeping backend.
   useEffect(() => {
-    refresh();
-  }, []);
-
-  // Restore whatever was saved from the previous launch. totalValue/
-  // healthScore/unallocatedFunds are deliberately left out here — those
-  // always come fresh from refresh() above, the same way a real balance
-  // would never be trusted from a stale local cache.
-  useEffect(() => {
-    loadJSON<PersistedFinanceData>(STORAGE_KEY).then((saved) => {
-      if (saved) {
-        setVaults(saved.vaults);
-        setRecentActivity(saved.recentActivity);
-        setExpenseAudit(saved.expenseAudit);
-        setKingdomImpactLog(saved.kingdomImpactLog);
-        setHarvestMode(saved.harvestMode);
-        setInvestmentMode(saved.investmentMode);
+    loadJSON<FinanceSnapshot>(STORAGE_KEY).then((cached) => {
+      if (cached) {
+        setSnapshot(cached);
+        setIsLoading(false);
       }
-      setIsHydrated(true);
+      refresh();
     });
   }, []);
 
-  useEffect(() => {
-    if (!isHydrated) return;
-    saveJSON<PersistedFinanceData>(STORAGE_KEY, {
-      vaults,
-      recentActivity,
-      expenseAudit,
-      kingdomImpactLog,
-      harvestMode,
-      investmentMode,
-    });
-  }, [isHydrated, vaults, recentActivity, expenseAudit, kingdomImpactLog, harvestMode, investmentMode]);
-
-  function transferFunds(amount: number, recipient: string) {
-    setTotalValue((prev) => prev - amount);
-    setRecentActivity((prev) => [
-      { id: `transfer-${Date.now()}`, label: `Transfer to ${recipient}`, amount: -amount, group: 'purchases' },
-      ...prev,
-    ]);
-    showToast(`Sent £${amount.toFixed(2)} to ${recipient}`, 'success');
+  async function transferFunds(amount: number, recipient: string) {
+    try {
+      applySnapshot(await api.transfer(amount, recipient));
+      showToast(`Sent £${amount.toFixed(2)} to ${recipient}`, 'success');
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Transfer failed', 'error');
+    }
   }
 
-  function createAllocationRule(name: string, percent: number) {
-    setVaults((prev) => [
-      { id: `vault-${Date.now()}`, name, splitLabel: `${percent}% Auto-Split`, balance: 0 },
-      ...prev,
-    ]);
-    showToast(`New allocation rule created for ${name}`, 'success');
+  async function createAllocationRule(name: string, percent: number) {
+    try {
+      applySnapshot(await api.createAllocationRule(name, percent));
+      showToast(`New allocation rule created for ${name}`, 'success');
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Could not create the rule', 'error');
+    }
   }
 
-  function deployCapital(amount: number, product: string) {
-    setUnallocatedFunds((prev) => Math.max(0, prev - amount));
-    showToast(`Deployed £${amount.toFixed(2)} into ${product}`, 'success');
+  async function deployCapital(amount: number, product: string) {
+    try {
+      applySnapshot(await api.deployCapital(amount, product));
+      showToast(`Deployed £${amount.toFixed(2)} into ${product}`, 'success');
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Deploy failed', 'error');
+    }
   }
 
-  function prunePayment(id: string) {
-    setExpenseAudit((prev) => prev.filter((item) => item.id !== id));
-    showToast('Payment pruned', 'success');
+  async function prunePayment(id: string) {
+    try {
+      applySnapshot(await api.prunePayment(id));
+      showToast('Payment pruned', 'success');
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Could not prune that payment', 'error');
+    }
   }
 
-  function logImpact(title: string, amountLabel: string) {
-    setKingdomImpactLog((prev) => [
-      { id: `impact-${Date.now()}`, title, subtitle: 'Logged by you', amountLabel },
-      ...prev,
-    ]);
-    showToast('Kingdom impact logged', 'success');
+  async function logImpact(title: string, amountLabel: string) {
+    try {
+      applySnapshot(await api.logImpact(title, amountLabel));
+      showToast('Kingdom impact logged', 'success');
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Could not log that impact', 'error');
+    }
+  }
+
+  async function setHarvestMode(mode: HarvestMode) {
+    try {
+      applySnapshot(await api.setHarvestMode(mode));
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Could not change harvest mode', 'error');
+    }
+  }
+
+  async function setInvestmentMode(mode: InvestmentMode) {
+    try {
+      applySnapshot(await api.setInvestmentMode(mode));
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Could not change investment mode', 'error');
+    }
   }
 
   const value: FinanceState = {
-    isLoading: isLoading || !isHydrated,
-    totalValue,
-    healthScore,
-    unallocatedFunds,
-    vaults,
-    recentActivity,
-    expenseAudit,
-    assessments,
-    kingdomImpactLog,
-    harvestMode,
-    investmentMode,
+    isLoading,
+    isOffline,
+    totalValue: snapshot.totalValue,
+    healthScore: snapshot.healthScore,
+    unallocatedFunds: snapshot.unallocatedFunds,
+    vaults: snapshot.vaults,
+    recentActivity: snapshot.recentActivity,
+    expenseAudit: snapshot.expenseAudit,
+    assessments: snapshot.assessments,
+    kingdomImpactLog: snapshot.kingdomImpactLog,
+    harvestMode: snapshot.harvestMode as HarvestMode,
+    investmentMode: snapshot.investmentMode as InvestmentMode,
     refresh,
     transferFunds,
     createAllocationRule,
