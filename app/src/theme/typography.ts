@@ -41,6 +41,13 @@ export const t3: TextStyle = {
   textTransform: 'uppercase',
 };
 
+/** Secondary numeric emphasis inside a card (Est. Yield, vault balances) —
+ *  sits between T2 and T4. */
+export const t3n: TextStyle = {
+  fontSize: 15,
+  fontWeight: '700',
+};
+
 /** Body copy, meta, list details. */
 export const t4: TextStyle = {
   fontSize: 12,
@@ -48,4 +55,4 @@ export const t4: TextStyle = {
   lineHeight: 17,
 };
 
-export const textStyles = { t1, t2, t3, t4 } as const;
+export const textStyles = { t1, t2, t3, t3n, t4 } as const;

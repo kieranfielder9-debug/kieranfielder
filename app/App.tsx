@@ -1,31 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { theme } from './src/theme';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { SecurityProvider } from './src/state/SecurityContext';
+import { ToastProvider } from './src/state/ToastContext';
+import { FinanceProvider } from './src/state/FinanceContext';
+import { RootNavigator } from './src/navigation/RootNavigator';
+import { ToastBanner } from './src/components/ToastBanner';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>£6,000</Text>
-      <Text style={styles.label}>Theme tokens wired up</Text>
+    <SafeAreaProvider>
+      <SecurityProvider>
+        <ToastProvider>
+          <FinanceProvider>
+            <NavigationContainer>
+              <RootNavigator />
+            </NavigationContainer>
+          </FinanceProvider>
+          <ToastBanner />
+        </ToastProvider>
+      </SecurityProvider>
       <StatusBar style="auto" />
-    </View>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.neutral[50],
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: theme.spacing.sm,
-  },
-  heading: {
-    ...theme.text.t1,
-    color: theme.colors.neutral[800],
-  },
-  label: {
-    ...theme.text.t3,
-    color: theme.colors.neutral[400],
-  },
-});
