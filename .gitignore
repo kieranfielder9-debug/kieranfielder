@@ -1,0 +1,3 @@
+# Scratch worktrees created by background agent tooling — ephemeral,
+# tied to a specific agent run, never real project content.
+.claude/worktrees/
