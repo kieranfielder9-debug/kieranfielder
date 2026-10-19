@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hero Remix Study</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: a study guide wrapping two framed website mockups, each followed by teaching notes. */
+:root {
+  --bg: #f5f6f8;
+  --fg: #16181d;
+  --muted: #5b6170;
+  --line: #dfe2e8;
+  --card: #ffffff;
+  --mark: #c2410c;
+  --font-body: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111317; --fg: #e9ebf0; --muted: #9aa1ae; --line: #2a2e36; --card: #181b21; --mark: #fb923c;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111317; --fg: #e9ebf0; --muted: #9aa1ae; --line: #2a2e36; --card: #181b21; --mark: #fb923c;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px; }
+
+/* ---------- study guide chrome ---------- */
+.intro { max-width: 680px; display: flex; flex-direction: column; gap: 12px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.intro h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.1; letter-spacing: -0.02em; margin: 0; text-wrap: balance; font-weight: 600; }
+.intro p { margin: 0; color: var(--muted); max-width: 62ch; }
+.toggle { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer; user-select: none; margin-top: 4px; width: fit-content; }
+.toggle input { width: 18px; height: 18px; accent-color: var(--mark); }
+
+.part { display: flex; flex-direction: column; gap: 20px; }
+.part-head { display: flex; flex-direction: column; gap: 4px; }
+.part-head h2 { margin: 0; font-size: 22px; letter-spacing: -0.01em; font-weight: 600; }
+.part-head p { margin: 0; color: var(--muted); max-width: 70ch; }
+
+.frame { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--card); box-shadow: 0 1px 2px rgb(0 0 0 / .04), 0 12px 32px -12px rgb(0 0 0 / .18); }
+.frame-bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.dots { display: flex; gap: 6px; }
+.dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); display: block; }
+.url { font-family: var(--font-mono); font-size: 12px; color: var(--muted); background: var(--bg); padding: 3px 10px; border-radius: 6px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.note { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+.note b { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--mark); font-weight: 500; }
+.note span { font-size: 14.5px; color: var(--fg); }
+
+.compare { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+.compare table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 14.5px; }
+.compare th, .compare td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.compare tr:last-child td { border-bottom: 0; }
+.compare th { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+.compare td:first-child { font-weight: 600; white-space: nowrap; }
+
+/* ---------- annotation overlay ---------- */
+.annos [data-anno] { outline: 1.5px dashed var(--mark); outline-offset: 4px; position: relative; }
+.annos [data-anno]::after {
+  content: attr(data-anno);
+  position: absolute; left: -4px; top: -26px; z-index: 5;
+  font: 500 10.5px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase;
+  background: var(--mark); color: #fff; padding: 4px 6px; border-radius: 4px; white-space: nowrap;
+  pointer-events: none;
+}
+
+/* =========================================================
+   SITE A: "Tracklane", a study of the Linear-style pattern.
+   Deliberately dark-only, so every colour is set explicitly.
+   ========================================================= */
+.a {
+  --a-bg: #08090b; --a-fg: #f4f5f7; --a-muted: #8b909a; --a-line: #1f2128; --a-panel: #0f1014; --a-accent: #7c7ff2;
+  background: var(--a-bg); color: var(--a-fg); font-family: "Geist", system-ui, sans-serif; color-scheme: dark;
+}
+.a-in { max-width: 1040px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); }
+.a-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; border-bottom: 1px solid var(--a-line); }
+.a-logo { display: flex; align-items: center; gap: 8px; font-weight: 600; letter-spacing: -0.01em; }
+.a-logo i { width: 18px; height: 18px; border-radius: 5px; background: linear-gradient(135deg, #f4f5f7 0 45%, transparent 45% 55%, #f4f5f7 55%); display: block; }
+.a-links { display: flex; gap: 22px; font-size: 14px; color: var(--a-muted); }
+.a-nav-cta { display: flex; gap: 8px; align-items: center; font-size: 14px; }
+.a-nav-cta .ghost { color: var(--a-muted); }
+.a-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-radius: 8px; padding: 10px 16px; font-weight: 500; font-size: 15px; text-decoration: none; border: 0; cursor: pointer; font-family: inherit; }
+.a-btn.sm { padding: 6px 12px; font-size: 13.5px; }
+.a-btn.primary { background: var(--a-fg); color: var(--a-bg); }
+.a-btn.secondary { color: var(--a-fg); background: transparent; }
+.a-btn:focus-visible { outline: 2px solid var(--a-accent); outline-offset: 2px; }
+
+.a-hero { padding-block: clamp(48px, 9vw, 104px) 0; display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
+.a-pill { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; color: var(--a-muted); border: 1px solid var(--a-line); background: var(--a-panel); padding: 5px 12px 5px 6px; border-radius: 999px; }
+.a-pill b { background: rgb(124 127 242 / .16); color: #b7b9ff; font-weight: 500; padding: 2px 8px; border-radius: 999px; font-size: 12px; }
+.a-h1 { font-size: clamp(38px, 7.2vw, 72px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 600; margin: 0; max-width: 14ch; text-wrap: balance;
+  background: linear-gradient(180deg, #ffffff 30%, #a3a7b1); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.a-sub { font-size: clamp(17px, 2vw, 19px); color: var(--a-muted); max-width: 46ch; margin: 0; line-height: 1.5; }
+.a-ctas { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.a-shot { margin-top: clamp(40px, 6vw, 72px); position: relative; }
+.a-shot::before { content: ""; position: absolute; inset: -40px 10% auto; height: 200px; background: radial-gradient(closest-side, rgb(124 127 242 / .28), transparent); filter: blur(20px); pointer-events: none; }
+.a-app { position: relative; border: 1px solid var(--a-line); border-bottom: 0; border-radius: 12px 12px 0 0; background: var(--a-panel); display: grid; grid-template-columns: 190px 1fr; min-height: 340px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent); mask-image: linear-gradient(180deg, #000 60%, transparent); }
+.a-side { border-right: 1px solid var(--a-line); padding: 14px 10px; display: flex; flex-direction: column; gap: 2px; font-size: 13px; color: var(--a-muted); }
+.a-side .ws { color: var(--a-fg); font-weight: 500; padding: 4px 8px 12px; }
+.a-side span { padding: 5px 8px; border-radius: 6px; }
+.a-side span.on { background: #1a1c22; color: var(--a-fg); }
+.a-side .grp { margin-top: 12px; font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; padding: 5px 8px; }
+.a-main { min-width: 0; }
+.a-main-head { display: flex; gap: 10px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--a-line); font-size: 13px; }
+.a-main-head .tab { color: var(--a-muted); padding: 3px 9px; border-radius: 6px; border: 1px solid transparent; }
+.a-main-head .tab.on { color: var(--a-fg); border-color: var(--a-line); background: #15171c; }
+.a-group { padding: 8px 16px; font-size: 12.5px; color: var(--a-muted); background: #121318; border-bottom: 1px solid var(--a-line); }
+.a-row { display: grid; grid-template-columns: 18px 64px 14px 1fr auto; gap: 12px; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--a-line); font-size: 13.5px; }
+.a-row .pri { display: flex; gap: 2px; align-items: flex-end; height: 12px; }
+.a-row .pri i { width: 3px; background: var(--a-muted); border-radius: 1px; display: block; }
+.a-row .id { font-family: "Geist Mono", monospace; color: var(--a-muted); font-size: 12.5px; }
+.a-row .st { width: 13px; height: 13px; border-radius: 50%; border: 1.5px solid #e2b340; }
+.a-row .st.prog { background: conic-gradient(#e2b340 0 50%, transparent 0); }
+.a-row .st.todo { border-color: var(--a-muted); }
+.a-row .st.done { background: var(--a-accent); border-color: var(--a-accent); }
+.a-row .t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.a-row .tag { font-size: 12px; color: var(--a-muted); border: 1px solid var(--a-line); border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
+
+.a-logos { border-top: 1px solid var(--a-line); padding-block: 36px; display: flex; flex-direction: column; gap: 18px; align-items: center; }
+.a-logos p { margin: 0; font-size: 14px; color: var(--a-muted); text-align: center; }
+.a-logos div { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 40px; color: #c9ccd3; font-weight: 600; font-size: 18px; letter-spacing: -0.02em; opacity: .7; }
+.a-feat { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: var(--a-line); border: 1px solid var(--a-line); border-radius: 12px; overflow: hidden; margin-bottom: 64px; }
+.a-feat > div { background: var(--a-bg); padding: 28px 24px; display: flex; flex-direction: column; gap: 8px; }
+.a-feat h3 { margin: 0; font-size: 17px; font-weight: 500; letter-spacing: -0.01em; }
+.a-feat p { margin: 0; color: var(--a-muted); font-size: 14.5px; }
+.a-final { text-align: center; padding-block: 64px; border-top: 1px solid var(--a-line); display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.a-final h2 { margin: 0; font-size: clamp(28px, 4.5vw, 44px); letter-spacing: -0.03em; font-weight: 600; text-wrap: balance; }
+.a-foot { border-top: 1px solid var(--a-line); padding-block: 20px; font-size: 13px; color: var(--a-muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+/* =========================================================
+   SITE B: "Tidepool", the same skeleton remade for swim-school
+   booking software. Deliberately light-only.
+   ========================================================= */
+.b {
+  --b-bg: #f2fafb; --b-fg: #0b2a3a; --b-muted: #4a6878; --b-line: #cfe5ea; --b-water: #1fb5c9; --b-deep: #0b5d7a; --b-sun: #ffcf4a; --b-card: #ffffff;
+  background: var(--b-bg); color: var(--b-fg); font-family: "Figtree", system-ui, sans-serif; color-scheme: light;
+}
+.b-in { max-width: 1040px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); }
+.b-display { font-family: "Bricolage Grotesque", "Figtree", system-ui, sans-serif; }
+.b-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; }
+.b-logo { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 20px; letter-spacing: -0.02em; color: var(--b-deep); }
+.b-logo svg { display: block; }
+.b-links { display: flex; gap: 24px; font-size: 15px; color: var(--b-muted); font-weight: 500; }
+.b-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; padding: 13px 22px; font-weight: 600; font-size: 16px; text-decoration: none; border: 0; cursor: pointer; font-family: inherit; }
+.b-btn.sm { padding: 8px 16px; font-size: 14.5px; }
+.b-btn.primary { background: var(--b-deep); color: #fff; }
+.b-btn.secondary { background: transparent; color: var(--b-deep); box-shadow: inset 0 0 0 1.5px var(--b-line); }
+.b-btn:focus-visible { outline: 3px solid var(--b-sun); outline-offset: 2px; }
+
+.b-hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(32px, 5vw, 64px); align-items: center; padding-block: clamp(36px, 7vw, 80px) clamp(40px, 6vw, 72px); }
+.b-copy { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; min-width: 0; }
+.b-pill { font-size: 14px; font-weight: 600; color: var(--b-deep); background: #dff4f7; padding: 6px 12px; border-radius: 999px; }
+.b-h1 { margin: 0; font-size: clamp(40px, 6.6vw, 68px); line-height: .98; letter-spacing: -0.035em; font-weight: 800; text-wrap: balance; }
+.b-h1 em { font-style: normal; color: var(--b-water); }
+.b-sub { margin: 0; font-size: clamp(17px, 1.9vw, 19px); color: var(--b-muted); max-width: 44ch; }
+.b-ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+.b-proof { display: flex; align-items: center; gap: 12px; font-size: 14.5px; color: var(--b-muted); }
+.b-faces { display: flex; }
+.b-faces i { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--b-bg); margin-left: -8px; display: block; }
+.b-faces i:first-child { margin-left: 0; }
+.b-proof b { color: var(--b-fg); }
+
+/* the lane board: the product doing its job */
+.b-board { background: var(--b-card); border-radius: 20px; box-shadow: 0 2px 4px rgb(11 42 58 / .06), 0 24px 48px -20px rgb(11 93 122 / .35); padding: 18px; display: flex; flex-direction: column; gap: 12px; position: relative; min-width: 0; }
+.b-board-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.b-board-head strong { font-family: "Bricolage Grotesque", sans-serif; font-size: 18px; letter-spacing: -0.01em; }
+.b-board-head span { font-size: 13px; color: var(--b-muted); font-variant-numeric: tabular-nums; }
+.b-lanes { display: flex; flex-direction: column; gap: 6px; }
+.b-lane { display: grid; grid-template-columns: 44px 1fr; gap: 8px; align-items: stretch; }
+.b-lane > span { font-size: 12px; font-weight: 600; color: var(--b-muted); display: flex; align-items: center; font-variant-numeric: tabular-nums; }
+.b-slot { border-radius: 10px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13.5px; background: repeating-linear-gradient(90deg, #e9f6f8 0 10px, #e3f2f5 10px 20px); }
+.b-slot .lv { font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.b-slot .ct { font-variant-numeric: tabular-nums; font-size: 12.5px; white-space: nowrap; font-weight: 600; }
+.b-slot.full { background: var(--b-deep); color: #fff; }
+.b-slot.open { background: #d4f1f5; color: var(--b-deep); }
+.b-slot.wait { background: #fff4cf; color: #6b4e00; }
+.b-toast { position: absolute; right: -12px; bottom: -18px; background: var(--b-fg); color: #fff; border-radius: 14px; padding: 10px 14px; font-size: 13.5px; display: flex; gap: 10px; align-items: center; box-shadow: 0 12px 24px -10px rgb(11 42 58 / .5); max-width: 260px; }
+.b-toast i { width: 8px; height: 8px; border-radius: 50%; background: var(--b-sun); flex: none; display: block; }
+
+.b-wave { display: block; width: 100%; height: 40px; }
+.b-band { background: #ffffff; }
+.b-logos { padding-block: 28px 8px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 36px; color: var(--b-muted); font-weight: 700; font-size: 17px; }
+.b-logos p { width: 100%; text-align: center; margin: 0 0 4px; font-weight: 500; font-size: 14px; }
+.b-feat { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; padding-block: 36px 64px; }
+.b-feat > div { background: var(--b-bg); border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 8px; }
+.b-feat .ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: #d4f1f5; color: var(--b-deep); font-weight: 800; font-family: "Bricolage Grotesque", sans-serif; }
+.b-feat h3 { margin: 4px 0 0; font-size: 19px; letter-spacing: -0.01em; font-family: "Bricolage Grotesque", sans-serif; }
+.b-feat p { margin: 0; color: var(--b-muted); font-size: 15px; }
+.b-final { background: var(--b-deep); color: #fff; }
+.b-final .b-in { padding-block: 56px; display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; }
+.b-final h2 { margin: 0; font-size: clamp(28px, 4.6vw, 44px); letter-spacing: -0.03em; font-weight: 800; text-wrap: balance; }
+.b-final p { margin: 0; opacity: .85; }
+.b-final .b-btn.primary { background: var(--b-sun); color: var(--b-fg); }
+.b-foot { padding-block: 20px; font-size: 13.5px; color: var(--b-muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 760px) {
+  .a-links, .b-links, .a-nav-cta .ghost { display: none; }
+  .a-app { grid-template-columns: 1fr; }
+  .a-side { display: none; }
+  .a-row { grid-template-columns: 14px 56px 14px 1fr; }
+  .a-row .tag { display: none; }
+  .b-hero { grid-template-columns: 1fr; }
+  .b-toast { right: 8px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .b-slot.open { animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 3px rgb(31 181 201 / .25); } }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap" id="root">
+
+  <header class="intro">
+    <div class="eyebrow">Hero study · one layout, two products</div>
+    <h1>Rebuilding a great SaaS home page, then remaking it</h1>
+    <p>Part 1 rebuilds the layout of Linear's home page with a made-up product called Tracklane. Part 2 keeps the same structure and redesigns it for a very different customer: swim schools. Turn on labels to see the building blocks.</p>
+    <label class="toggle"><input type="checkbox" id="anno-toggle"> Show hero labels</label>
+  </header>
+
+  <!-- ================= PART 1 ================= -->
+  <section class="part" id="study">
+    <div class="part-head">
+      <div class="eyebrow">Part 1 · The study</div>
+      <h2>Tracklane: the Linear-style pattern</h2>
+      <p>Dark, quiet and product-led. The page sells speed and focus, so almost nothing competes with the headline and the screenshot.</p>
+    </div>
+
+    <div class="frame">
+      <div class="frame-bar"><div class="dots"><i></i><i></i><i></i></div><div class="url">tracklane.example</div></div>
+      <div class="a">
+        <div class="a-in">
+          <nav class="a-nav" data-anno="Nav">
+            <div class="a-logo"><i></i>Tracklane</div>
+            <div class="a-links"><span>Product</span><span>Method</span><span>Customers</span><span>Changelog</span><span>Pricing</span></div>
+            <div class="a-nav-cta"><span class="ghost">Log in</span><a class="a-btn primary sm" href="#study">Sign up</a></div>
+          </nav>
+
+          <div class="a-hero">
+            <span class="a-pill" data-anno="Announcement"><b>New</b> Cycles now plan themselves →</span>
+            <h1 class="a-h1" data-anno="Headline">Plan and ship software without the busywork</h1>
+            <p class="a-sub" data-anno="Subheadline">Tracklane is the issue tracker for teams who would rather build than update tickets. Fast keyboard flows, automatic triage and roadmaps that stay current.</p>
+            <div class="a-ctas" data-anno="Calls to action">
+              <a class="a-btn primary" href="#study">Start building</a>
+              <a class="a-btn secondary" href="#study">Read the changelog →</a>
+            </div>
+          </div>
+
+          <div class="a-shot" data-anno="Product visual">
+            <div class="a-app" aria-hidden="true">
+              <div class="a-side">
+                <div class="ws">Northwind ▾</div>
+                <span>Inbox</span><span class="on">My issues</span><span>Views</span>
+                <div class="grp">Teams</div>
+                <span>Engineering</span><span>Design</span><span>Platform</span>
+              </div>
+              <div class="a-main">
+                <div class="a-main-head"><span class="tab on">Active</span><span class="tab">Backlog</span><span class="tab">All issues</span></div>
+                <div class="a-group">In progress · 3</div>
+                <div class="a-row"><div class="pri"><i style="height:4px"></i><i style="height:8px"></i><i style="height:12px"></i></div><span class="id">TRK-142</span><span class="st prog"></span><span class="t">Offline mode for the mobile editor</span><span class="tag">Cycle 31</span></div>
+                <div class="a-row"><div class="pri"><i style="height:4px"></i><i style="height:8px"></i><i style="height:12px;opacity:.3"></i></div><span class="id">TRK-138</span><span class="st prog"></span><span class="t">Speed up search on large workspaces</span><span class="tag">Performance</span></div>
+                <div class="a-row"><div class="pri"><i style="height:4px"></i><i style="height:8px;opacity:.3"></i><i style="height:12px;opacity:.3"></i></div><span class="id">TRK-127</span><span class="st prog"></span><span class="t">Keyboard shortcut for bulk assign</span><span class="tag">Editor</span></div>
+                <div class="a-group">Todo · 2</div>
+                <div class="a-row"><div class="pri"><i style="height:4px"></i><i style="height:8px"></i><i style="height:12px;opacity:.3"></i></div><span class="id">TRK-151</span><span class="st todo"></span><span class="t">SAML login for enterprise workspaces</span><span class="tag">Security</span></div>
+                <div class="a-row"><div class="pri"><i style="height:4px"></i><i style="height:8px;opacity:.3"></i><i style="height:12px;opacity:.3"></i></div><span class="id">TRK-149</span><span class="st done"></span><span class="t">Dark mode contrast pass</span><span class="tag">Design</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="a-logos">
+            <p>Trusted by product teams who ship every week</p>
+            <div><span>Northwind</span><span>Halcyon</span><span>Parallel</span><span>Brightline</span><span>Orbitly</span></div>
+          </div>
+
+          <div class="a-feat">
+            <div><h3>Built for the keyboard</h3><p>Every action is a shortcut away. Create, assign and close issues without touching the mouse.</p></div>
+            <div><h3>Triage that runs itself</h3><p>New reports land in an inbox, get labelled and go to the right team automatically.</p></div>
+            <div><h3>Roadmaps that stay true</h3><p>Projects update from the work itself, so the plan matches what is actually shipping.</p></div>
+          </div>
+
+          <div class="a-final">
+            <h2>Built for teams that ship.<br>Available today.</h2>
+            <div class="a-ctas"><a class="a-btn primary" href="#study">Get started</a><a class="a-btn secondary" href="#study">Talk to sales →</a></div>
+          </div>
+
+          <footer class="a-foot"><span>Tracklane · a design study</span><span>Product · Customers · Docs · Privacy</span></footer>
+        </div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note"><b>Headline</b><span>Seven words. It names the job (ship software) and the pain it removes (busywork). The grey gradient makes the large type feel softer.</span></div>
+      <div class="note"><b>Hierarchy</b><span>The headline is about 4× the body size. The white button is the only bright solid shape, so your eye lands on it second.</span></div>
+      <div class="note"><b>Visual</b><span>The real product UI, cropped and faded at the bottom. It shows the product instead of describing it, and the fade pulls you down the page.</span></div>
+      <div class="note"><b>Restraint</b><span>One accent colour, used only for a soft glow and a status dot. On a dark page, colour used sparingly makes a strong impression.</span></div>
+    </div>
+  </section>
+
+  <!-- ================= PART 2 ================= -->
+  <section class="part" id="remix">
+    <div class="part-head">
+      <div class="eyebrow">Part 2 · The remix</div>
+      <h2>Tidepool: booking software for swim schools</h2>
+      <p>Same skeleton (nav, hero, proof, features, final call to action) for a new audience. School owners and front-desk staff aren't developers, so the page gets warmer, brighter and more direct.</p>
+    </div>
+
+    <div class="frame">
+      <div class="frame-bar"><div class="dots"><i></i><i></i><i></i></div><div class="url">tidepool.example</div></div>
+      <div class="b">
+        <div class="b-in">
+          <nav class="b-nav" data-anno="Nav">
+            <div class="b-logo">
+              <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="13" fill="#1fb5c9"/><path d="M3 15c3-3 5-3 8 0s5 3 8 0 4-2 4-2v6a10 10 0 0 1-20 0z" fill="#0b5d7a"/></svg>
+              Tidepool
+            </div>
+            <div class="b-links"><span>Features</span><span>Pricing</span><span>Stories</span><span>Help</span></div>
+            <a class="b-btn primary sm" href="#remix">Book a demo</a>
+          </nav>
+
+          <div class="b-hero">
+            <div class="b-copy">
+              <span class="b-pill" data-anno="Announcement">New: automatic make-up lessons</span>
+              <h1 class="b-h1 b-display" data-anno="Headline">Fill every lane, <em>every lesson</em></h1>
+              <p class="b-sub" data-anno="Subheadline">Tidepool handles bookings, waitlists and level-ups for swim schools, so your front desk can stop playing phone tag with parents.</p>
+              <div class="b-ctas" data-anno="Calls to action">
+                <a class="b-btn primary" href="#remix">Book a 15-minute demo</a>
+                <a class="b-btn secondary" href="#remix">See pricing</a>
+              </div>
+              <div class="b-proof" data-anno="Trust signal">
+                <div class="b-faces"><i style="background:#ffcf4a"></i><i style="background:#1fb5c9"></i><i style="background:#0b5d7a"></i><i style="background:#ff8f6b"></i></div>
+                <span><b>420 swim schools</b> booked 1.2M lessons last term</span>
+              </div>
+            </div>
+
+            <div class="b-board" data-anno="Product visual" aria-label="Example lane schedule">
+              <div class="b-board-head"><strong>Saturday · 9:30 session</strong><span>25 m pool · 30.5 °C</span></div>
+              <div class="b-lanes">
+                <div class="b-lane"><span>Lane 1</span><div class="b-slot full"><span class="lv">Stage 1 · Starfish</span><span class="ct">4/4</span></div></div>
+                <div class="b-lane"><span>Lane 2</span><div class="b-slot full"><span class="lv">Stage 2 · Seahorses</span><span class="ct">5/5</span></div></div>
+                <div class="b-lane"><span>Lane 3</span><div class="b-slot open"><span class="lv">Stage 3 · Otters</span><span class="ct">4/6</span></div></div>
+                <div class="b-lane"><span>Lane 4</span><div class="b-slot wait"><span class="lv">Stage 4 · Dolphins</span><span class="ct">6/6 · 3 waiting</span></div></div>
+                <div class="b-lane"><span>Lane 5</span><div class="b-slot full"><span class="lv">Adult improvers</span><span class="ct">6/6</span></div></div>
+              </div>
+              <div class="b-toast"><i></i>Maya moved up to Stage 4. Her parents have been notified.</div>
+            </div>
+          </div>
+        </div>
+
+        <svg class="b-wave" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 20 C150 0 300 40 450 20 S750 0 900 20 S1100 40 1200 20 V40 H0Z" fill="#ffffff"/></svg>
+        <div class="b-band">
+          <div class="b-in">
+            <div class="b-logos">
+              <p>Used by swim schools from local pools to national chains</p>
+              <span>Splashworks</span><span>Little Kickers</span><span>Bluewater Academy</span><span>Ripple Swim</span>
+            </div>
+            <div class="b-feat">
+              <div><div class="ic">W</div><h3>Waitlists that fill themselves</h3><p>When a spot opens, the next family gets a text and can claim it in one tap.</p></div>
+              <div><div class="ic">L</div><h3>Level-ups parents can see</h3><p>Teachers tick off skills poolside. Parents get a progress card the same day.</p></div>
+              <div><div class="ic">£</div><h3>Payments and make-ups</h3><p>Term fees, direct debits and missed-lesson credits, all handled without spreadsheets.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="b-final">
+          <div class="b-in">
+            <h2 class="b-display">Spend less time at the front desk</h2>
+            <p>Set up in a week. We'll move your class lists over for you.</p>
+            <a class="b-btn primary" href="#remix">Book a 15-minute demo</a>
+          </div>
+        </div>
+
+        <div class="b-in"><footer class="b-foot"><span>Tidepool · a design study</span><span>Features · Pricing · Help · Privacy</span></footer></div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note"><b>Layout</b><span>Centred stack becomes a split layout. The audience wants to see the product working at a glance, so the visual moves up beside the words.</span></div>
+      <div class="note"><b>Visual</b><span>A lane board with real pool details: lanes, swimmer levels, class sizes, water temperature. It shows the job being done, as Tracklane's screenshot did.</span></div>
+      <div class="note"><b>Call to action</b><span>"Start building" becomes "Book a 15-minute demo". Busy school owners respond to a short, low-risk commitment.</span></div>
+      <div class="note"><b>Trust</b><span>A specific number ("420 schools, 1.2M lessons") sits right under the buttons, where a cautious buyer hesitates.</span></div>
+    </div>
+  </section>
+
+  <!-- ================= COMPARE ================= -->
+  <section class="part" id="compare">
+    <div class="part-head">
+      <div class="eyebrow">What changed and why</div>
+      <h2>Same bones, different audience</h2>
+      <p>Each decision traces back to who is visiting and what they need to feel before they click.</p>
+    </div>
+    <div class="compare">
+      <table>
+        <thead><tr><th>Element</th><th>Tracklane (developers)</th><th>Tidepool (swim schools)</th></tr></thead>
+        <tbody>
+          <tr><td>Mood</td><td>Calm, precise, fast</td><td>Bright, friendly, reassuring</td></tr>
+          <tr><td>Colour</td><td>Near-black with one muted indigo</td><td>Pale water with deep teal, plus a sunny yellow for highlights</td></tr>
+          <tr><td>Type</td><td>Neutral sans, tight letter spacing, medium weight</td><td>Rounded, chunky display face at extra-bold weight</td></tr>
+          <tr><td>Layout</td><td>Stacked, left-aligned, wide screenshot below</td><td>Split: words left, product right</td></tr>
+          <tr><td>Main button</td><td>"Start building" (self-serve sign-up)</td><td>"Book a 15-minute demo" (talk to a human)</td></tr>
+          <tr><td>Proof</td><td>Customer logo strip under the visual</td><td>Specific usage numbers right under the buttons</td></tr>
+          <tr><td>Shapes</td><td>Sharp 8px corners, thin borders</td><td>Pill buttons, soft 20px cards, a wave divider</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const t = document.getElementById('anno-toggle');
+  const root = document.getElementById('root');
+  t.addEventListener('change', () => root.classList.toggle('annos', t.checked));
+</script>
+</body>
+</html>
