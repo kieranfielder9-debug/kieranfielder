@@ -1,0 +1,21 @@
+{
+  "name": "Pocket Studio",
+  "short_name": "Studio",
+  "description": "Design, manage content and publish your site from your phone.",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f1117",
+  "theme_color": "#4f46e5",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Publish widget", "short_name": "Publish", "description": "One-tap publish and site status", "url": "/?view=widget", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Content", "short_name": "CMS", "url": "/?panel=cms", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

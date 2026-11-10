@@ -1,0 +1,23 @@
+{
+  "name": "studio",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Pocket Studio: an installable (PWA) visual site builder with CMS, publishing and custom domains.",
+  "type": "module",
+  "workspaces": [
+    "packages/core",
+    "apps/server",
+    "apps/editor"
+  ],
+  "scripts": {
+    "build": "npm run build -w @studio/core && npm run build -w @studio/server && npm run build -w @studio/editor",
+    "dev": "node scripts/dev.mjs",
+    "start": "node apps/server/dist/index.js",
+    "test": "npm run build -w @studio/core && npm run build -w @studio/server && node --test packages/core/test/*.test.mjs apps/server/test/*.test.mjs",
+    "typecheck": "tsc -b packages/core apps/server && tsc -p apps/editor --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0"
+  }
+}
