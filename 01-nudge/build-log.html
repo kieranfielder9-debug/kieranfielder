@@ -1,0 +1,582 @@
+<title>Nudge Build Log</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+  /* Layout: one reading column of numbered stages; each stage = output, PM call, your turn. Whiteboard marker colours carry meaning: blue = the work, red = PM stepping in, green = your turn. */
+  :root {
+    --bg: #f7f9fb; --surface: #ffffff; --ink: #16202e; --muted: #5b6878; --line: #d5dce5;
+    --blue: #1f5fd6; --on-blue: #ffffff; --red: #c8322b; --green: #1c7c4a; --amber: #a85d00;
+    --blue-wash: #e9f0fc; --flash: #fff3c4;
+    --display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+    --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --hand: "Caveat", "Segoe Print", "Bradley Hand", cursive;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10151c; --surface: #18202a; --ink: #e6ebf2; --muted: #98a5b5; --line: #2c3745;
+      --blue: #6fa3ff; --on-blue: #0c1422; --red: #ff7b72; --green: #5fcf8f; --amber: #e5a84b;
+      --blue-wash: #17253d; --flash: #4a3f12; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10151c; --surface: #18202a; --ink: #e6ebf2; --muted: #98a5b5; --line: #2c3745;
+    --blue: #6fa3ff; --on-blue: #0c1422; --red: #ff7b72; --green: #5fcf8f; --amber: #e5a84b;
+    --blue-wash: #17253d; --flash: #4a3f12; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font: 16px/1.6 var(--body); }
+  .page {
+    max-width: 780px; margin: 0 auto; padding-block: 40px 80px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: grid; gap: 56px;
+  }
+  .page > * { min-width: 0; }
+  h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.15; }
+  h1 { font-size: clamp(32px, 6vw, 46px); font-weight: 700; }
+  h2 { font-size: 26px; font-weight: 700; }
+  h3 { font-size: 17px; font-weight: 500; }
+  p { margin: 0; max-width: 65ch; }
+  a { color: var(--blue); }
+  code { font-family: var(--mono); font-size: 0.9em; background: var(--blue-wash); padding: 1px 5px; border-radius: 4px; }
+  .muted { color: var(--muted); }
+  .stack { display: grid; gap: 14px; }
+  .stack > * { min-width: 0; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+  /* Intro */
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 14px; }
+  .legend span::before { content: ""; display: inline-block; width: 22px; height: 4px; border-radius: 2px; margin-right: 8px; vertical-align: middle; background: var(--c); }
+
+  /* Brief */
+  .brief { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: grid; gap: 14px; }
+  .brief dl { margin: 0; display: grid; grid-template-columns: minmax(110px, 170px) 1fr; gap: 8px 16px; }
+  .brief dt { color: var(--muted); font-size: 14px; }
+  .brief dd { margin: 0; min-width: 0; }
+  @media (max-width: 480px) { .brief dl { grid-template-columns: 1fr; gap: 2px; } .brief dd { margin-bottom: 8px; } }
+
+  /* Stage */
+  .stage { display: grid; gap: 18px; }
+  .stage > * { min-width: 0; }
+  .stage-head { display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 10px; }
+  .stage-num { font-family: var(--display); font-weight: 700; font-size: 26px; color: var(--blue); font-variant-numeric: tabular-nums; }
+  .stage-q { color: var(--muted); font-size: 15px; }
+  .mechanism { font-family: var(--display); font-size: clamp(19px, 3.4vw, 24px); line-height: 1.35; font-weight: 500; max-width: 30em; }
+  .mechanism b { color: var(--blue); font-weight: 700; }
+
+  /* PM call and Your turn: marker-pen notes, no boxes around every block */
+  .note { display: grid; gap: 6px; padding-left: 18px; border-left: 2px dashed var(--c); }
+  .note-label { font-family: var(--hand); font-size: 24px; line-height: 1; color: var(--c); font-weight: 700; }
+  .pm { --c: var(--red); }
+  .turn { --c: var(--green); }
+
+  /* Scope */
+  .scope { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+  .scope ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+  .scope h3 { padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+
+  /* Journey */
+  .journey { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: step; }
+  .journey li { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; counter-increment: step; }
+  .journey li::before {
+    content: counter(step); width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--blue); color: var(--blue);
+    display: grid; place-items: center; font-weight: 600; font-size: 14px; font-family: var(--display);
+  }
+  .journey .gap { color: var(--amber); font-weight: 600; }
+
+  /* Wide things scroll inside themselves */
+  .scroll { overflow-x: auto; }
+  .board { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+  .board svg { display: block; min-width: 640px; width: 100%; height: auto; }
+  .wf-box { fill: none; stroke: var(--ink); stroke-width: 1.6; }
+  .wf-soft { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+  .wf-btn { fill: var(--blue-wash); stroke: var(--blue); stroke-width: 1.2; }
+  .wf-text { fill: var(--ink); font: 500 12px var(--body); }
+  .wf-small { fill: var(--muted); font: 400 10.5px var(--body); }
+  .wf-btn-text { fill: var(--blue); font: 600 10px var(--body); }
+  .wf-hand { fill: var(--red); font: 700 19px var(--hand); }
+  .wf-hand-sub { fill: var(--muted); font: 500 16px var(--hand); }
+  .wf-arrow { stroke: var(--red); stroke-width: 1.4; fill: none; }
+  .wf-dot { fill: var(--red); }
+
+  pre { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; font: 13px/1.6 var(--mono); overflow-x: auto; }
+  pre .c { color: var(--muted); }
+  pre .k { color: var(--blue); font-weight: 600; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  td.num, th.num { font-variant-numeric: tabular-nums; }
+
+  /* Demo */
+  .demo { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; align-items: start; }
+  .demo > * { min-width: 0; }
+  .pane { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: grid; gap: 16px; }
+  .pane > * { min-width: 0; }
+  .pane-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .pane-title { font-family: var(--display); font-weight: 700; font-size: 20px; }
+  .clock { display: flex; align-items: center; gap: 8px; font-size: 14px; flex-wrap: wrap; }
+  .lead { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; display: grid; gap: 8px; background: var(--bg); }
+  .lead-top { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .lead-name { font-weight: 600; }
+  .lead-about { font-size: 14px; color: var(--muted); }
+  .when { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .when.overdue { color: var(--amber); font-weight: 600; }
+  .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  .list { display: grid; gap: 8px; }
+  button {
+    font: 500 13px var(--body); padding: 6px 10px; border-radius: 5px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  }
+  button:hover { border-color: var(--blue); }
+  button.primary { background: var(--blue); border-color: var(--blue); color: var(--on-blue); font-weight: 600; }
+  button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .demo form { display: grid; gap: 8px; }
+  .demo label { display: grid; gap: 3px; font-size: 13px; color: var(--muted); }
+  .demo input { font: 15px var(--body); padding: 7px 9px; border-radius: 5px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 100%; }
+  .empty { color: var(--muted); border: 1px dashed var(--line); border-radius: 6px; padding: 10px 12px; font-size: 14px; }
+  .error { color: var(--red); font-size: 13px; }
+  .score { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+  .score strong { color: var(--ink); }
+  .db-table { font-family: var(--mono); font-size: 12px; }
+  .db-table td, .db-table th { padding: 5px 8px; white-space: nowrap; }
+  .db-name { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--blue); }
+  tr.flash td { animation: flash 1.6s ease-out; }
+  @keyframes flash { from { background: var(--flash); } to { background: transparent; } }
+  @media (prefers-reduced-motion: reduce) { tr.flash td { animation: none; } }
+  .lastaction { font-size: 13px; background: var(--blue-wash); border-radius: 5px; padding: 8px 10px; }
+
+  .files td:first-child { font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+  ol.plain, ul.plain { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 65ch; }
+</style>
+
+<div class="page">
+
+  <header class="stack">
+    <div class="eyebrow">App 1 of your practice run · I do, you watch</div>
+    <h1>Nudge: one app, taken through all seven stages</h1>
+    <p>This is a small, complete app built to show you the process. Each stage below has the same three parts, so you can see the work, the project management, and what you would practise.</p>
+    <div class="legend">
+      <span style="--c: var(--blue)">The output of the stage</span>
+      <span style="--c: var(--red)">Where I stepped in as PM</span>
+      <span style="--c: var(--green)">Your turn</span>
+    </div>
+    <p><a href="#demo">Skip to the working app</a></p>
+  </header>
+
+  <section class="stack">
+    <h2>The brief</h2>
+    <p class="muted">You have not given me a problem yet, so I wrote this one as an example, in the template I asked you to use. It is invented. Nobody has confirmed the problem is real.</p>
+    <div class="brief">
+      <dl>
+        <dt>Who has it</dt><dd>A freelance designer with 5 to 15 quotes out at any time.</dd>
+        <dt>What goes wrong</dt><dd>They send a quote, mean to chase it, forget, and the lead goes cold.</dd>
+        <dt>What they do today</dt><dd>Memory, starred emails, a sticky note.</dd>
+        <dt>Hypothesis</dt><dd>I believe that if a freelancer could open one list of who to chase today, they would follow up on time, because the decision about who and when has already been made.</dd>
+        <dt>Proof</dt><dd>3 of 5 freelancers open it on 3 separate days in one week, and chase at least 80% of leads on the day they fall due.</dd>
+        <dt>Constraints</dt><dd>One weekend. Web. No budget.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="stage">
+    <div class="stage-head"><span class="stage-num">1</span><div><h2>Mechanism</h2><div class="stage-q">What does the app actually do?</div></div></div>
+    <p class="mechanism">When a freelancer <b>logs a lead with a follow-up date</b>, the app <b>puts that lead on a Today list when the date arrives</b>, so they <b>chase the right person without having to remember</b>.</p>
+    <div class="note pm">
+      <div class="note-label">PM call</div>
+      <p>The hypothesis says “follow up on time”. That is an outcome, and you cannot build an outcome. I turned it into one trigger (a date arrives) and one response (a list). I rejected email reminders here. A reminder is a second mechanism, and if we built both we would not know which one worked.</p>
+    </div>
+    <div class="note turn">
+      <div class="note-label">Your turn</div>
+      <p>Fill in the sentence for any app you use daily: “When [user] does [action], the app does [thing], so they get [outcome].” If you need the word “and” twice, you have found two mechanisms.</p>
+    </div>
+  </section>
+
+  <section class="stage">
+    <div class="stage-head"><span class="stage-num">2</span><div><h2>Scope</h2><div class="stage-q">What is the smallest thing that tests the hypothesis?</div></div></div>
+    <div class="scope">
+      <div><h3>Must have</h3><ul>
+        <li>Add a lead: name, what it is about, date to chase</li>
+        <li>Today list: due and overdue leads</li>
+        <li>“Chased” button that sets the next date</li>
+        <li>Mark a lead won or lost</li>
+        <li>A count of chases done on time</li>
+      </ul></div>
+      <div><h3>Later</h3><ul>
+        <li>Login and accounts</li>
+        <li>Email or phone reminders</li>
+        <li>Editing a lead</li>
+        <li>Notes and history per lead</li>
+        <li>Hosting it online</li>
+      </ul></div>
+      <div><h3>Never, for this test</h3><ul>
+        <li>Sales pipeline stages</li>
+        <li>Reading your inbox</li>
+        <li>Teams and sharing</li>
+        <li>Invoicing</li>
+      </ul></div>
+    </div>
+    <div class="note pm">
+      <div class="note-label">PM call</div>
+      <p>I asked one question of every feature: if I remove this, can the hypothesis still be tested? Login failed that test, so it went to Later, even though every real app has one. The on-time count passed it, so it stayed, even though no user would ask for it. Scope serves the test first and the user's wish list second.</p>
+    </div>
+    <div class="note turn">
+      <div class="note-label">Your turn</div>
+      <p>Before reading further, pick one item from Later that you would have fought to keep. Write one sentence on why. Then check whether your reason is about testing the hypothesis or about the app feeling finished.</p>
+    </div>
+  </section>
+
+  <section class="stage">
+    <div class="stage-head"><span class="stage-num">3</span><div><h2>User journey</h2><div class="stage-q">What does one person do, start to finish?</div></div></div>
+    <ol class="journey">
+      <li><div>Opens Nudge and sees who to chase today.</div></li>
+      <li><div>Sends a new quote, so adds the lead with a date three days out.</div></li>
+      <li><div>The lead sits under Coming up. <span class="gap">Days pass. Nothing brings them back.</span></div></li>
+      <li><div>Opens Nudge again. The lead has moved to Chase today.</div></li>
+      <li><div>Sends the follow-up email, then presses Chased. The lead moves back to Coming up with a new date.</div></li>
+      <li><div>The client replies. Marks the lead won or lost, and it leaves the list.</div></li>
+    </ol>
+    <div class="note pm">
+      <div class="note-label">PM call</div>
+      <p>Step 3 is the weak point of this app. The user has to come back unprompted, and the app gives them no reason to. I flagged it as the main risk and left it in. If testers do not return, we have learned the list alone is not enough, which is a real answer to the hypothesis. Hiding the gap behind notifications would have cost a day and blurred the result.</p>
+    </div>
+    <div class="note turn">
+      <div class="note-label">Your turn</div>
+      <p>Write the journey for your own idea as numbered steps, one action each. Then mark any step where time passes or the user leaves. Those are your risks.</p>
+    </div>
+  </section>
+
+  <section class="stage">
+    <div class="stage-head"><span class="stage-num">4</span><div><h2>Wireframe</h2><div class="stage-q">What do they see at each step?</div></div></div>
+    <p>Copy this onto your whiteboard as boxes and labels. The circled numbers are the journey steps from stage 3.</p>
+    <div class="board scroll">
+      <svg viewBox="0 0 720 500" role="img" aria-label="Wireframe of the single Nudge screen with four zones: Chase today, Add a lead, Coming up, and the on-time score. Notes link each zone to journey steps.">
+        <rect class="wf-box" x="20" y="14" width="320" height="472" rx="10"/>
+        <text class="wf-text" x="36" y="42" style="font-size:16px;font-weight:700">Nudge</text>
+        <text class="wf-small" x="324" y="42" text-anchor="end">Fri 13 Nov</text>
+
+        <text class="wf-text" x="36" y="72">Chase today (2)</text>
+        <rect class="wf-soft" x="36" y="82" width="288" height="58" rx="5"/>
+        <text class="wf-text" x="46" y="100">Priya, Fernhill Bakery</text>
+        <text class="wf-small" x="314" y="100" text-anchor="end">2 days overdue</text>
+        <rect class="wf-btn" x="46" y="110" width="92" height="20" rx="4"/><text class="wf-btn-text" x="92" y="124" text-anchor="middle">Chased, 3 days</text>
+        <rect class="wf-btn" x="144" y="110" width="86" height="20" rx="4"/><text class="wf-btn-text" x="187" y="124" text-anchor="middle">Chased, week</text>
+        <rect class="wf-soft" x="236" y="110" width="38" height="20" rx="4"/><text class="wf-small" x="255" y="124" text-anchor="middle">Won</text>
+        <rect class="wf-soft" x="280" y="110" width="38" height="20" rx="4"/><text class="wf-small" x="299" y="124" text-anchor="middle">Lost</text>
+        <rect class="wf-soft" x="36" y="146" width="288" height="30" rx="5"/>
+        <text class="wf-text" x="46" y="166">Tom, Harbour Yoga</text>
+        <text class="wf-small" x="314" y="166" text-anchor="end">Due today</text>
+
+        <text class="wf-text" x="36" y="206">Add a lead</text>
+        <rect class="wf-soft" x="36" y="216" width="288" height="24" rx="4"/><text class="wf-small" x="46" y="232">Who are you waiting on?</text>
+        <rect class="wf-soft" x="36" y="246" width="288" height="24" rx="4"/><text class="wf-small" x="46" y="262">What is it about?</text>
+        <rect class="wf-soft" x="36" y="276" width="140" height="24" rx="4"/><text class="wf-small" x="46" y="292">Chase them on [date]</text>
+        <rect class="wf-btn" x="36" y="308" width="74" height="22" rx="4"/><text class="wf-btn-text" x="73" y="323" text-anchor="middle">Add lead</text>
+
+        <text class="wf-text" x="36" y="362">Coming up</text>
+        <rect class="wf-soft" x="36" y="372" width="288" height="30" rx="5"/>
+        <text class="wf-text" x="46" y="392">Aisha, Kiln &amp; Co</text>
+        <text class="wf-small" x="314" y="392" text-anchor="end">Mon 16 Nov</text>
+        <rect class="wf-soft" x="36" y="408" width="288" height="30" rx="5"/>
+
+        <line class="wf-soft" x1="36" y1="452" x2="324" y2="452"/>
+        <text class="wf-small" x="36" y="472">Chased on time: 4 of 5</text>
+
+        <!-- annotations -->
+        <path class="wf-arrow" d="M344 98 C 370 92, 380 84, 398 82"/><circle class="wf-dot" cx="344" cy="98" r="3"/>
+        <text class="wf-hand" x="404" y="80">A. The output. Steps 1, 4, 5</text>
+        <text class="wf-hand-sub" x="404" y="100">Top of the screen, because this list</text>
+        <text class="wf-hand-sub" x="404" y="118">is the reason they opened the app.</text>
+
+        <path class="wf-arrow" d="M344 258 C 370 250, 380 240, 398 238"/><circle class="wf-dot" cx="344" cy="258" r="3"/>
+        <text class="wf-hand" x="404" y="236">B. The input. Step 2</text>
+        <text class="wf-hand-sub" x="404" y="256">Three fields. The date is pre-filled</text>
+        <text class="wf-hand-sub" x="404" y="274">so adding a lead takes ten seconds.</text>
+
+        <path class="wf-arrow" d="M344 388 C 370 380, 380 366, 398 364"/><circle class="wf-dot" cx="344" cy="388" r="3"/>
+        <text class="wf-hand" x="404" y="362">C. The waiting room. Steps 3, 6</text>
+        <text class="wf-hand-sub" x="404" y="382">Shows nothing has been lost.</text>
+
+        <path class="wf-arrow" d="M344 468 C 370 462, 380 452, 398 450"/><circle class="wf-dot" cx="344" cy="468" r="3"/>
+        <text class="wf-hand" x="404" y="448">D. The proof</text>
+        <text class="wf-hand-sub" x="404" y="468">The number from the brief, on screen.</text>
+      </svg>
+    </div>
+    <div class="note pm">
+      <div class="note-label">PM call</div>
+      <p>Six journey steps did not become six screens. I checked which steps share the same information and found they all read the same list of leads, so one screen covers them. Fewer screens means less to build and nowhere for a first-time user to get lost. I also put the output above the input, which is the reverse of how most beginners draw it.</p>
+    </div>
+    <div class="note turn">
+      <div class="note-label">Your turn</div>
+      <p>Draw this screen on your whiteboard from memory, then draw what a second screen for “Edit a lead” would need. Count the new boxes. That count is roughly what the feature costs.</p>
+    </div>
+  </section>
+
+  <section class="stage">
+    <div class="stage-head"><span class="stage-num">5</span><div><h2>Database</h2><div class="stage-q">What must the app remember?</div></div></div>
+    <p>Two tables. Each row in <code>follow_ups</code> points at one row in <code>leads</code> through <code>lead_id</code>.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Table</th><th>Column</th><th>Holds</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="5"><code>leads</code></td><td><code>id</code></td><td>A number the database gives each lead</td><td class="num">1</td></tr>
+          <tr><td><code>name</code></td><td>Who you are waiting on</td><td>Priya, Fernhill Bakery</td></tr>
+          <tr><td><code>about</code></td><td>What the work is</td><td>Logo quote</td></tr>
+          <tr><td><code>next_follow_up</code></td><td>The date to chase</td><td class="num">2026-11-16</td></tr>
+          <tr><td><code>status</code></td><td>open, won or lost</td><td>open</td></tr>
+          <tr><td rowspan="4"><code>follow_ups</code></td><td><code>id</code></td><td>A number for each chase</td><td class="num">1</td></tr>
+          <tr><td><code>lead_id</code></td><td>Which lead was chased</td><td class="num">1</td></tr>
+          <tr><td><code>was_due_on</code></td><td>The date it should have happened</td><td class="num">2026-11-11</td></tr>
+          <tr><td><code>done_on</code></td><td>The date it did happen</td><td class="num">2026-11-13</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note pm">
+      <div class="note-label">PM call</div>
+      <p>The app runs on the <code>leads</code> table alone. I added <code>follow_ups</code> because the brief's proof is “chased on the day they fall due”, and without a record of each chase that number cannot be counted. A database holds what the app needs to remember and what you need to measure. Beginners usually plan for the first and forget the second, then finish a test with no data.</p>
+    </div>
+    <div class="note turn">
+      <div class="note-label">Your turn</div>
+      <p>Open <code>schema.sql</code>. It is 20 lines. Work out which table and column you would add to store the client's email address, and write the line before asking me.</p>
+    </div>
+  </section>
+
+  <section class="stage">
+    <div class="stage-head"><span class="stage-num">6</span><div><h2>Action</h2><div class="stage-q">What happens when they press the button?</div></div></div>
+    <p>The whole app rests on one rule: <strong>a lead is due when it is still open and its follow-up date is today or earlier.</strong> In the code, that rule is one line.</p>
+<pre><span class="c">-- server.js, the core rule</span>
+<span class="k">SELECT</span> * <span class="k">FROM</span> leads
+<span class="k">WHERE</span> status = 'open' <span class="k">AND</span> next_follow_up &lt;= today
+<span class="k">ORDER BY</span> next_follow_up</pre>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>The user does</th><th>The app checks</th><th>The database changes</th></tr></thead>
+        <tbody>
+          <tr><td>Adds a lead</td><td>Has a name and a date</td><td>New row in <code>leads</code></td></tr>
+          <tr><td>Presses Chased</td><td>The lead is open</td><td>New row in <code>follow_ups</code>, and <code>next_follow_up</code> moves 3 or 7 days on</td></tr>
+          <tr><td>Presses Won or Lost</td><td>The lead is open</td><td><code>status</code> changes, so the rule stops matching it</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note pm">
+      <div class="note-label">PM call</div>
+      <p>Two decisions. First, Chased does two things in one press: it logs the chase and sets the next date. The user never picks a date by hand, so an open lead can never be left without one. Second, the tools. I chose plain JavaScript with the database that ships inside Node, so there is nothing to install and the app is three files you can read in one sitting. A framework would look more professional and teach you less at this stage.</p>
+    </div>
+    <div class="note turn">
+      <div class="note-label">Your turn</div>
+      <p>In <code>server.js</code>, find <code>markChased</code>. Add a “2 weeks” option. You will need to change one line there and add one button in <code>index.html</code>.</p>
+    </div>
+  </section>
+
+  <section class="stage" id="demo">
+    <div class="stage-head"><span class="stage-num">7</span><div><h2>Output and test</h2><div class="stage-q">Was the hypothesis right?</div></div></div>
+    <p>The app is on the left. On the right is what the database holds at that moment. Press a button and watch which rows change. The three leads are examples. This demo keeps its data in the page, so it resets when you reload; the real app in your repository saves to a database file.</p>
+
+    <div class="demo">
+      <div class="pane">
+        <div class="pane-head">
+          <span class="pane-title">Nudge</span>
+          <span class="clock"><span id="d-today"></span><button id="d-tomorrow" type="button">Skip to tomorrow</button></span>
+        </div>
+        <div class="stack">
+          <h3>Chase today <span class="muted" id="d-due-count"></span></h3>
+          <div class="list" id="d-due"></div>
+        </div>
+        <div class="stack">
+          <h3>Add a lead</h3>
+          <form id="d-form">
+            <label for="d-name">Who are you waiting on?<input id="d-name" placeholder="Sam at Northgate Dental"></label>
+            <label for="d-about">What is it about?<input id="d-about" placeholder="Website quote"></label>
+            <label for="d-next">Chase them on<input id="d-next" type="date"></label>
+            <div class="error" id="d-error" hidden></div>
+            <div><button class="primary" type="submit">Add lead</button></div>
+          </form>
+        </div>
+        <div class="stack">
+          <h3>Coming up</h3>
+          <div class="list" id="d-upcoming"></div>
+        </div>
+        <div class="score" id="d-score"></div>
+      </div>
+
+      <div class="pane">
+        <div class="pane-head"><span class="pane-title">The database</span></div>
+        <div class="lastaction" id="d-last">Nothing pressed yet. Try “Chased, again in 3 days” on Priya.</div>
+        <div class="stack">
+          <span class="db-name">leads</span>
+          <div class="scroll"><table class="db-table"><thead><tr><th>id</th><th>name</th><th>next_follow_up</th><th>status</th></tr></thead><tbody id="d-leads"></tbody></table></div>
+        </div>
+        <div class="stack">
+          <span class="db-name">follow_ups</span>
+          <div class="scroll"><table class="db-table"><thead><tr><th>id</th><th>lead_id</th><th>was_due_on</th><th>done_on</th></tr></thead><tbody id="d-fu"></tbody></table></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note pm">
+      <div class="note-label">PM call</div>
+      <p>I set “done” before building, then checked against it. The real app passed these checks when I ran it: a lead dated yesterday or today shows under Chase today and one dated later does not; a late chase and an on-time chase are counted correctly; won and lost leads leave the list; a blank name or missing date is refused with a message. What is not done: it is not online, and no freelancer has used it. The app works. The hypothesis is still untested, and only five real people can change that.</p>
+    </div>
+    <div class="note turn">
+      <div class="note-label">Your turn</div>
+      <p>Press “Skip to tomorrow” three times without chasing anyone, then chase them. Watch the score. Then say in one sentence how the app knew those chases were late. If you can, you understand stages 5 and 6.</p>
+    </div>
+  </section>
+
+  <section class="stack">
+    <h2>Run the real one</h2>
+    <p>The full app is in the <code>01-nudge</code> folder of your repository, on the branch <code>claude/app-dev-pm-framework-eo6254</code>. You need Node 22.13 or newer. Nothing else to install.</p>
+<pre>cd 01-nudge
+node server.js
+<span class="c"># then open http://localhost:3000</span></pre>
+    <div class="scroll">
+      <table class="files">
+        <thead><tr><th>File</th><th>Stage</th><th>What it is</th></tr></thead>
+        <tbody>
+          <tr><td>schema.sql</td><td class="num">5</td><td>The two tables</td></tr>
+          <tr><td>server.js</td><td class="num">6</td><td>The rules, and the code that answers the browser</td></tr>
+          <tr><td>public/index.html</td><td class="num">4, 7</td><td>The screen and what happens on a click</td></tr>
+          <tr><td>README.md</td><td></td><td>The seven stage outputs in short form, and three exercises</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="stack">
+    <h2>What I did as project manager</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Move</th><th>Where</th><th>What it protected</th></tr></thead>
+        <tbody>
+          <tr><td>Narrowed to one mechanism</td><td>Stage 1</td><td>A test with one clear answer</td></tr>
+          <tr><td>Cut features by one question</td><td>Stage 2</td><td>The weekend deadline</td></tr>
+          <tr><td>Named the biggest risk and kept it visible</td><td>Stage 3</td><td>An honest result</td></tr>
+          <tr><td>Merged six steps into one screen</td><td>Stage 4</td><td>Build time and clarity</td></tr>
+          <tr><td>Made the database store the proof</td><td>Stage 5</td><td>The ability to measure at all</td></tr>
+          <tr><td>Chose tools you can read</td><td>Stage 6</td><td>Your learning</td></tr>
+          <tr><td>Defined done, then checked it</td><td>Stage 7</td><td>Knowing when to stop</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>None of these moves needed coding skill. They are decisions, and they are the part you take over first.</p>
+  </section>
+
+  <section class="stack">
+    <h2>What happens next</h2>
+    <ol class="plain">
+      <li>Do the three code exercises in the README, in order. They go from changing one word to touching all three files.</li>
+      <li>Bring me your own problem and hypothesis in the template. For app 2 you draft each stage first and I correct it.</li>
+      <li>Tell me which whiteboard you use and how much coding you have done. I still need both to pitch app 2 at the right level.</li>
+    </ol>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  // The demo copies the real app's rules, with the data held in the page instead of a database file.
+  var pad = function (n) { return String(n).padStart(2, '0'); };
+  var fmt = function (d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+  var parse = function (t) { var p = t.split('-').map(Number); return new Date(p[0], p[1] - 1, p[2]); };
+  var addDays = function (t, n) { var d = parse(t); d.setDate(d.getDate() + n); return fmt(d); };
+  var nice = function (t) { return parse(t).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' }); };
+  var daysBetween = function (a, b) { return Math.round((parse(b) - parse(a)) / 86400000); };
+  var $ = function (id) { return document.getElementById(id); };
+  var safe = function (s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
+
+  var start = fmt(new Date());
+  var s = {
+    today: start,
+    leads: [
+      { id: 1, name: 'Priya, Fernhill Bakery', about: 'Logo quote (example)', next_follow_up: addDays(start, -2), status: 'open' },
+      { id: 2, name: 'Tom, Harbour Yoga', about: 'Class timetable design (example)', next_follow_up: start, status: 'open' },
+      { id: 3, name: 'Aisha, Kiln & Co', about: 'Packaging labels (example)', next_follow_up: addDays(start, 2), status: 'open' }
+    ],
+    fu: [],
+    flashLead: null, flashFu: null
+  };
+
+  function leadRow(l, due) {
+    var late = daysBetween(l.next_follow_up, s.today);
+    var when = due ? (late === 0 ? 'Due today' : late + ' day' + (late === 1 ? '' : 's') + ' overdue') : nice(l.next_follow_up);
+    var chase = due
+      ? '<button class="primary" type="button" data-do="chased" data-id="' + l.id + '" data-days="3">Chased, again in 3 days</button>' +
+        '<button type="button" data-do="chased" data-id="' + l.id + '" data-days="7">Chased, again in a week</button>'
+      : '';
+    return '<div class="lead"><div class="lead-top"><div><div class="lead-name">' + safe(l.name) + '</div><div class="lead-about">' + safe(l.about) + '</div></div>' +
+      '<div class="when ' + (due && late > 0 ? 'overdue' : '') + '">' + when + '</div></div><div class="actions">' + chase +
+      '<button type="button" data-do="close" data-id="' + l.id + '" data-status="won">Won</button>' +
+      '<button type="button" data-do="close" data-id="' + l.id + '" data-status="lost">Lost</button></div></div>';
+  }
+
+  function draw() {
+    // THE CORE RULE, same as the SQL above.
+    var open = s.leads.filter(function (l) { return l.status === 'open'; })
+      .sort(function (a, b) { return a.next_follow_up < b.next_follow_up ? -1 : 1; });
+    var due = open.filter(function (l) { return l.next_follow_up <= s.today; });
+    var upcoming = open.filter(function (l) { return l.next_follow_up > s.today; });
+
+    $('d-today').textContent = nice(s.today);
+    $('d-due-count').textContent = due.length ? '(' + due.length + ')' : '';
+    $('d-due').innerHTML = due.length ? due.map(function (l) { return leadRow(l, true); }).join('') : '<div class="empty">Nobody to chase today.</div>';
+    $('d-upcoming').innerHTML = upcoming.length ? upcoming.map(function (l) { return leadRow(l, false); }).join('') : '<div class="empty">No leads waiting.</div>';
+
+    var onTime = s.fu.filter(function (f) { return f.done_on <= f.was_due_on; }).length;
+    $('d-score').innerHTML = s.fu.length
+      ? 'Chased on time: <strong>' + onTime + ' of ' + s.fu.length + '</strong>'
+      : 'No chases logged yet. This line will show how many you did on time.';
+
+    $('d-leads').innerHTML = s.leads.map(function (l) {
+      return '<tr class="' + (s.flashLead === l.id ? 'flash' : '') + '"><td>' + l.id + '</td><td>' + safe(l.name) + '</td><td>' + l.next_follow_up + '</td><td>' + l.status + '</td></tr>';
+    }).join('');
+    $('d-fu').innerHTML = s.fu.length ? s.fu.map(function (f) {
+      return '<tr class="' + (s.flashFu === f.id ? 'flash' : '') + '"><td>' + f.id + '</td><td>' + f.lead_id + '</td><td>' + f.was_due_on + '</td><td>' + f.done_on + '</td></tr>';
+    }).join('') : '<tr><td colspan="4" style="font-family:var(--body);color:var(--muted);white-space:normal">Empty. A row appears each time you press Chased.</td></tr>';
+    s.flashLead = null; s.flashFu = null;
+  }
+
+  function say(html) { $('d-last').innerHTML = html; }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-do]');
+    if (!b) return;
+    var lead = s.leads.find(function (l) { return l.id === Number(b.dataset.id); });
+    if (!lead || lead.status !== 'open') return;
+    if (b.dataset.do === 'chased') {
+      var f = { id: s.fu.length + 1, lead_id: lead.id, was_due_on: lead.next_follow_up, done_on: s.today };
+      s.fu.push(f);
+      lead.next_follow_up = addDays(s.today, Number(b.dataset.days));
+      s.flashLead = lead.id; s.flashFu = f.id;
+      say('<strong>Chased.</strong> Added a row to <code>follow_ups</code>, and moved <code>next_follow_up</code> on lead ' + lead.id + ' to ' + lead.next_follow_up + '. The rule no longer matches it, so it left Chase today.');
+    } else {
+      lead.status = b.dataset.status;
+      s.flashLead = lead.id;
+      say('<strong>Closed.</strong> Changed <code>status</code> on lead ' + lead.id + ' to ' + lead.status + '. The row stays in the database, but the rule only looks at open leads.');
+    }
+    draw();
+  });
+
+  $('d-tomorrow').addEventListener('click', function () {
+    s.today = addDays(s.today, 1);
+    say('<strong>A day passed.</strong> No row changed. Only “today” moved, and any lead whose date is now today or earlier matches the rule.');
+    draw();
+  });
+
+  $('d-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = $('d-name').value.trim(), next = $('d-next').value, err = $('d-error');
+    err.hidden = true;
+    if (!name) { err.textContent = 'Give the lead a name.'; err.hidden = false; return; }
+    if (!next) { err.textContent = 'Pick a follow-up date.'; err.hidden = false; return; }
+    var id = s.leads.length + 1;
+    s.leads.push({ id: id, name: name, about: $('d-about').value.trim(), next_follow_up: next, status: 'open' });
+    s.flashLead = id;
+    say('<strong>Added.</strong> New row in <code>leads</code> with id ' + id + '.');
+    $('d-name').value = ''; $('d-about').value = '';
+    draw();
+  });
+
+  $('d-next').value = addDays(start, 3);
+  draw();
+})();
+</script>

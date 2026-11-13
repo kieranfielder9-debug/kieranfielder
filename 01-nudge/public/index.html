@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nudge</title>
+<!--
+  STAGE 4 (the screen) and STAGE 7 (the output) live in this file.
+  It has three parts, top to bottom:
+    1. <style>   how it looks
+    2. the HTML  what is on the screen
+    3. <script>  what happens when you click
+-->
+<style>
+  :root {
+    --bg: #f7f9fb; --surface: #ffffff; --ink: #16202e; --muted: #5b6878;
+    --line: #d5dce5; --blue: #1f5fd6; --on-blue: #ffffff; --red: #c8322b; --green: #1c7c4a; --amber: #a85d00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10151c; --surface: #18202a; --ink: #e6ebf2; --muted: #98a5b5;
+      --line: #2c3745; --blue: #6fa3ff; --on-blue: #0c1422; --red: #ff7b72; --green: #5fcf8f; --amber: #e5a84b;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  main { max-width: 620px; margin: 0 auto; padding: 24px 16px 64px; display: grid; gap: 28px; }
+  header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  h1 { margin: 0; font-size: 28px; }
+  h2 { margin: 0 0 10px; font-size: 18px; }
+  .muted { color: var(--muted); }
+  .list { display: grid; gap: 8px; }
+  .lead {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 14px; display: grid; gap: 8px;
+  }
+  .lead-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .lead-name { font-weight: 600; }
+  .when { font-size: 14px; color: var(--muted); white-space: nowrap; }
+  .when.overdue { color: var(--amber); font-weight: 600; }
+  .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  button {
+    font: inherit; font-size: 14px; padding: 6px 12px; border-radius: 6px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  }
+  button.primary { background: var(--blue); border-color: var(--blue); color: var(--on-blue); font-weight: 600; }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  form { display: grid; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
+  label { display: grid; gap: 4px; font-size: 14px; color: var(--muted); }
+  input {
+    font: inherit; padding: 8px 10px; border-radius: 6px; width: 100%;
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+  }
+  .error { color: var(--red); font-size: 14px; margin: 0; }
+  .empty { color: var(--muted); border: 1px dashed var(--line); border-radius: 8px; padding: 14px; }
+  .score { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+  .score strong { color: var(--ink); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Nudge</h1>
+    <span class="muted" id="today"></span>
+  </header>
+
+  <!-- Zone A: the output. Who to chase today. -->
+  <section>
+    <h2>Chase today <span class="muted" id="due-count"></span></h2>
+    <div class="list" id="due"></div>
+  </section>
+
+  <!-- Zone B: the input. -->
+  <section>
+    <h2>Add a lead</h2>
+    <form id="add-form">
+      <label>Who are you waiting on?
+        <input id="name" required placeholder="Priya at Fernhill Bakery">
+      </label>
+      <label>What is it about?
+        <input id="about" placeholder="Logo quote, sent Tuesday">
+      </label>
+      <label>Chase them on
+        <input id="next" type="date" required>
+      </label>
+      <p class="error" id="error" hidden></p>
+      <div><button class="primary" type="submit">Add lead</button></div>
+    </form>
+  </section>
+
+  <!-- Zone C: everything not due yet. -->
+  <section>
+    <h2>Coming up</h2>
+    <div class="list" id="upcoming"></div>
+  </section>
+
+  <!-- Zone D: the measure of the hypothesis. -->
+  <p class="score" id="score"></p>
+</main>
+
+<script>
+  // ---------- Talking to the server ----------
+  // Every call returns the full, fresh state, and we redraw the screen from it.
+  async function call(method, url, body) {
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    return data;
+  }
+
+  // ---------- Small helpers ----------
+  const $ = (id) => document.getElementById(id);
+
+  // Never put what a user typed straight into the page. This makes it safe.
+  function safe(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function niceDate(dateText) {
+    const [y, m, d] = dateText.split('-').map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
+  }
+
+  function daysBetween(a, b) {
+    const toDate = (t) => { const [y, m, d] = t.split('-').map(Number); return new Date(y, m - 1, d); };
+    return Math.round((toDate(b) - toDate(a)) / 86400000);
+  }
+
+  // ---------- Drawing the screen ----------
+  function draw(state) {
+    $('today').textContent = niceDate(state.today);
+    $('due-count').textContent = state.due.length ? `(${state.due.length})` : '';
+
+    $('due').innerHTML = state.due.length
+      ? state.due.map((lead) => {
+          const late = daysBetween(lead.next_follow_up, state.today);
+          const when = late === 0 ? 'Due today' : `${late} day${late === 1 ? '' : 's'} overdue`;
+          return `
+            <div class="lead">
+              <div class="lead-top">
+                <div><div class="lead-name">${safe(lead.name)}</div><div class="muted">${safe(lead.about)}</div></div>
+                <div class="when ${late > 0 ? 'overdue' : ''}">${when}</div>
+              </div>
+              <div class="actions">
+                <button class="primary" data-do="chased" data-id="${lead.id}" data-days="3">Chased, again in 3 days</button>
+                <button data-do="chased" data-id="${lead.id}" data-days="7">Chased, again in a week</button>
+                <button data-do="close" data-id="${lead.id}" data-status="won">Won</button>
+                <button data-do="close" data-id="${lead.id}" data-status="lost">Lost</button>
+              </div>
+            </div>`;
+        }).join('')
+      : `<div class="empty">Nobody to chase today.</div>`;
+
+    $('upcoming').innerHTML = state.upcoming.length
+      ? state.upcoming.map((lead) => `
+          <div class="lead">
+            <div class="lead-top">
+              <div><div class="lead-name">${safe(lead.name)}</div><div class="muted">${safe(lead.about)}</div></div>
+              <div class="when">${niceDate(lead.next_follow_up)}</div>
+            </div>
+            <div class="actions">
+              <button data-do="close" data-id="${lead.id}" data-status="won">Won</button>
+              <button data-do="close" data-id="${lead.id}" data-status="lost">Lost</button>
+            </div>
+          </div>`).join('')
+      : `<div class="empty">No leads waiting. Add one above.</div>`;
+
+    $('score').innerHTML = state.score.chased
+      ? `Chased on time: <strong>${state.score.on_time} of ${state.score.chased}</strong>`
+      : 'No chases logged yet. This line will show how many you did on time.';
+  }
+
+  // ---------- Clicks ----------
+  // One listener for every button in the lists.
+  document.addEventListener('click', async (event) => {
+    const button = event.target.closest('button[data-do]');
+    if (!button) return;
+    const id = button.dataset.id;
+    if (button.dataset.do === 'chased') {
+      draw(await call('POST', `/api/leads/${id}/chased`, { days: Number(button.dataset.days) }));
+    } else {
+      draw(await call('POST', `/api/leads/${id}/close`, { status: button.dataset.status }));
+    }
+  });
+
+  $('add-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    $('error').hidden = true;
+    try {
+      draw(await call('POST', '/api/leads', {
+        name: $('name').value,
+        about: $('about').value,
+        next_follow_up: $('next').value,
+      }));
+      $('name').value = '';
+      $('about').value = '';
+      $('name').focus();
+    } catch (err) {
+      $('error').textContent = err.message;
+      $('error').hidden = false;
+    }
+  });
+
+  // ---------- Start ----------
+  call('GET', '/api/leads').then((state) => {
+    draw(state);
+    // Suggest a follow-up date three days from now.
+    const [y, m, d] = state.today.split('-').map(Number);
+    const suggestion = new Date(y, m - 1, d + 3);
+    const pad = (n) => String(n).padStart(2, '0');
+    $('next').value = `${suggestion.getFullYear()}-${pad(suggestion.getMonth() + 1)}-${pad(suggestion.getDate())}`;
+  });
+</script>
+</body>
+</html>
