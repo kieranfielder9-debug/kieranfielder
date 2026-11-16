@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- EDIT: the text shown in the browser tab and in search results -->
+  <title>[Your Name] — [What you do]</title>
+  <meta name="description" content="[One sentence describing this site.]">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ============ HEADER / NAVIGATION ============ -->
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <!-- EDIT: your name or logo text -->
+      <a class="brand" href="#top">[Your Name]</a>
+
+      <!-- EDIT: add, remove or rename links. Each href matches a section id below. -->
+      <nav class="nav" aria-label="Main">
+        <a href="#about">About</a>
+        <a href="#work">Work</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="wrap">
+        <!-- EDIT: short label above the headline (or delete this line) -->
+        <p class="eyebrow">[Your role or tagline]</p>
+
+        <!-- EDIT: your main headline -->
+        <h1>[A clear headline that says what you do and who it's for.]</h1>
+
+        <!-- EDIT: one or two supporting sentences -->
+        <p class="lead">[A short supporting sentence or two. Explain the value you offer, or what visitors will find here.]</p>
+
+        <!-- EDIT: button labels and where they link to -->
+        <div class="actions">
+          <a class="button" href="#contact">[Main button]</a>
+          <a class="button button-secondary" href="#work">[Second button]</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about" class="section">
+      <div class="wrap two-col">
+        <div>
+          <h2>About</h2>
+          <!-- EDIT: your bio -->
+          <p>[Write a paragraph about yourself or your business. Who are you, what do you do, and why?]</p>
+          <p>[A second paragraph with more detail: your background, experience, or what makes your approach different.]</p>
+        </div>
+
+        <!-- EDIT: replace this placeholder with a photo, e.g.
+             <img class="photo" src="images/me.jpg" alt="Portrait of [Your Name]"> -->
+        <div class="photo placeholder" role="img" aria-label="Photo placeholder">Your photo here</div>
+      </div>
+    </section>
+
+    <!-- ============ WORK / PROJECTS ============ -->
+    <section id="work" class="section section-alt">
+      <div class="wrap">
+        <h2>Work</h2>
+        <p class="section-intro">[One sentence introducing your projects.]</p>
+
+        <!-- EDIT: each <article> is one project. Copy a whole block to add another,
+             or delete one to remove it. -->
+        <div class="grid">
+          <article class="card">
+            <div class="card-image placeholder" role="img" aria-label="Image placeholder">Image</div>
+            <h3>[Project one]</h3>
+            <p>[A sentence or two about what this project was and what you did.]</p>
+            <a href="#">View project →</a>
+          </article>
+
+          <article class="card">
+            <div class="card-image placeholder" role="img" aria-label="Image placeholder">Image</div>
+            <h3>[Project two]</h3>
+            <p>[A sentence or two about what this project was and what you did.]</p>
+            <a href="#">View project →</a>
+          </article>
+
+          <article class="card">
+            <div class="card-image placeholder" role="img" aria-label="Image placeholder">Image</div>
+            <h3>[Project three]</h3>
+            <p>[A sentence or two about what this project was and what you did.]</p>
+            <a href="#">View project →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICES / SKILLS ============ -->
+    <section id="services" class="section">
+      <div class="wrap">
+        <h2>Services</h2>
+        <p class="section-intro">[One sentence introducing what you offer.]</p>
+
+        <!-- EDIT: each <div class="feature"> is one item. Copy or delete as needed. -->
+        <div class="grid">
+          <div class="feature">
+            <h3>[Service one]</h3>
+            <p>[Briefly describe this service or skill.]</p>
+          </div>
+          <div class="feature">
+            <h3>[Service two]</h3>
+            <p>[Briefly describe this service or skill.]</p>
+          </div>
+          <div class="feature">
+            <h3>[Service three]</h3>
+            <p>[Briefly describe this service or skill.]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact" class="section section-alt">
+      <div class="wrap contact">
+        <h2>Get in touch</h2>
+        <p class="section-intro">[A sentence inviting people to contact you.]</p>
+
+        <!-- EDIT: put your email address in both places on the next line -->
+        <a class="button" href="mailto:you@example.com">you@example.com</a>
+
+        <!-- EDIT: your social links (delete any you don't use) -->
+        <ul class="social">
+          <li><a href="#">[LinkedIn]</a></li>
+          <li><a href="#">[GitHub]</a></li>
+          <li><a href="#">[Instagram]</a></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="wrap">
+      <!-- EDIT: your name. The year updates automatically. -->
+      <p>© <span id="year"></span> [Your Name]. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

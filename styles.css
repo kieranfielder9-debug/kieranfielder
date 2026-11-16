@@ -1,0 +1,197 @@
+/* =====================================================================
+   EDIT: change the look of the whole site from here.
+   ===================================================================== */
+:root {
+  --accent: #2f5d50;        /* buttons and links */
+  --accent-text: #ffffff;   /* text on top of the accent colour */
+  --bg: #fbfaf7;            /* page background */
+  --bg-alt: #f1efe9;        /* background of alternating sections */
+  --text: #1d1f1e;          /* main text */
+  --muted: #5f6562;         /* secondary text */
+  --border: #dcd9d0;        /* lines and card outlines */
+
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-heading: Georgia, "Times New Roman", serif;
+
+  --max-width: 1040px;      /* how wide the content gets on big screens */
+  --radius: 10px;           /* roundness of buttons, cards and images */
+}
+
+/* Colours used when the visitor's device is in dark mode.
+   Delete this whole block if you want the site to always be light. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: #8fc7b3;
+    --accent-text: #10201b;
+    --bg: #141615;
+    --bg-alt: #1c1f1e;
+    --text: #eceeed;
+    --muted: #a3aaa6;
+    --border: #2f3432;
+  }
+}
+
+/* ============================ Base ============================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  line-height: 1.15;
+  margin: 0 0 1rem;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2.25rem, 6vw, 3.75rem); max-width: 18ch; }
+h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+h3 { font-size: 1.25rem; }
+
+p { margin: 0 0 1rem; }
+a { color: var(--accent); }
+img { max-width: 100%; display: block; }
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* ============================ Header ============================ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1.5rem;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+.brand {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+}
+.nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+.nav a { color: var(--muted); text-decoration: none; }
+.nav a:hover { color: var(--text); }
+
+/* ============================ Hero ============================ */
+.hero { padding: clamp(4rem, 12vw, 8rem) 0; }
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.lead { font-size: 1.25rem; color: var(--muted); max-width: 55ch; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+
+.button {
+  display: inline-block;
+  padding: 0.75rem 1.4rem;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+.button:hover { opacity: 0.88; }
+.button-secondary { background: transparent; color: var(--accent); }
+
+/* ============================ Sections ============================ */
+.section { padding: clamp(3.5rem, 9vw, 6rem) 0; }
+.section-alt { background: var(--bg-alt); }
+.section-intro { color: var(--muted); max-width: 60ch; margin-bottom: 2.5rem; }
+
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 3rem;
+  align-items: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+.card p, .feature p { color: var(--muted); }
+.card-image {
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  object-fit: cover;
+  border-radius: calc(var(--radius) - 4px);
+  margin-bottom: 1.25rem;
+}
+
+.feature { border-top: 2px solid var(--accent); padding-top: 1.25rem; }
+
+.photo {
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  max-width: 380px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  justify-self: center;
+}
+
+/* Grey boxes that stand in for images until you add your own */
+.placeholder {
+  display: grid;
+  place-items: center;
+  background: var(--bg-alt);
+  border: 2px dashed var(--border);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.section-alt .placeholder { background: var(--bg); }
+
+/* ============================ Contact ============================ */
+.contact { text-align: center; }
+.contact .section-intro { margin-left: auto; margin-right: auto; }
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.5rem;
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+}
+
+/* ============================ Footer ============================ */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+.site-footer p { margin: 0; }
