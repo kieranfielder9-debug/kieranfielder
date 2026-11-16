@@ -1,0 +1,574 @@
+<title>Landing Page Template</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style id="site">
+/* Layout: one centred column of full-width bands, alternating background, in a fixed sales order. */
+:root {
+  --accent: #2f5d50;
+  --accent-text: #ffffff;
+  --bg: #fbfaf7;
+  --bg-alt: #f1efe9;
+  --text: #1d1f1e;
+  --muted: #5f6562;
+  --border: #dcd9d0;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-heading: Georgia, "Times New Roman", serif;
+  --max-width: 1040px;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --accent: #8fc7b3; --accent-text: #10201b; --bg: #141615; --bg-alt: #1c1f1e;
+    --text: #eceeed; --muted: #a3aaa6; --border: #2f3432; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --accent: #8fc7b3; --accent-text: #10201b; --bg: #141615; --bg-alt: #1c1f1e;
+  --text: #eceeed; --muted: #a3aaa6; --border: #2f3432; color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+html { scroll-padding-top: 5rem; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+h1, h2, h3 { font-family: var(--font-heading); line-height: 1.15; margin: 0 0 1rem; text-wrap: balance; }
+h1 { font-size: clamp(2.25rem, 6vw, 3.75rem); }
+h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+h3 { font-size: 1.25rem; }
+p { margin: 0 0 1rem; }
+a { color: var(--accent); }
+img { max-width: 100%; display: block; }
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+}
+.narrow { max-width: 720px; }
+.center { text-align: center; }
+.intro { max-width: 680px; }
+
+.site-header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0.9rem 0; }
+.brand { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; color: var(--text); text-decoration: none; }
+
+.hero { padding: clamp(4rem, 12vw, 8rem) 0; }
+.lead { font-size: 1.25rem; color: var(--muted); margin-bottom: 2rem; }
+.button {
+  display: inline-block;
+  padding: 0.85rem 1.75rem;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+a.button:hover { opacity: 0.88; }
+.note { color: var(--muted); font-size: 0.9rem; margin: 0.75rem 0 0; }
+
+.section { padding: clamp(3.5rem, 9vw, 6rem) 0; }
+.section-alt { background: var(--bg-alt); }
+.section-intro { color: var(--muted); }
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2.5rem 0 0;
+}
+.grid > * { min-width: 0; }
+.card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 0; }
+
+.list { list-style: none; margin: 1.5rem 0 0; padding: 0; }
+.list li { position: relative; padding: 0.6rem 0 0.6rem 1.75rem; border-top: 1px solid var(--border); }
+.list li::before {
+  content: ""; position: absolute; left: 0.25rem; top: 1.15rem;
+  width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--accent);
+}
+
+.callout {
+  margin: 2rem 0 0;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  border-left: 4px solid var(--accent);
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  line-height: 1.35;
+}
+
+.feature { border-top: 2px solid var(--accent); padding-top: 1.25rem; }
+.feature p, .steps p { color: var(--muted); margin: 0; }
+.media { width: 100%; max-width: 100%; border-radius: var(--radius); margin-top: 3rem; }
+
+.steps { list-style: none; padding: 0; counter-reset: step; }
+.steps li { counter-increment: step; }
+.steps li::before {
+  content: counter(step);
+  display: grid; place-items: center;
+  width: 2.5rem; height: 2.5rem; margin-bottom: 1rem;
+  border-radius: 50%; background: var(--accent); color: var(--accent-text); font-weight: 700;
+}
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+.stats strong { display: block; font-family: var(--font-heading); font-size: 2.5rem; line-height: 1.1; color: var(--accent); }
+.stats span, figcaption span { display: block; color: var(--muted); font-size: 0.95rem; }
+figure blockquote { margin: 0 0 1.25rem; }
+figcaption strong { display: block; }
+
+.pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; align-items: start; margin-top: 2.5rem; }
+.pricing > * { min-width: 0; }
+.price-card { border: 2px solid var(--accent); text-align: center; }
+.price-card .list { text-align: left; margin-bottom: 1.5rem; }
+.price-card .button { display: block; }
+.price { font-family: var(--font-heading); font-size: 3rem; line-height: 1.1; margin: 0; }
+.price .per { font-family: var(--font-body); font-size: 1rem; color: var(--muted); margin-left: 0.35rem; }
+
+.faq details, .faq-item { border-bottom: 1px solid var(--border); }
+.faq details:first-child, .faq-item:first-child { border-top: 1px solid var(--border); }
+.faq summary, .faq-q { cursor: pointer; padding: 1rem 0; font-weight: 600; margin: 0; }
+.faq details p, .faq-a { color: var(--muted); }
+
+.cta-band { background: var(--bg-alt); border-top: 1px solid var(--border); }
+.site-footer { border-top: 1px solid var(--border); padding: 2rem 0; color: var(--muted); font-size: 0.9rem; text-align: center; }
+.site-footer p { margin: 0; }
+</style>
+<style id="ed">
+/* Editing tools only. None of this is included in the downloaded website. */
+:root { --ed-bg: #20242b; --ed-fg: #f3f4f6; --ed-dim: #aeb4bf; --ed-line: #3b414c; --ed-go: #ffd166; --ed-go-text: #1c1a10; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ed-bg); }
+.ed-bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9;
+  background: var(--ed-bg); color: var(--ed-fg);
+  font: 0.9rem/1.3 var(--font-body);
+}
+.ed-bar-in {
+  max-width: var(--max-width); margin: 0 auto;
+  padding-block: 0.6rem;
+  padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem;
+}
+.ed-status { color: var(--ed-dim); flex: 1 1 12rem; min-width: 0; }
+.ed-link { display: flex; align-items: center; gap: 0.5rem; flex: 2 1 16rem; min-width: 0; color: var(--ed-dim); white-space: nowrap; }
+.ed-link input {
+  flex: 1; min-width: 0; padding: 0.45rem 0.6rem;
+  border: 1px solid var(--ed-line); border-radius: 6px;
+  background: transparent; color: var(--ed-fg); font: inherit;
+}
+.ed-link input::placeholder { color: var(--ed-dim); }
+.ed-btn {
+  padding: 0.5rem 0.9rem; border-radius: 6px; cursor: pointer; font: inherit; font-weight: 600;
+  border: 1px solid var(--ed-line); background: transparent; color: var(--ed-fg);
+}
+.ed-btn.go { background: var(--ed-go); border-color: var(--ed-go); color: var(--ed-go-text); }
+.ed-btn:disabled { opacity: 0.5; cursor: default; }
+.ed-hint { margin: 0; padding: 0.6rem 0; background: var(--bg-alt); border-bottom: 1px solid var(--border); color: var(--muted); font-size: 0.9rem; }
+
+[data-k] { outline: 1px dashed transparent; outline-offset: 4px; border-radius: 2px; min-width: 3ch; cursor: text; }
+span[data-k] { display: inline-block; }
+.stats span[data-k], figcaption span[data-k] { display: block; }
+[data-k]:hover { outline-color: var(--border); }
+[data-k]:focus { outline: 2px solid var(--accent); }
+[data-k]:empty::before { content: attr(data-ph); opacity: 0.5; font-style: italic; }
+.button[data-k] { cursor: text; }
+
+[data-item] { position: relative; }
+.ed-x {
+  position: absolute; top: 0.35rem; right: 0.35rem;
+  width: 1.75rem; height: 1.75rem; padding: 0; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--bg); color: var(--muted);
+  font: 1rem/1 var(--font-body); cursor: pointer; opacity: 0.55;
+}
+.ed-x:hover, .ed-x:focus-visible { opacity: 1; color: var(--text); }
+.list li[data-item], .faq-item { padding-right: 2.5rem; }
+.ed-add {
+  display: inline-block; margin-top: 1rem; padding: 0.4rem 0.8rem;
+  border: 1px dashed var(--muted); border-radius: 6px;
+  background: transparent; color: var(--muted); font: 0.9rem var(--font-body); cursor: pointer;
+}
+.ed-add:hover, .ed-add:focus-within { color: var(--text); border-color: var(--text); }
+.ed-drop {
+  display: grid; place-items: center; aspect-ratio: 16 / 7; margin-top: 3rem; cursor: pointer;
+  border: 2px dashed var(--border); border-radius: var(--radius); background: var(--bg); color: var(--muted); font-size: 0.95rem;
+}
+.ed-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.ed-file { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.ed-bar :focus-visible, .ed-add:focus-visible, .ed-x:focus-visible { outline: 2px solid var(--ed-go); outline-offset: 2px; }
+</style>
+<div id="root"></div>
+<script type="application/json" id="state">{}</script>
+<script id="main">
+(function () {
+  "use strict";
+  var TITLE = "Landing Page Template";
+  var DRAFT = "lp-draft", PENDING = "lp-pending";
+  var $ = function (id) { return document.getElementById(id); };
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    del: function (k) { try { localStorage.removeItem(k); } catch (e) {} }
+  };
+
+  /* ---------- state ---------- */
+  var BLANK = {
+    symptoms: { t: "" }, benefits: { h: "", p: "" }, steps: { h: "", p: "" }, stats: { n: "", l: "" },
+    quotes: { q: "", n: "", r: "" }, included: { t: "" }, faqs: { q: "", a: "" }
+  };
+  var COUNT = { symptoms: 3, benefits: 3, steps: 3, stats: 3, quotes: 3, included: 4, faqs: 4 };
+  function defaults() {
+    var l = {};
+    Object.keys(BLANK).forEach(function (n) {
+      l[n] = [];
+      for (var i = 0; i < COUNT[n]; i++) l[n].push(Object.assign({}, BLANK[n]));
+    });
+    return {
+      f: { eProblem: "The problem", eAgitation: "Why it matters", eSolution: "The solution",
+           eHow: "How it works", eProof: "Proof", ePricing: "Pricing" },
+      l: l, img: ""
+    };
+  }
+  function merge(src) {
+    var d = defaults();
+    src = src || {};
+    return { f: Object.assign(d.f, src.f || {}), l: Object.assign(d.l, src.l || {}), img: src.img || "" };
+  }
+
+  var embedded = $("state").textContent.trim() || "{}";
+  var S, dirty = false, notice = "";
+  (function load() {
+    var parsed = {};
+    try { parsed = JSON.parse(embedded); } catch (e) {}
+    S = merge(parsed);
+    // A save that lost a race with someone else's save: bring those edits back.
+    var pending = store.get(PENDING);
+    store.del(PENDING);
+    if (pending && pending !== JSON.stringify(S)) {
+      try { S = merge(JSON.parse(pending)); dirty = true; notice = "Your last save didn't go through. Your edits are still here: press Save again."; return; } catch (e) {}
+    }
+    // Unsaved edits made in this browser since the last saved version.
+    try {
+      var d = JSON.parse(store.get(DRAFT) || "null");
+      if (d && d.base === embedded) { S = merge(d.s); dirty = true; }
+    } catch (e) {}
+  })();
+
+  function get(path) {
+    var a = path.split(".");
+    if (a.length === 1) return S.f[path] || "";
+    return ((S.l[a[0]] || [])[+a[1]] || {})[a[2]] || "";
+  }
+  function set(path, v) {
+    var a = path.split(".");
+    if (a.length === 1) S.f[path] = v; else S.l[a[0]][+a[1]][a[2]] = v;
+  }
+
+  /* ---------- rendering (edit = the editor view, !edit = the finished website) ---------- */
+  var esc = function (s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+  };
+  var CE = (function () {
+    var d = document.createElement("div");
+    try { d.contentEditable = "plaintext-only"; } catch (e) {}
+    return d.contentEditable === "plaintext-only" ? "plaintext-only" : "true";
+  })();
+  function href(fallback) {
+    var u = (S.f.url || "").trim();
+    if (!u) return fallback;
+    return /^(https?:|mailto:|tel:|#|\/)/i.test(u) ? u : "https://" + u;
+  }
+
+  function page(edit) {
+    function T(k, tag, ph, cls) {
+      var v = get(k);
+      if (!edit) return v.trim() ? "<" + tag + (cls ? ' class="' + cls + '"' : "") + ">" + esc(v.trim()) + "</" + tag + ">" : "";
+      return "<" + tag + ' class="' + (cls || "") + '" data-k="' + k + '" data-ph="' + esc(ph) + '" contenteditable="' + CE +
+        '" role="textbox" aria-label="' + esc(ph) + '">' + esc(v) + "</" + tag + ">";
+    }
+    function B(k, fallback) {
+      if (edit) return T(k, "span", "Button text", "button");
+      var v = get(k).trim();
+      return v ? '<a class="button" href="' + esc(href(fallback)) + '">' + esc(v) + "</a>" : "";
+    }
+    // A repeatable group. item(prefix) returns the inner HTML of one entry.
+    function L(name, open, close, tag, cls, item, label) {
+      var out = S.l[name].map(function (_, i) {
+        var inner = item(name + "." + i + ".");
+        if (!edit) return inner ? "<" + tag + (cls ? ' class="' + cls + '"' : "") + ">" + inner + "</" + tag + ">" : "";
+        return "<" + tag + ' class="' + cls + '" data-item>' + inner +
+          '<button type="button" class="ed-x" data-rm="' + name + "." + i + '" aria-label="Remove this ' + label + '">&times;</button></' + tag + ">";
+      }).join("");
+      if (!edit) return out ? open + out + close : "";
+      return open + out + close + '<button type="button" class="ed-add" data-add="' + name + '">+ Add ' + label + "</button>";
+    }
+    function section(cls, eyebrow, body, wrap, id) {
+      if (!edit && !body.trim()) return "";
+      return '<section class="' + cls + '"' + (id ? ' id="' + id + '"' : "") + '><div class="wrap ' + (wrap || "") + '">' +
+        (eyebrow ? T(eyebrow, "p", "Section label", "eyebrow") : "") + body + "</div></section>";
+    }
+
+    var brand = get("brand").trim();
+    var header = (edit || brand)
+      ? '<header class="site-header"><div class="wrap">' + T("brand", "span", "Your business name (optional)", "brand") + "</div></header>" : "";
+
+    var hero = section("hero", "",
+      T("headline", "h1", "Headline: the main outcome your customer wants") +
+      T("sub", "p", "Sub-headline: how you deliver that outcome, and who it's for", "lead") +
+      B("cta1", "#pricing") +
+      T("note1", "p", "Reassurance under the button, e.g. No card required (optional)", "note"),
+      "narrow center");
+
+    var problem = section("section section-alt", "eProblem",
+      T("problemH", "h2", "State the problem your customer is facing") +
+      T("problemP", "p", "Describe the situation they are in right now, specifically enough that they think: that's me") +
+      L("symptoms", '<ul class="list">', "</ul>", "li", "", function (p) { return T(p + "t", "span", "A symptom or frustration they'll recognise"); }, "symptom"),
+      "narrow");
+
+    var agitation = section("section", "eAgitation",
+      T("agitH", "h2", "Show what this problem is really costing them") +
+      T("agitP1", "p", "Spell out the consequences: lost time, lost money, stress, missed opportunities") +
+      T("agitP2", "p", "Why the usual fixes haven't worked, and what happens if they leave it") +
+      T("callout", "blockquote", "One striking fact, number or sentence that makes the cost feel real (optional)", "callout"),
+      "narrow");
+
+    var image = S.img
+      ? '<img class="media" src="' + esc(S.img) + '" alt="' + esc(get("solH").trim()) + '">' +
+        (edit ? '<div class="ed-row"><label class="ed-add">Replace image<input class="ed-file" type="file" accept="image/*" id="img-file"></label>' +
+                '<button type="button" class="ed-add" data-rmimg>Remove image</button></div>' : "")
+      : (edit ? '<label class="ed-drop">+ Add a product image or screenshot (optional)<input class="ed-file" type="file" accept="image/*" id="img-file"></label>' : "");
+
+    var solution = section("section section-alt", "eSolution",
+      '<div class="intro">' + T("solH", "h2", "Introduce your solution") +
+      T("solP", "p", "What it is, and why it solves the problem above", "section-intro") + "</div>" +
+      L("benefits", '<div class="grid">', "</div>", "div", "feature", function (p) {
+        return T(p + "h", "h3", "Benefit") + T(p + "p", "p", "What the customer gets and why it matters to them");
+      }, "benefit") + image);
+    if (!edit && solution.indexOf("<h2") < 0 && solution.indexOf("feature") < 0 && !S.img && !get("solP").trim()) solution = "";
+
+    var how = section("section", "eHow",
+      T("howH", "h2", "Heading, e.g. Getting started is simple") +
+      L("steps", '<ol class="steps grid">', "</ol>", "li", "", function (p) {
+        return T(p + "h", "h3", "Step name") + T(p + "p", "p", "What happens in this step");
+      }, "step"));
+
+    var proof = section("section section-alt", "eProof",
+      T("proofH", "h2", "Heading, e.g. Results our customers get") +
+      L("stats", '<div class="stats">', "</div>", "div", "", function (p) {
+        return T(p + "n", "strong", "000+") + T(p + "l", "span", "What this number counts");
+      }, "number") +
+      L("quotes", '<div class="grid">', "</div>", "figure", "card", function (p) {
+        var q = T(p + "q", "blockquote", "A customer quote describing the result they got");
+        var who = T(p + "n", "strong", "Customer name") + T(p + "r", "span", "Role, company or location");
+        return (edit || q || who) ? q + (edit || who ? "<figcaption>" + who + "</figcaption>" : "") : "";
+      }, "testimonial"));
+
+    var price = T("price", "span", "£00") + T("period", "span", "/ month", "per");
+    var card =
+      T("plan", "h3", "Plan or offer name") +
+      (edit || price ? '<p class="price">' + price + "</p>" : "") +
+      L("included", '<ul class="list">', "</ul>", "li", "", function (p) { return T(p + "t", "span", "Something that's included"); }, "included item") +
+      B("cta2", "#") +
+      T("note2", "p", "Guarantee, e.g. 30-day money-back guarantee (optional)", "note");
+    var faqN = 0;
+    var faq = L("faqs", '<div class="faq">', "</div>", edit ? "div" : "details", edit ? "faq-item" : "", function (p) {
+      if (edit) return T(p + "q", "p", "An objection or question, e.g. Is it worth the money?", "faq-q") + T(p + "a", "p", "Your answer: direct and specific", "faq-a");
+      var q = get(p + "q").trim(), a = get(p + "a").trim();
+      return q ? "<summary>" + esc(q) + "</summary>" + (a ? "<p>" + esc(a) + "</p>" : "") : "";
+    }, "question");
+    if (!edit) faq = faq.replace("<details>", function (m) { return faqN++ ? m : "<details open>"; });
+    var pricingBody = (edit || card ? '<div class="card price-card">' + card + "</div>" : "") + (edit ? "<div>" + faq + "</div>" : faq);
+    var pricing = section("section", "ePricing",
+      T("priceH", "h2", "Heading, e.g. Simple pricing, no surprises") +
+      (edit || pricingBody ? '<div class="pricing">' + pricingBody + "</div>" : ""), "", "pricing");
+
+    var finalCta = section("section cta-band", "",
+      T("finalH", "h2", "Restate the outcome and invite them to act") +
+      T("finalP", "p", "One sentence on what they get and how easy it is to start", "lead") +
+      B("cta3", "#pricing"), "narrow center");
+
+    var footer = '<footer class="site-footer"><div class="wrap"><p>&copy; ' +
+      (edit ? new Date().getFullYear() : '<span id="year"></span>') +
+      " " + (edit ? '<span data-mirror="brand">' + esc(brand) + "</span>" : esc(brand)) + "</p></div></footer>";
+
+    return header + "<main>" + hero + problem + agitation + solution + how + proof + pricing + finalCta + "</main>" + footer;
+  }
+
+  /* ---------- the two documents this page can produce ---------- */
+  var END = "<" + "/script>";
+  function siteDoc() {
+    var brand = get("brand").trim(), head = get("headline").trim(), sub = get("sub").trim();
+    var title = brand && head ? brand + " — " + head : brand || head || "My website";
+    return '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n' +
+      "<title>" + esc(title) + "</title>\n" + (sub ? '<meta name="description" content="' + esc(sub) + '">\n' : "") +
+      "<style>" + $("site").textContent + "</style>\n</head>\n<body>\n" + page(false) +
+      '\n<script>document.getElementById("year").textContent = new Date().getFullYear();' + END + "\n</body>\n</html>\n";
+  }
+  function selfDoc() {
+    var reset = (document.head.querySelector("style") || {}).textContent || "";
+    return '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>' +
+      reset + "</style></head><body>" +
+      "<title>" + TITLE + '</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n' +
+      '<style id="site">' + $("site").textContent + '</style>\n<style id="ed">' + $("ed").textContent + "</style>\n" +
+      '<div id="root"></div>\n<script type="application/json" id="state">' + JSON.stringify(S).replace(/</g, "\\u003c") + END +
+      '\n<script id="main">' + $("main").textContent + END + "\n</body></html>";
+  }
+
+  /* ---------- editor chrome ---------- */
+  var root = $("root");
+  root.innerHTML =
+    '<div class="ed-bar"><div class="ed-bar-in">' +
+      '<span class="ed-status" id="ed-status" role="status"></span>' +
+      '<label class="ed-link">Button link <input id="ed-url" type="url" inputmode="url" placeholder="https://your-checkout-or-booking-page"></label>' +
+      '<button type="button" class="ed-btn go" id="ed-save" hidden>Save</button>' +
+      '<button type="button" class="ed-btn" id="ed-dl">Download website</button>' +
+    "</div></div>" +
+    '<p class="ed-hint"><span class="wrap" style="display:block">Click any text and type. Faded italic text is a prompt: it disappears when you type, and anything left empty is left out of the finished site.</span></p>' +
+    '<div id="app"></div>';
+  var app = $("app"), statusEl = $("ed-status"), saveBtn = $("ed-save"), urlIn = $("ed-url");
+  var art = null, canSave = false;
+
+  function draw() { app.innerHTML = page(true); }
+  function status(msg) {
+    statusEl.textContent = msg || (dirty
+      ? (canSave ? "Unsaved changes" : "Changes are kept in this browser only")
+      : (canSave ? "All changes saved" : "Click any text to edit"));
+    saveBtn.disabled = !dirty;
+  }
+  var timer;
+  function changed() {
+    dirty = true; notice = "";
+    status();
+    clearTimeout(timer);
+    timer = setTimeout(keep, 300);
+  }
+  function keep() { if (dirty) store.set(DRAFT, JSON.stringify({ base: embedded, s: S })); }
+  window.addEventListener("pagehide", keep);
+
+  urlIn.value = S.f.url || "";
+  urlIn.addEventListener("input", function () { S.f.url = urlIn.value.trim(); changed(); });
+
+  app.addEventListener("input", function (e) {
+    var el = e.target.closest && e.target.closest("[data-k]");
+    if (!el) return;
+    var v = el.textContent.replace(/\s*\n\s*/g, " ");
+    if (!v.trim()) { v = ""; el.textContent = ""; }
+    set(el.dataset.k, v);
+    if (el.dataset.k === "brand") {
+      var m = app.querySelector('[data-mirror="brand"]');
+      if (m) m.textContent = v.trim();
+    }
+    changed();
+  });
+  app.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && e.target.closest("[data-k]")) { e.preventDefault(); e.target.blur(); }
+  });
+  app.addEventListener("paste", function (e) {
+    if (CE === "plaintext-only" || !e.target.closest("[data-k]")) return;
+    e.preventDefault();
+    var text = (e.clipboardData || window.clipboardData).getData("text").replace(/\s*\n\s*/g, " ");
+    document.execCommand("insertText", false, text);
+  });
+  app.addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.add) {
+      var name = b.dataset.add;
+      S.l[name].push(Object.assign({}, BLANK[name]));
+      draw(); changed();
+      var first = app.querySelector('[data-k^="' + name + "." + (S.l[name].length - 1) + '."]');
+      if (first) first.focus();
+    } else if (b.dataset.rm) {
+      var a = b.dataset.rm.split(".");
+      S.l[a[0]].splice(+a[1], 1);
+      draw(); changed();
+    } else if ("rmimg" in b.dataset) {
+      S.img = ""; draw(); changed();
+    }
+  });
+  app.addEventListener("change", function (e) {
+    if (e.target.id !== "img-file" || !e.target.files[0]) return;
+    var url = URL.createObjectURL(e.target.files[0]), im = new Image();
+    im.onload = function () {
+      var k = Math.min(1, 1600 / im.naturalWidth), c = document.createElement("canvas");
+      c.width = Math.round(im.naturalWidth * k); c.height = Math.round(im.naturalHeight * k);
+      var g = c.getContext("2d");
+      g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height);
+      g.drawImage(im, 0, 0, c.width, c.height);
+      S.img = c.toDataURL("image/jpeg", 0.85);
+      URL.revokeObjectURL(url);
+      draw(); changed();
+    };
+    im.onerror = function () { URL.revokeObjectURL(url); status("That file couldn't be read as an image. Try a JPG or PNG."); };
+    im.src = url;
+  });
+
+  saveBtn.addEventListener("click", function () {
+    if (!art || !dirty) return;
+    saveBtn.disabled = true;
+    status("Saving…");
+    store.set(PENDING, JSON.stringify(S));
+    art.publish(selfDoc()).then(function () {
+      store.del(DRAFT);
+    }, function (err) {
+      var code = err && err.code;
+      if (code === "conflict") return; // the page reloads; the pending copy restores these edits
+      store.del(PENDING);
+      if (code === "not_writer" || code === "not_granted") {
+        canSave = false; saveBtn.hidden = true;
+        status("You can't save changes to this page. Your edits are kept in this browser; use Download website to keep a copy.");
+      } else if (code === "too_large") {
+        status("Too large to save. Try removing or shrinking the image.");
+      } else if (code === "rate_limited") {
+        status("Saving too often. Wait a moment, then press Save again.");
+      } else {
+        status("Couldn't save. Your edits are still here: try Save again.");
+      }
+      saveBtn.disabled = false;
+    });
+  });
+
+  $("ed-dl").addEventListener("click", function () {
+    var html = siteDoc();
+    var local = function () {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+      a.download = "index.html";
+      document.body.appendChild(a); a.click(); a.remove();
+    };
+    var use = window.claude && window.claude.use;
+    if (!use) return local();
+    window.claude.use("downloads").then(function (d) {
+      if (!d) { status("Downloading isn't available in this view."); return; }
+      return d.save({ filename: "index.html", data: html }).then(function () {
+        status("Downloaded index.html: that file is your finished website.");
+      }, function (err) {
+        if (err && err.code === "declined") return status();
+        status(err && err.code === "rate_limited" ? "A download prompt is already open." : "Couldn't download in this view.");
+      });
+    });
+  });
+
+  draw();
+  status(notice);
+  if (window.claude && window.claude.use) {
+    window.claude.use("artifact").then(function (a) {
+      if (!a) return;
+      art = a; canSave = true; saveBtn.hidden = false;
+      status(notice);
+    });
+  }
+})();
+</script>
