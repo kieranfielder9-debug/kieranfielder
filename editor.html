@@ -1,46 +1,49 @@
 <title>Landing Page Template</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style id="site">
-/* Layout: one centred column of full-width bands, alternating background, in a fixed sales order. */
+/* Layout: one column of full-width bands in a fixed sales order. Every colour, font and shape comes from the tokens below. */
 :root {
-  --accent: #2f5d50;
-  --accent-text: #ffffff;
-  --bg: #fbfaf7;
-  --bg-alt: #f1efe9;
-  --text: #1d1f1e;
-  --muted: #5f6562;
-  --border: #dcd9d0;
+  --c-accent: #2f5d50; --c-accent-text: #ffffff; --c-bg: #fbfaf7; --c-bg-alt: #f1efe9; --c-text: #1d1f1e;
   --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-heading: Georgia, "Times New Roman", serif;
-  --max-width: 1040px;
-  --radius: 10px;
+  --scale: 1; --h-scale: 1; --h-weight: 700; --h-case: none;
+  --radius: 10px; --btn-radius: 10px; --space: 1; --max-width: 1040px;
+
+  --accent: var(--c-accent); --accent-text: var(--c-accent-text);
+  --bg: var(--c-bg); --bg-alt: var(--c-bg-alt); --text: var(--c-text);
+  --muted: color-mix(in srgb, var(--c-text) 68%, var(--c-bg));
+  --border: color-mix(in srgb, var(--c-text) 16%, var(--c-bg));
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --accent: #8fc7b3; --accent-text: #10201b; --bg: #141615; --bg-alt: #1c1f1e;
-    --text: #eceeed; --muted: #a3aaa6; --border: #2f3432; color-scheme: dark;
-  }
+.on-accent {
+  --bg: var(--c-accent); --text: var(--c-accent-text);
+  --accent: var(--c-accent-text); --accent-text: var(--c-accent);
+  --muted: color-mix(in srgb, var(--c-accent-text) 80%, var(--c-accent));
+  --border: color-mix(in srgb, var(--c-accent-text) 30%, var(--c-accent));
+  background: var(--bg); color: var(--text);
 }
-:root[data-theme="dark"] {
-  --accent: #8fc7b3; --accent-text: #10201b; --bg: #141615; --bg-alt: #1c1f1e;
-  --text: #eceeed; --muted: #a3aaa6; --border: #2f3432; color-scheme: dark;
+.on-photo {
+  --bg: rgba(0, 0, 0, 0.4); --text: #ffffff; --muted: rgba(255, 255, 255, 0.85); --border: rgba(255, 255, 255, 0.35);
+  color: var(--text); background-size: cover; background-position: center;
 }
+.on-photo .eyebrow, .on-photo .stats strong { color: #ffffff; }
 
 *, *::before, *::after { box-sizing: border-box; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
-html { scroll-padding-top: 5rem; }
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 1.0625rem;
+  font-size: calc(1.0625rem * var(--scale));
   line-height: 1.65;
 }
-h1, h2, h3 { font-family: var(--font-heading); line-height: 1.15; margin: 0 0 1rem; text-wrap: balance; }
-h1 { font-size: clamp(2.25rem, 6vw, 3.75rem); }
-h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
-h3 { font-size: 1.25rem; }
+h1, h2, h3 {
+  font-family: var(--font-heading); font-weight: var(--h-weight); text-transform: var(--h-case);
+  line-height: 1.15; margin: 0 0 1rem; text-wrap: balance;
+}
+h1 { font-size: calc(clamp(2.25rem, 6vw, 3.75rem) * var(--h-scale)); }
+h2 { font-size: calc(clamp(1.75rem, 4vw, 2.5rem) * var(--h-scale)); }
+h3 { font-size: calc(1.25rem * var(--h-scale)); }
 p { margin: 0 0 1rem; }
 a { color: var(--accent); }
 img { max-width: 100%; display: block; }
@@ -53,33 +56,38 @@ img { max-width: 100%; display: block; }
 }
 .narrow { max-width: 720px; }
 .center { text-align: center; }
+.lefty > * { max-width: 46rem; }
 .intro { max-width: 680px; }
+.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 3rem; align-items: center; }
+.split > * { min-width: 0; }
+.split .media { margin-top: 0; }
 
 .site-header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0.9rem 0; }
-.brand { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; color: var(--text); text-decoration: none; }
+.site-header .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+.logo { height: 2.25rem; width: auto; }
+.brand { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; color: var(--text); }
 
-.hero { padding: clamp(4rem, 12vw, 8rem) 0; }
-.lead { font-size: 1.25rem; color: var(--muted); margin-bottom: 2rem; }
+.section { padding: calc(clamp(3.5rem, 9vw, 6rem) * var(--space)) 0; }
+.hero { padding: calc(clamp(4rem, 12vw, 8rem) * var(--space)) 0; }
+.section-alt { background: var(--bg-alt); }
+.lead { font-size: 1.2em; color: var(--muted); margin-bottom: 2rem; }
 .button {
   display: inline-block;
   padding: 0.85rem 1.75rem;
   border: 2px solid var(--accent);
-  border-radius: var(--radius);
+  border-radius: var(--btn-radius);
   background: var(--accent);
   color: var(--accent-text);
-  font-size: 1.1rem;
+  font-size: 1.05em;
   font-weight: 600;
   text-decoration: none;
 }
 a.button:hover { opacity: 0.88; }
-.note { color: var(--muted); font-size: 0.9rem; margin: 0.75rem 0 0; }
-
-.section { padding: clamp(3.5rem, 9vw, 6rem) 0; }
-.section-alt { background: var(--bg-alt); }
+.note { color: var(--muted); font-size: 0.85em; margin: 0.75rem 0 0; }
 .section-intro { color: var(--muted); }
 .eyebrow {
   color: var(--accent);
-  font-size: 0.85rem;
+  font-size: 0.8em;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -87,7 +95,7 @@ a.button:hover { opacity: 0.88; }
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
   gap: 1.5rem;
   margin: 2.5rem 0 0;
 }
@@ -97,21 +105,25 @@ a.button:hover { opacity: 0.88; }
 .list { list-style: none; margin: 1.5rem 0 0; padding: 0; }
 .list li { position: relative; padding: 0.6rem 0 0.6rem 1.75rem; border-top: 1px solid var(--border); }
 .list li::before {
-  content: ""; position: absolute; left: 0.25rem; top: 1.15rem;
+  content: ""; position: absolute; left: 0.25rem; top: 1.15em;
   width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--accent);
 }
-
 .callout {
   margin: 2rem 0 0;
   padding: 0.25rem 0 0.25rem 1.25rem;
   border-left: 4px solid var(--accent);
   font-family: var(--font-heading);
-  font-size: 1.4rem;
+  font-size: 1.3em;
   line-height: 1.35;
 }
 
 .feature { border-top: 2px solid var(--accent); padding-top: 1.25rem; }
 .feature p, .steps p { color: var(--muted); margin: 0; }
+.icon {
+  display: block; width: 2.75rem; height: 2.75rem; padding: 0.6rem; margin-bottom: 1rem;
+  border-radius: var(--radius); background: var(--accent); color: var(--accent-text);
+}
+.icon-img { width: 3.5rem; height: 3.5rem; object-fit: cover; border-radius: var(--radius); margin-bottom: 1rem; }
 .media { width: 100%; max-width: 100%; border-radius: var(--radius); margin-top: 3rem; }
 
 .steps { list-style: none; padding: 0; counter-reset: step; }
@@ -123,18 +135,21 @@ a.button:hover { opacity: 0.88; }
   border-radius: 50%; background: var(--accent); color: var(--accent-text); font-weight: 700;
 }
 
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
-.stats strong { display: block; font-family: var(--font-heading); font-size: 2.5rem; line-height: 1.1; color: var(--accent); }
-.stats span, figcaption span { display: block; color: var(--muted); font-size: 0.95rem; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+.stats strong { display: block; font-family: var(--font-heading); font-size: 2.4em; line-height: 1.1; color: var(--accent); }
+.stats span, .who span { display: block; color: var(--muted); font-size: 0.9em; }
 figure blockquote { margin: 0 0 1.25rem; }
-figcaption strong { display: block; }
+figcaption { display: flex; align-items: center; gap: 0.75rem; }
+.who { min-width: 0; }
+.who strong { display: block; }
+.avatar { width: 3rem; height: 3rem; border-radius: 50%; object-fit: cover; flex: none; }
 
-.pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; align-items: start; margin-top: 2.5rem; }
+.pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 2.5rem; align-items: start; margin-top: 2.5rem; }
 .pricing > * { min-width: 0; }
 .price-card { border: 2px solid var(--accent); text-align: center; }
 .price-card .list { text-align: left; margin-bottom: 1.5rem; }
 .price-card .button { display: block; }
-.price { font-family: var(--font-heading); font-size: 3rem; line-height: 1.1; margin: 0; }
+.price { font-family: var(--font-heading); font-size: 2.8em; line-height: 1.1; margin: 0; }
 .price .per { font-family: var(--font-body); font-size: 1rem; color: var(--muted); margin-left: 0.35rem; }
 
 .faq details, .faq-item { border-bottom: 1px solid var(--border); }
@@ -142,21 +157,16 @@ figcaption strong { display: block; }
 .faq summary, .faq-q { cursor: pointer; padding: 1rem 0; font-weight: 600; margin: 0; }
 .faq details p, .faq-a { color: var(--muted); }
 
-.cta-band { background: var(--bg-alt); border-top: 1px solid var(--border); }
-.site-footer { border-top: 1px solid var(--border); padding: 2rem 0; color: var(--muted); font-size: 0.9rem; text-align: center; }
+.site-footer { border-top: 1px solid var(--border); padding: 2rem 0; color: var(--muted); font-size: 0.85em; text-align: center; }
 .site-footer p { margin: 0; }
 </style>
 <style id="ed">
 /* Editing tools only. None of this is included in the downloaded website. */
-:root { --ed-bg: #20242b; --ed-fg: #f3f4f6; --ed-dim: #aeb4bf; --ed-line: #3b414c; --ed-go: #ffd166; --ed-go-text: #1c1a10; }
+:root { --ed-bg: #20242b; --ed-fg: #f3f4f6; --ed-dim: #aeb4bf; --ed-line: #3b414c; --ed-go: #ffd166; --ed-go-text: #1c1a10;
+        --ed-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; --ed-w: 320px; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ed-bg); }
-.ed-bar {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9;
-  background: var(--ed-bg); color: var(--ed-fg);
-  font: 0.9rem/1.3 var(--font-body);
-}
+.ed-bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--ed-bg); color: var(--ed-fg); font: 0.9rem/1.3 var(--ed-font); }
 .ed-bar-in {
-  max-width: var(--max-width); margin: 0 auto;
   padding-block: 0.6rem;
   padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
   padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
@@ -166,8 +176,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .ed-link { display: flex; align-items: center; gap: 0.5rem; flex: 2 1 16rem; min-width: 0; color: var(--ed-dim); white-space: nowrap; }
 .ed-link input {
   flex: 1; min-width: 0; padding: 0.45rem 0.6rem;
-  border: 1px solid var(--ed-line); border-radius: 6px;
-  background: transparent; color: var(--ed-fg); font: inherit;
+  border: 1px solid var(--ed-line); border-radius: 6px; background: transparent; color: var(--ed-fg); font: inherit;
 }
 .ed-link input::placeholder { color: var(--ed-dim); }
 .ed-btn {
@@ -175,39 +184,99 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   border: 1px solid var(--ed-line); background: transparent; color: var(--ed-fg);
 }
 .ed-btn.go { background: var(--ed-go); border-color: var(--ed-go); color: var(--ed-go-text); }
+.ed-btn[aria-expanded="true"] { background: var(--ed-fg); color: var(--ed-bg); }
 .ed-btn:disabled { opacity: 0.5; cursor: default; }
-.ed-hint { margin: 0; padding: 0.6rem 0; background: var(--bg-alt); border-bottom: 1px solid var(--border); color: var(--muted); font-size: 0.9rem; }
+.ed-hint { margin: 0; padding: 0.6rem 0; background: var(--bg-alt); border-bottom: 1px solid var(--border); color: var(--muted); font: 0.875rem/1.5 var(--ed-font); }
 
+/* Design panel */
+.ed-panel {
+  position: fixed; right: 0; bottom: 0; top: 3.5rem; z-index: 8; width: var(--ed-w); overflow-y: auto;
+  background: var(--ed-bg); color: var(--ed-fg); border-left: 1px solid var(--ed-line); font: 0.85rem/1.4 var(--ed-font);
+  padding: 1rem max(1rem, env(safe-area-inset-right, 0px)) calc(1.5rem + env(safe-area-inset-bottom, 0px)) 1rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.ed-h { margin: 0.9rem 0 0; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ed-dim); }
+.ed-h:first-child { margin-top: 0; }
+.ed-f { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.ed-f select, .ed-f input[type="range"] { flex: 0 1 9.5rem; min-width: 0; }
+.ed-f select { padding: 0.35rem 0.4rem; border: 1px solid var(--ed-line); border-radius: 6px; background: var(--ed-bg); color: var(--ed-fg); font: inherit; }
+.ed-f input[type="color"] { width: 2.75rem; height: 2rem; padding: 0; border: 1px solid var(--ed-line); border-radius: 6px; background: none; cursor: pointer; }
+.ed-pals { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; }
+.ed-pal { height: 2.25rem; padding: 0; border: 1px solid var(--ed-line); border-radius: 6px; cursor: pointer; overflow: hidden; display: flex; background: none; }
+.ed-pal i { flex: 1; }
+.ed-note { margin: 0.5rem 0 0; color: var(--ed-dim); }
+@media (min-width: 1000px) { body.ed-open #app, body.ed-open .ed-hint { margin-right: var(--ed-w); } }
+@media (max-width: 999px) {
+  .ed-panel { top: auto !important; left: 0; width: auto; max-height: 46vh; border-left: 0; border-top: 1px solid var(--ed-line);
+              padding-left: max(1rem, env(safe-area-inset-left, 0px)); }
+  body.ed-open #app { padding-bottom: 46vh; }
+}
+
+/* Editable text */
 [data-k] { outline: 1px dashed transparent; outline-offset: 4px; border-radius: 2px; min-width: 3ch; cursor: text; }
 span[data-k] { display: inline-block; }
-.stats span[data-k], figcaption span[data-k] { display: block; }
+.stats span[data-k], .who span[data-k] { display: block; }
 [data-k]:hover { outline-color: var(--border); }
 [data-k]:focus { outline: 2px solid var(--accent); }
-[data-k]:empty::before { content: attr(data-ph); opacity: 0.5; font-style: italic; }
+[data-k]:empty::before { content: attr(data-ph); opacity: 0.5; font-style: italic; text-transform: none; }
 .button[data-k] { cursor: text; }
 
+/* Per-section controls */
+.ed-sec {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.6rem;
+  font: 0.8rem/1.2 var(--ed-font); color: var(--muted); text-align: left;
+  padding-bottom: 0.75rem; margin-bottom: 1.75rem; border-bottom: 1px dashed var(--border);
+}
+.ed-sec b { color: var(--text); margin-right: auto; }
+.ed-sec select, .ed-sec button, .ed-mini {
+  font: 0.8rem/1.2 var(--ed-font); color: inherit; background: transparent;
+  border: 1px solid var(--border); border-radius: 5px; padding: 0.3rem 0.5rem; cursor: pointer;
+}
+.ed-sec option { color: #111111; background: #ffffff; }
+.ed-sec button:hover, .ed-mini:hover { color: var(--text); border-color: var(--text); }
+.ed-hidden { padding: 1rem 0 0.25rem; background: var(--bg); border-top: 1px dashed var(--border); }
+.ed-hidden .ed-sec { border-bottom: 0; margin-bottom: 0; }
+.ed-mini { color: var(--muted); }
+
+/* Repeatable items */
 [data-item] { position: relative; }
 .ed-x {
   position: absolute; top: 0.35rem; right: 0.35rem;
   width: 1.75rem; height: 1.75rem; padding: 0; border-radius: 50%;
   border: 1px solid var(--border); background: var(--bg); color: var(--muted);
-  font: 1rem/1 var(--font-body); cursor: pointer; opacity: 0.55;
+  font: 1rem/1 var(--ed-font); cursor: pointer; opacity: 0.55;
 }
 .ed-x:hover, .ed-x:focus-visible { opacity: 1; color: var(--text); }
 .list li[data-item], .faq-item { padding-right: 2.5rem; }
 .ed-add {
   display: inline-block; margin-top: 1rem; padding: 0.4rem 0.8rem;
   border: 1px dashed var(--muted); border-radius: 6px;
-  background: transparent; color: var(--muted); font: 0.9rem var(--font-body); cursor: pointer;
+  background: transparent; color: var(--muted); font: 0.85rem var(--ed-font); cursor: pointer;
 }
-.ed-add:hover, .ed-add:focus-within { color: var(--text); border-color: var(--text); }
-.ed-drop {
-  display: grid; place-items: center; aspect-ratio: 16 / 7; margin-top: 3rem; cursor: pointer;
-  border: 2px dashed var(--border); border-radius: var(--radius); background: var(--bg); color: var(--muted); font-size: 0.95rem;
+.ed-add:hover { color: var(--text); border-color: var(--text); }
+.ed-imgbtn { padding: 0; border: 0; background: none; cursor: pointer; flex: none; }
+
+/* Icon picker */
+.ed-pop { position: relative; margin-bottom: 1rem; width: max-content; max-width: 100%; }
+.ed-pop summary { list-style: none; cursor: pointer; width: max-content; }
+.ed-pop summary::-webkit-details-marker { display: none; }
+.ed-pop summary .icon, .ed-pop summary .icon-img { margin-bottom: 0; }
+.ed-pop-in {
+  position: absolute; z-index: 5; top: calc(100% + 0.4rem); left: 0; width: 15.5rem; max-width: 80vw;
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.3rem; padding: 0.6rem;
+  background: var(--ed-bg); border: 1px solid var(--ed-line); border-radius: 8px; color: var(--ed-fg);
 }
-.ed-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.ed-pop-in button {
+  display: grid; place-items: center; aspect-ratio: 1; padding: 0.3rem; cursor: pointer;
+  border: 1px solid transparent; border-radius: 5px; background: none; color: inherit; font: 0.8rem var(--ed-font);
+}
+.ed-pop-in button:hover { border-color: var(--ed-dim); }
+.ed-pop-in button.wide { grid-column: span 3; aspect-ratio: auto; border-color: var(--ed-line); padding: 0.4rem; }
+.ed-pop-in svg { width: 1.4rem; height: 1.4rem; }
+
 .ed-file { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
-.ed-bar :focus-visible, .ed-add:focus-visible, .ed-x:focus-visible { outline: 2px solid var(--ed-go); outline-offset: 2px; }
+.ed-bar :focus-visible, .ed-panel :focus-visible, .ed-pop-in :focus-visible { outline: 2px solid var(--ed-go); outline-offset: 2px; }
+.ed-add:focus-visible, .ed-sec :focus-visible, .ed-mini:focus-visible, .ed-pop summary:focus-visible, .ed-imgbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 </style>
 <div id="root"></div>
 <script type="application/json" id="state">{}</script>
@@ -215,55 +284,140 @@ span[data-k] { display: inline-block; }
 (function () {
   "use strict";
   var TITLE = "Landing Page Template";
-  var DRAFT = "lp-draft", PENDING = "lp-pending";
+  var DRAFT = "draft", PENDING = "pending";
   var $ = function (id) { return document.getElementById(id); };
-  var store = {
-    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
-    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
-    del: function (k) { try { localStorage.removeItem(k); } catch (e) {} }
+  var esc = function (s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
   };
+
+  /* Unsaved edits are kept in this browser (IndexedDB, so photos fit). Every call resolves, never rejects. */
+  var kv = (function () {
+    var dbp;
+    function db() {
+      return dbp || (dbp = new Promise(function (res, rej) {
+        try {
+          var r = indexedDB.open("landing-page-editor", 1);
+          r.onupgradeneeded = function () { r.result.createObjectStore("kv"); };
+          r.onsuccess = function () { res(r.result); };
+          r.onerror = function () { rej(r.error); };
+        } catch (e) { rej(e); }
+      }));
+    }
+    function run(mode, fn) {
+      return db().then(function (d) {
+        return new Promise(function (res, rej) {
+          var tx = d.transaction("kv", mode), rq = fn(tx.objectStore("kv"));
+          tx.oncomplete = function () { res(rq.result); };
+          tx.onerror = tx.onabort = function () { rej(tx.error); };
+        });
+      }).catch(function () { return null; });
+    }
+    return {
+      get: function (k) { return run("readonly", function (s) { return s.get(k); }); },
+      set: function (k, v) { return run("readwrite", function (s) { return s.put(v, k); }); },
+      del: function (k) { return run("readwrite", function (s) { return s.delete(k); }); }
+    };
+  })();
+
+  /* ---------- what the design tools offer ---------- */
+  var SECS = [
+    { id: "hero", name: "Headline and call to action", bg: "plain" },
+    { id: "problem", name: "Problem", bg: "tint" },
+    { id: "agitation", name: "Agitation", bg: "plain" },
+    { id: "solution", name: "Solution", bg: "tint" },
+    { id: "how", name: "How it works", bg: "plain" },
+    { id: "proof", name: "Proof", bg: "tint" },
+    { id: "pricing", name: "Objections and pricing", bg: "plain" },
+    { id: "final", name: "Closing call to action", bg: "tint" }
+  ];
+  var SANS = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', SERIF = 'Georgia, "Times New Roman", serif';
+  // name, fallback, weights to load from Google Fonts ("" = already on every device)
+  var FONTS = [
+    ["System", SANS, ""], ["Georgia", SERIF, ""],
+    ["Inter", SANS, "400;600;700"], ["DM Sans", SANS, "400;500;700"], ["Manrope", SANS, "400;600;700"],
+    ["Poppins", SANS, "400;600;700"], ["Montserrat", SANS, "400;600;700"], ["Work Sans", SANS, "400;600;700"],
+    ["Nunito", SANS, "400;600;700"], ["Raleway", SANS, "400;600;700"], ["Roboto", SANS, "400;500;700"],
+    ["Open Sans", SANS, "400;600;700"], ["Space Grotesk", SANS, "400;500;700"], ["Oswald", SANS, "400;600;700"],
+    ["Bebas Neue", SANS, "400"],
+    ["Playfair Display", SERIF, "400;700"], ["Lora", SERIF, "400;600;700"], ["Merriweather", SERIF, "400;700"],
+    ["Libre Baskerville", SERIF, "400;700"], ["Fraunces", SERIF, "400;600;700"], ["DM Serif Display", SERIF, "400"],
+    ["Cormorant Garamond", SERIF, "400;600;700"], ["Source Serif 4", SERIF, "400;600;700"],
+    ["Caveat", "cursive", "400;700"]
+  ];
+  var FONT_LABEL = { System: "System sans-serif", Georgia: "Georgia (classic serif)" };
+  // name, accent, page background, tinted sections, text
+  var PALETTES = [
+    ["Forest", "#2f5d50", "#fbfaf7", "#f1efe9", "#1d1f1e"], ["Ocean", "#1d4ed8", "#ffffff", "#eef3fb", "#0f172a"],
+    ["Sunset", "#d9480f", "#fffaf5", "#fdeee0", "#2b1a12"], ["Berry", "#9d174d", "#fffafc", "#fbeaf1", "#2a1320"],
+    ["Mint", "#0f766e", "#f6fffb", "#e3f6ef", "#10201c"], ["Mono", "#111827", "#ffffff", "#f3f4f6", "#111827"],
+    ["Midnight", "#7dd3fc", "#0b1220", "#131c2e", "#e5edf7"], ["Gold on charcoal", "#e0b84c", "#17181a", "#222429", "#f2efe8"]
+  ];
+  var CHOICES = {
+    size: [["0.94", "Small"], ["1", "Regular"], ["1.1", "Large"]],
+    hsize: [["0.85", "Small"], ["1", "Regular"], ["1.2", "Large"]],
+    hweight: [["400", "Regular"], ["700", "Bold"]],
+    hcase: [["none", "As typed"], ["uppercase", "ALL CAPITALS"]],
+    btn: [["square", "Square"], ["round", "Rounded"], ["pill", "Pill"]],
+    space: [["0.7", "Compact"], ["1", "Regular"], ["1.3", "Roomy"]],
+    align: [["center", "Centred"], ["left", "Left"]]
+  };
+  var DESIGN = { accent: "#2f5d50", bg: "#fbfaf7", alt: "#f1efe9", text: "#1d1f1e", hf: "Georgia", bf: "System",
+                 size: "1", hsize: "1", hweight: "700", hcase: "none", radius: "10", btn: "round", space: "1", align: "center" };
+  var ICONS = {
+    check: '<path d="M5 12l5 5 9-10"/>',
+    star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+    heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.600-7 10-7 10z"/>',
+    bolt: '<path d="M13 3L5 14h6l-1 7 8-11h-6z"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    shield: '<path d="M12 3l7 3v5c0 5-3.500 8.500-7 10-3.500-1.500-7-5-7-10V6z"/>',
+    chart: '<path d="M5 20V11M11 20V5M17 20v-6M3 20h18"/>',
+    people: '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.300 2.700-6 6-6s6 2.700 6 6"/><circle cx="17" cy="9" r="2.500"/><path d="M16.500 14.200c2.600.4 4.500 2.700 4.500 5.800"/>',
+    chat: '<path d="M4 5h16v11H9l-5 4z"/>',
+    lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+    globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.500 3 14.500 0 18M12 3c-3 3.500-3 14.500 0 18"/>',
+    target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+    calendar: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>',
+    gift: '<rect x="4" y="10" width="16" height="10"/><path d="M3 7h18v3H3zM12 7v13M12 7c-2-4-6-3-5 0M12 7c2-4 6-3 5 0"/>',
+    phone: '<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/>',
+    leaf: '<path d="M5 19c0-9 5-14 14-14 0 9-5 14-14 14zM5 19l8-8"/>',
+    tag: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.500" cy="8.500" r="1.500"/>',
+    home: '<path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/>'
+  };
+  function icon(name) {
+    return ICONS[name] ? '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS[name] + "</svg>" : "";
+  }
 
   /* ---------- state ---------- */
   var BLANK = {
-    symptoms: { t: "" }, benefits: { h: "", p: "" }, steps: { h: "", p: "" }, stats: { n: "", l: "" },
-    quotes: { q: "", n: "", r: "" }, included: { t: "" }, faqs: { q: "", a: "" }
+    symptoms: { t: "" }, benefits: { h: "", p: "", ic: "", img: "" }, steps: { h: "", p: "" }, stats: { n: "", l: "" },
+    quotes: { q: "", n: "", r: "", img: "" }, included: { t: "" }, faqs: { q: "", a: "" }
   };
   var COUNT = { symptoms: 3, benefits: 3, steps: 3, stats: 3, quotes: 3, included: 4, faqs: 4 };
-  function defaults() {
+  function merge(src) {
+    src = src || {};
     var l = {};
     Object.keys(BLANK).forEach(function (n) {
+      var given = (src.l || {})[n];
       l[n] = [];
-      for (var i = 0; i < COUNT[n]; i++) l[n].push(Object.assign({}, BLANK[n]));
+      if (Array.isArray(given)) given.forEach(function (it) { l[n].push(Object.assign({}, BLANK[n], it)); });
+      else for (var i = 0; i < COUNT[n]; i++) l[n].push(Object.assign({}, BLANK[n]));
     });
+    var sec = {};
+    SECS.forEach(function (s) { sec[s.id] = Object.assign({ bg: s.bg, as: "below", hide: false }, (src.sec || {})[s.id]); });
+    var img = typeof src.img === "string" ? (src.img ? { "sec.solution": src.img } : {}) : Object.assign({}, src.img);
     return {
-      f: { eProblem: "The problem", eAgitation: "Why it matters", eSolution: "The solution",
-           eHow: "How it works", eProof: "Proof", ePricing: "Pricing" },
-      l: l, img: ""
+      rev: src.rev || "",
+      f: Object.assign({ eProblem: "The problem", eAgitation: "Why it matters", eSolution: "The solution",
+                         eHow: "How it works", eProof: "Proof", ePricing: "Pricing" }, src.f),
+      l: l, img: img, sec: sec, d: Object.assign({}, DESIGN, src.d)
     };
   }
-  function merge(src) {
-    var d = defaults();
-    src = src || {};
-    return { f: Object.assign(d.f, src.f || {}), l: Object.assign(d.l, src.l || {}), img: src.img || "" };
-  }
-
-  var embedded = $("state").textContent.trim() || "{}";
-  var S, dirty = false, notice = "";
-  (function load() {
+  var S, baseRev, dirty = false, notice = "";
+  (function () {
     var parsed = {};
-    try { parsed = JSON.parse(embedded); } catch (e) {}
+    try { parsed = JSON.parse($("state").textContent.trim() || "{}"); } catch (e) {}
     S = merge(parsed);
-    // A save that lost a race with someone else's save: bring those edits back.
-    var pending = store.get(PENDING);
-    store.del(PENDING);
-    if (pending && pending !== JSON.stringify(S)) {
-      try { S = merge(JSON.parse(pending)); dirty = true; notice = "Your last save didn't go through. Your edits are still here: press Save again."; return; } catch (e) {}
-    }
-    // Unsaved edits made in this browser since the last saved version.
-    try {
-      var d = JSON.parse(store.get(DRAFT) || "null");
-      if (d && d.base === embedded) { S = merge(d.s); dirty = true; }
-    } catch (e) {}
+    baseRev = S.rev;
   })();
 
   function get(path) {
@@ -275,11 +429,59 @@ span[data-k] { display: inline-block; }
     var a = path.split(".");
     if (a.length === 1) S.f[path] = v; else S.l[a[0]][+a[1]][a[2]] = v;
   }
+  function setImg(path, v) {
+    var a = path.split(".");
+    if (S.l[a[0]]) { var it = S.l[a[0]][+a[1]]; it.img = v; if (v) it.ic = ""; }
+    else if (v) S.img[path] = v;
+    else delete S.img[path];
+  }
+
+  /* ---------- design tokens ---------- */
+  function hex(v, fallback) { return /^#[0-9a-f]{6}$/i.test(v) ? v : fallback; }
+  function pick(key) {
+    var v = String(S.d[key]);
+    return CHOICES[key].some(function (c) { return c[0] === v; }) ? v : DESIGN[key];
+  }
+  function lum(h) {
+    var c = [1, 3, 5].map(function (i) {
+      var x = parseInt(h.substr(i, 2), 16) / 255;
+      return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  function font(name) { return FONTS.filter(function (f) { return f[0] === name; })[0] || FONTS[0]; }
+  function stack(name) { var f = font(name); return f[2] ? '"' + f[0] + '", ' + f[1] : f[1]; }
+  function fontHref() {
+    var seen = {}, parts = [];
+    [S.d.hf, S.d.bf].forEach(function (n) {
+      var f = font(n);
+      if (!f[2] || seen[f[0]]) return;
+      seen[f[0]] = 1;
+      parts.push("family=" + f[0].replace(/ /g, "+") + ":wght@" + f[2]);
+    });
+    return parts.length ? "https://fonts.googleapis.com/css2?" + parts.join("&") + "&display=swap" : "";
+  }
+  function vars() {
+    var d = S.d, accent = hex(d.accent, DESIGN.accent), bg = hex(d.bg, DESIGN.bg);
+    var radius = Math.max(0, Math.min(28, parseInt(d.radius, 10) || 0));
+    var btn = pick("btn");
+    return [
+      "--c-accent:" + accent, "--c-accent-text:" + (lum(accent) > 0.179 ? "#111111" : "#ffffff"),
+      "--c-bg:" + bg, "--c-bg-alt:" + hex(d.alt, DESIGN.alt), "--c-text:" + hex(d.text, DESIGN.text),
+      "--font-heading:" + stack(d.hf), "--font-body:" + stack(d.bf),
+      "--scale:" + pick("size"), "--h-scale:" + pick("hsize"), "--h-weight:" + pick("hweight"), "--h-case:" + pick("hcase"),
+      "--radius:" + radius + "px", "--btn-radius:" + (btn === "square" ? "0px" : btn === "pill" ? "999px" : radius + "px"),
+      "--space:" + pick("space"), "color-scheme:" + (lum(bg) < 0.4 ? "dark" : "light")
+    ].join(";");
+  }
+  function applyDesign() {
+    document.documentElement.style.cssText = vars();
+    var h = fontHref(), l = $("ed-fonts");
+    if (!l) { l = document.createElement("link"); l.id = "ed-fonts"; l.rel = "stylesheet"; document.head.appendChild(l); }
+    if (h) { if (l.getAttribute("href") !== h) l.setAttribute("href", h); } else l.removeAttribute("href");
+  }
 
   /* ---------- rendering (edit = the editor view, !edit = the finished website) ---------- */
-  var esc = function (s) {
-    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
-  };
   var CE = (function () {
     var d = document.createElement("div");
     try { d.contentEditable = "plaintext-only"; } catch (e) {}
@@ -289,6 +491,9 @@ span[data-k] { display: inline-block; }
     var u = (S.f.url || "").trim();
     if (!u) return fallback;
     return /^(https?:|mailto:|tel:|#|\/)/i.test(u) ? u : "https://" + u;
+  }
+  function options(list, cur) {
+    return list.map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === cur ? " selected" : "") + ">" + o[1] + "</option>"; }).join("");
   }
 
   function page(edit) {
@@ -303,10 +508,10 @@ span[data-k] { display: inline-block; }
       var v = get(k).trim();
       return v ? '<a class="button" href="' + esc(href(fallback)) + '">' + esc(v) + "</a>" : "";
     }
-    // A repeatable group. item(prefix) returns the inner HTML of one entry.
+    // A repeatable group. item(prefix, entry) returns the inner HTML of one entry.
     function L(name, open, close, tag, cls, item, label) {
-      var out = S.l[name].map(function (_, i) {
-        var inner = item(name + "." + i + ".");
+      var out = S.l[name].map(function (it, i) {
+        var inner = item(name + "." + i + ".", it, name + "." + i);
         if (!edit) return inner ? "<" + tag + (cls ? ' class="' + cls + '"' : "") + ">" + inner + "</" + tag + ">" : "";
         return "<" + tag + ' class="' + cls + '" data-item>' + inner +
           '<button type="button" class="ed-x" data-rm="' + name + "." + i + '" aria-label="Remove this ' + label + '">&times;</button></' + tag + ">";
@@ -314,66 +519,107 @@ span[data-k] { display: inline-block; }
       if (!edit) return out ? open + out + close : "";
       return open + out + close + '<button type="button" class="ed-add" data-add="' + name + '">+ Add ' + label + "</button>";
     }
-    function section(cls, eyebrow, body, wrap, id) {
-      if (!edit && !body.trim()) return "";
-      return '<section class="' + cls + '"' + (id ? ' id="' + id + '"' : "") + '><div class="wrap ' + (wrap || "") + '">' +
-        (eyebrow ? T(eyebrow, "p", "Section label", "eyebrow") : "") + body + "</div></section>";
+    function section(id, cls, eyebrow, body, wrap, headKey) {
+      var o = S.sec[id], name = SECS.filter(function (s) { return s.id === id; })[0].name;
+      var img = S.img["sec." + id] || "", mode = img ? (o.as === "side" || o.as === "behind" ? o.as : "below") : "";
+      if (!edit && (o.hide || (!body.trim() && !img))) return "";
+      if (edit && o.hide) {
+        return '<section class="ed-hidden"><div class="wrap"><div class="ed-sec"><b>' + name + ' (hidden)</b>' +
+          '<button type="button" data-hide="' + id + '">Show section</button></div></div></section>';
+      }
+      var bar = !edit ? "" : '<div class="wrap"><div class="ed-sec"><b>' + name + "</b>" +
+        '<select data-sec="' + id + '" data-opt="bg" aria-label="Background of this section">' +
+          options([["plain", "Background: plain"], ["tint", "Background: tinted"], ["accent", "Background: accent colour"]], o.bg) + "</select>" +
+        (img ? '<select data-sec="' + id + '" data-opt="as" aria-label="Photo position">' +
+          options([["below", "Photo: below the text"], ["side", "Photo: beside the text"], ["behind", "Photo: behind the text"]], mode) + "</select>" : "") +
+        '<button type="button" data-img="sec.' + id + '">' + (img ? "Replace photo" : "+ Photo") + "</button>" +
+        (img ? '<button type="button" data-rmimg="sec.' + id + '">Remove photo</button>' : "") +
+        '<button type="button" data-hide="' + id + '">Hide section</button></div></div>';
+      var tag = '<img class="media" src="' + esc(img) + '" alt="' + esc(get(headKey).trim()) + '">';
+      var content = (eyebrow ? T(eyebrow, "p", "Section label", "eyebrow") : "") + body;
+      var inner = mode === "side"
+        ? '<div class="wrap split"><div>' + content + "</div>" + tag + "</div>"
+        : '<div class="wrap ' + (wrap || "") + '">' + content + (mode === "below" ? tag : "") + "</div>";
+      var style = "";
+      if (mode === "behind") {
+        cls += " on-photo";
+        style = " style=\"background-image:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('" + esc(img) + "')\"";
+      } else if (o.bg === "tint") cls += " section-alt";
+      else if (o.bg === "accent") cls += " on-accent";
+      return '<section class="' + cls + '"' + (id === "pricing" ? ' id="pricing"' : "") + style + ">" + bar + inner + "</section>";
     }
 
-    var brand = get("brand").trim();
-    var header = (edit || brand)
-      ? '<header class="site-header"><div class="wrap">' + T("brand", "span", "Your business name (optional)", "brand") + "</div></header>" : "";
+    var aligned = pick("align") === "left" ? "lefty" : "narrow center";
+    var brand = get("brand").trim(), logo = S.img.logo || "";
+    var logoHtml = logo ? '<img class="logo" src="' + esc(logo) + '" alt="' + esc(brand || "Logo") + '">' : "";
+    var header = "";
+    if (edit) {
+      header = '<header class="site-header"><div class="wrap">' +
+        (logo ? '<button type="button" class="ed-imgbtn" data-img="logo" aria-label="Replace logo">' + logoHtml + "</button>" : "") +
+        T("brand", "span", "Your business name (optional)", "brand") +
+        '<button type="button" class="ed-mini" data-img="logo">' + (logo ? "Replace logo" : "+ Logo") + "</button>" +
+        (logo ? '<button type="button" class="ed-mini" data-rmimg="logo">Remove logo</button>' : "") + "</div></header>";
+    } else if (brand || logo) {
+      header = '<header class="site-header"><div class="wrap">' + logoHtml + T("brand", "span", "", "brand") + "</div></header>";
+    }
 
-    var hero = section("hero", "",
+    var hero = section("hero", "hero", "",
       T("headline", "h1", "Headline: the main outcome your customer wants") +
       T("sub", "p", "Sub-headline: how you deliver that outcome, and who it's for", "lead") +
       B("cta1", "#pricing") +
       T("note1", "p", "Reassurance under the button, e.g. No card required (optional)", "note"),
-      "narrow center");
+      aligned, "headline");
 
-    var problem = section("section section-alt", "eProblem",
+    var problem = section("problem", "section", "eProblem",
       T("problemH", "h2", "State the problem your customer is facing") +
       T("problemP", "p", "Describe the situation they are in right now, specifically enough that they think: that's me") +
       L("symptoms", '<ul class="list">', "</ul>", "li", "", function (p) { return T(p + "t", "span", "A symptom or frustration they'll recognise"); }, "symptom"),
-      "narrow");
+      "narrow", "problemH");
 
-    var agitation = section("section", "eAgitation",
+    var agitation = section("agitation", "section", "eAgitation",
       T("agitH", "h2", "Show what this problem is really costing them") +
       T("agitP1", "p", "Spell out the consequences: lost time, lost money, stress, missed opportunities") +
       T("agitP2", "p", "Why the usual fixes haven't worked, and what happens if they leave it") +
       T("callout", "blockquote", "One striking fact, number or sentence that makes the cost feel real (optional)", "callout"),
-      "narrow");
+      "narrow", "agitH");
 
-    var image = S.img
-      ? '<img class="media" src="' + esc(S.img) + '" alt="' + esc(get("solH").trim()) + '">' +
-        (edit ? '<div class="ed-row"><label class="ed-add">Replace image<input class="ed-file" type="file" accept="image/*" id="img-file"></label>' +
-                '<button type="button" class="ed-add" data-rmimg>Remove image</button></div>' : "")
-      : (edit ? '<label class="ed-drop">+ Add a product image or screenshot (optional)<input class="ed-file" type="file" accept="image/*" id="img-file"></label>' : "");
+    var intro = T("solH", "h2", "Introduce your solution") + T("solP", "p", "What it is, and why it solves the problem above", "section-intro");
+    var solution = section("solution", "section", "eSolution",
+      (intro ? '<div class="intro">' + intro + "</div>" : "") +
+      L("benefits", '<div class="grid">', "</div>", "div", "feature", function (p, it, path) {
+        var text = T(p + "h", "h3", "Benefit") + T(p + "p", "p", "What the customer gets and why it matters to them");
+        var art = it.img ? '<img class="icon-img" src="' + esc(it.img) + '" alt="">' : icon(it.ic);
+        if (!edit) return text ? art + text : "";
+        return '<details class="ed-pop"><summary aria-label="Choose an icon or picture">' + (art || '<span class="ed-add" style="margin:0">+ Icon</span>') + "</summary>" +
+          '<div class="ed-pop-in">' + Object.keys(ICONS).map(function (n) {
+            return '<button type="button" data-ic="' + path + '" data-v="' + n + '" aria-label="' + n + ' icon">' + icon(n).replace(' class="icon"', "") + "</button>";
+          }).join("") +
+          '<button type="button" class="wide" data-img="' + path + '">Upload picture</button>' +
+          '<button type="button" class="wide" data-ic="' + path + '" data-v="">No icon</button></div></details>' + text;
+      }, "benefit"), "", "solH");
 
-    var solution = section("section section-alt", "eSolution",
-      '<div class="intro">' + T("solH", "h2", "Introduce your solution") +
-      T("solP", "p", "What it is, and why it solves the problem above", "section-intro") + "</div>" +
-      L("benefits", '<div class="grid">', "</div>", "div", "feature", function (p) {
-        return T(p + "h", "h3", "Benefit") + T(p + "p", "p", "What the customer gets and why it matters to them");
-      }, "benefit") + image);
-    if (!edit && solution.indexOf("<h2") < 0 && solution.indexOf("feature") < 0 && !S.img && !get("solP").trim()) solution = "";
-
-    var how = section("section", "eHow",
+    var how = section("how", "section", "eHow",
       T("howH", "h2", "Heading, e.g. Getting started is simple") +
       L("steps", '<ol class="steps grid">', "</ol>", "li", "", function (p) {
         return T(p + "h", "h3", "Step name") + T(p + "p", "p", "What happens in this step");
-      }, "step"));
+      }, "step"), "", "howH");
 
-    var proof = section("section section-alt", "eProof",
+    var proof = section("proof", "section", "eProof",
       T("proofH", "h2", "Heading, e.g. Results our customers get") +
       L("stats", '<div class="stats">', "</div>", "div", "", function (p) {
         return T(p + "n", "strong", "000+") + T(p + "l", "span", "What this number counts");
       }, "number") +
-      L("quotes", '<div class="grid">', "</div>", "figure", "card", function (p) {
+      L("quotes", '<div class="grid">', "</div>", "figure", "card", function (p, it, path) {
         var q = T(p + "q", "blockquote", "A customer quote describing the result they got");
         var who = T(p + "n", "strong", "Customer name") + T(p + "r", "span", "Role, company or location");
-        return (edit || q || who) ? q + (edit || who ? "<figcaption>" + who + "</figcaption>" : "") : "";
-      }, "testimonial"));
+        var face = it.img ? '<img class="avatar" src="' + esc(it.img) + '" alt="">' : "";
+        if (!edit) return (q || who) ? q + (who ? "<figcaption>" + face + '<div class="who">' + who + "</div></figcaption>" : "") : "";
+        return q + "<figcaption>" +
+          (face ? '<button type="button" class="ed-imgbtn" data-img="' + path + '" aria-label="Replace photo">' + face + "</button>" : "") +
+          '<div class="who">' + who + "</div></figcaption>" +
+          '<button type="button" class="ed-add" data-img="' + path + '">' + (face ? "Replace photo" : "+ Photo") + "</button>" +
+          (face ? ' <button type="button" class="ed-add" data-rmimg="' + path + '">Remove photo</button>' : "");
+      }, "testimonial"), "", "proofH");
 
     var price = T("price", "span", "£00") + T("period", "span", "/ month", "per");
     var card =
@@ -390,14 +636,14 @@ span[data-k] { display: inline-block; }
     }, "question");
     if (!edit) faq = faq.replace("<details>", function (m) { return faqN++ ? m : "<details open>"; });
     var pricingBody = (edit || card ? '<div class="card price-card">' + card + "</div>" : "") + (edit ? "<div>" + faq + "</div>" : faq);
-    var pricing = section("section", "ePricing",
+    var pricing = section("pricing", "section", "ePricing",
       T("priceH", "h2", "Heading, e.g. Simple pricing, no surprises") +
-      (edit || pricingBody ? '<div class="pricing">' + pricingBody + "</div>" : ""), "", "pricing");
+      (edit || pricingBody ? '<div class="pricing">' + pricingBody + "</div>" : ""), "", "priceH");
 
-    var finalCta = section("section cta-band", "",
+    var finalCta = section("final", "section", "",
       T("finalH", "h2", "Restate the outcome and invite them to act") +
       T("finalP", "p", "One sentence on what they get and how easy it is to start", "lead") +
-      B("cta3", "#pricing"), "narrow center");
+      B("cta3", "#pricing"), aligned, "finalH");
 
     var footer = '<footer class="site-footer"><div class="wrap"><p>&copy; ' +
       (edit ? new Date().getFullYear() : '<span id="year"></span>') +
@@ -409,11 +655,12 @@ span[data-k] { display: inline-block; }
   /* ---------- the two documents this page can produce ---------- */
   var END = "<" + "/script>";
   function siteDoc() {
-    var brand = get("brand").trim(), head = get("headline").trim(), sub = get("sub").trim();
+    var brand = get("brand").trim(), head = get("headline").trim(), sub = get("sub").trim(), fonts = fontHref();
     var title = brand && head ? brand + " — " + head : brand || head || "My website";
     return '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n' +
       "<title>" + esc(title) + "</title>\n" + (sub ? '<meta name="description" content="' + esc(sub) + '">\n' : "") +
-      "<style>" + $("site").textContent + "</style>\n</head>\n<body>\n" + page(false) +
+      (fonts ? '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link rel="stylesheet" href="' + esc(fonts) + '">\n' : "") +
+      "<style>" + $("site").textContent + "</style>\n<style>:root{" + vars() + "}</style>\n</head>\n<body>\n" + page(false) +
       '\n<script>document.getElementById("year").textContent = new Date().getFullYear();' + END + "\n</body>\n</html>\n";
   }
   function selfDoc() {
@@ -427,20 +674,55 @@ span[data-k] { display: inline-block; }
   }
 
   /* ---------- editor chrome ---------- */
+  function field(label, control) { return '<label class="ed-f"><span>' + label + "</span>" + control + "</label>"; }
+  function sel(key) { return '<select data-d="' + key + '">' + options(CHOICES[key], "") + "</select>"; }
+  function fontSel(key) {
+    return '<select data-d="' + key + '">' + FONTS.map(function (f) {
+      return '<option value="' + f[0] + '">' + (FONT_LABEL[f[0]] || f[0]) + "</option>";
+    }).join("") + "</select>";
+  }
   var root = $("root");
   root.innerHTML =
-    '<div class="ed-bar"><div class="ed-bar-in">' +
+    '<div class="ed-bar" id="ed-bar"><div class="ed-bar-in">' +
       '<span class="ed-status" id="ed-status" role="status"></span>' +
       '<label class="ed-link">Button link <input id="ed-url" type="url" inputmode="url" placeholder="https://your-checkout-or-booking-page"></label>' +
+      '<button type="button" class="ed-btn" id="ed-design" aria-expanded="false" aria-controls="ed-panel">Design</button>' +
       '<button type="button" class="ed-btn go" id="ed-save" hidden>Save</button>' +
       '<button type="button" class="ed-btn" id="ed-dl">Download website</button>' +
     "</div></div>" +
-    '<p class="ed-hint"><span class="wrap" style="display:block">Click any text and type. Faded italic text is a prompt: it disappears when you type, and anything left empty is left out of the finished site.</span></p>' +
-    '<div id="app"></div>';
+    '<aside class="ed-panel" id="ed-panel" aria-label="Design" hidden>' +
+      '<p class="ed-h">Colours</p>' +
+      '<div class="ed-pals">' + PALETTES.map(function (p, i) {
+        return '<button type="button" class="ed-pal" data-pal="' + i + '" title="' + p[0] + '" aria-label="' + p[0] + ' colour scheme">' +
+          '<i style="background:' + p[2] + '"></i><i style="background:' + p[3] + '"></i><i style="background:' + p[1] + '"></i><i style="background:' + p[4] + '"></i></button>';
+      }).join("") + "</div>" +
+      field("Accent (buttons, highlights)", '<input type="color" data-d="accent">') +
+      field("Page background", '<input type="color" data-d="bg">') +
+      field("Tinted sections", '<input type="color" data-d="alt">') +
+      field("Text", '<input type="color" data-d="text">') +
+      '<p class="ed-h">Fonts</p>' +
+      field("Headings", fontSel("hf")) + field("Body text", fontSel("bf")) +
+      field("Heading size", sel("hsize")) + field("Heading weight", sel("hweight")) + field("Heading capitals", sel("hcase")) +
+      field("Body text size", sel("size")) +
+      '<p class="ed-h">Shapes and layout</p>' +
+      field("Corner roundness", '<input type="range" min="0" max="28" step="1" data-d="radius">') +
+      field("Button shape", sel("btn")) + field("Section spacing", sel("space")) + field("Headline alignment", sel("align")) +
+      '<p class="ed-note">Photos, your logo, icons and each section\'s background are set on the page itself, using the controls at the top of each section.</p>' +
+      '<button type="button" class="ed-btn" data-reset>Reset design to default</button>' +
+    "</aside>" +
+    '<p class="ed-hint"><span class="wrap" style="display:block">Click any text and type. Faded italic text is a prompt: it disappears when you type, and anything left empty is left out of the finished site. Open Design for colours, fonts and shapes.</span></p>' +
+    '<div id="app"></div>' +
+    '<input type="file" accept="image/*" class="ed-file" id="ed-file" tabindex="-1" aria-hidden="true">';
   var app = $("app"), statusEl = $("ed-status"), saveBtn = $("ed-save"), urlIn = $("ed-url");
-  var art = null, canSave = false;
+  var panel = $("ed-panel"), designBtn = $("ed-design"), fileIn = $("ed-file");
+  var art = null, canSave = false, imgPath = "";
 
   function draw() { app.innerHTML = page(true); }
+  function syncPanel() {
+    panel.querySelectorAll("[data-d]").forEach(function (el) { el.value = S.d[el.dataset.d]; });
+    urlIn.value = S.f.url || "";
+  }
+  function refresh() { applyDesign(); syncPanel(); draw(); status(notice); }
   function status(msg) {
     statusEl.textContent = msg || (dirty
       ? (canSave ? "Unsaved changes" : "Changes are kept in this browser only")
@@ -454,12 +736,42 @@ span[data-k] { display: inline-block; }
     clearTimeout(timer);
     timer = setTimeout(keep, 300);
   }
-  function keep() { if (dirty) store.set(DRAFT, JSON.stringify({ base: embedded, s: S })); }
+  function keep() { if (dirty) kv.set(DRAFT, { base: baseRev, s: S }); }
   window.addEventListener("pagehide", keep);
 
-  urlIn.value = S.f.url || "";
   urlIn.addEventListener("input", function () { S.f.url = urlIn.value.trim(); changed(); });
 
+  /* design panel */
+  function placePanel() { panel.style.top = $("ed-bar").getBoundingClientRect().bottom + "px"; }
+  designBtn.addEventListener("click", function () {
+    var open = panel.hidden;
+    panel.hidden = !open;
+    designBtn.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("ed-open", open);
+    if (open) placePanel();
+  });
+  window.addEventListener("resize", placePanel);
+  panel.addEventListener("input", function (e) {
+    var key = e.target.dataset && e.target.dataset.d;
+    if (!key) return;
+    S.d[key] = e.target.value;
+    applyDesign();
+    if (key === "align") draw();
+    changed();
+  });
+  panel.addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.pal) {
+      var p = PALETTES[+b.dataset.pal];
+      S.d.accent = p[1]; S.d.bg = p[2]; S.d.alt = p[3]; S.d.text = p[4];
+    } else if ("reset" in b.dataset) {
+      S.d = Object.assign({}, DESIGN);
+    } else return;
+    applyDesign(); syncPanel(); draw(); changed();
+  });
+
+  /* editing on the page */
   app.addEventListener("input", function (e) {
     var el = e.target.closest && e.target.closest("[data-k]");
     if (!el) return;
@@ -484,30 +796,44 @@ span[data-k] { display: inline-block; }
   app.addEventListener("click", function (e) {
     var b = e.target.closest("button");
     if (!b) return;
-    if (b.dataset.add) {
-      var name = b.dataset.add;
-      S.l[name].push(Object.assign({}, BLANK[name]));
-      draw(); changed();
-      var first = app.querySelector('[data-k^="' + name + "." + (S.l[name].length - 1) + '."]');
-      if (first) first.focus();
-    } else if (b.dataset.rm) {
-      var a = b.dataset.rm.split(".");
-      S.l[a[0]].splice(+a[1], 1);
-      draw(); changed();
-    } else if ("rmimg" in b.dataset) {
-      S.img = ""; draw(); changed();
+    var d = b.dataset;
+    if (d.img) {
+      imgPath = d.img; fileIn.value = ""; fileIn.click();
+      return;
     }
+    if (d.add) {
+      S.l[d.add].push(Object.assign({}, BLANK[d.add]));
+      draw(); changed();
+      var first = app.querySelector('[data-k^="' + d.add + "." + (S.l[d.add].length - 1) + '."]');
+      if (first) first.focus();
+      return;
+    }
+    if (d.rm) { var a = d.rm.split("."); S.l[a[0]].splice(+a[1], 1); }
+    else if (d.rmimg) setImg(d.rmimg, "");
+    else if (d.ic) { var c = d.ic.split("."), it = S.l[c[0]][+c[1]]; it.ic = d.v; it.img = ""; }
+    else if (d.hide) S.sec[d.hide].hide = !S.sec[d.hide].hide;
+    else return;
+    draw(); changed();
   });
   app.addEventListener("change", function (e) {
-    if (e.target.id !== "img-file" || !e.target.files[0]) return;
-    var url = URL.createObjectURL(e.target.files[0]), im = new Image();
+    var d = e.target.dataset;
+    if (!d || !d.sec) return;
+    S.sec[d.sec][d.opt] = e.target.value;
+    draw(); changed();
+  });
+  fileIn.addEventListener("change", function () {
+    var file = fileIn.files[0], path = imgPath;
+    if (!file || !path) return;
+    var photo = path.indexOf("sec.") === 0;           // big section photos become JPEGs;
+    var max = photo ? 1600 : 400;                      // logos, icons and faces stay small and keep transparency
+    var url = URL.createObjectURL(file), im = new Image();
     im.onload = function () {
-      var k = Math.min(1, 1600 / im.naturalWidth), c = document.createElement("canvas");
-      c.width = Math.round(im.naturalWidth * k); c.height = Math.round(im.naturalHeight * k);
+      var k = Math.min(1, max / Math.max(im.naturalWidth, photo ? 1 : im.naturalHeight)), c = document.createElement("canvas");
+      c.width = Math.max(1, Math.round(im.naturalWidth * k)); c.height = Math.max(1, Math.round(im.naturalHeight * k));
       var g = c.getContext("2d");
-      g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height);
+      if (photo) { g.fillStyle = "#ffffff"; g.fillRect(0, 0, c.width, c.height); }
       g.drawImage(im, 0, 0, c.width, c.height);
-      S.img = c.toDataURL("image/jpeg", 0.85);
+      setImg(path, photo ? c.toDataURL("image/jpeg", 0.82) : c.toDataURL("image/png"));
       URL.revokeObjectURL(url);
       draw(); changed();
     };
@@ -515,22 +841,25 @@ span[data-k] { display: inline-block; }
     im.src = url;
   });
 
+  /* save and download */
   saveBtn.addEventListener("click", function () {
     if (!art || !dirty) return;
     saveBtn.disabled = true;
     status("Saving…");
-    store.set(PENDING, JSON.stringify(S));
-    art.publish(selfDoc()).then(function () {
-      store.del(DRAFT);
+    var prev = S.rev, id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    S.rev = id;
+    kv.set(PENDING, { id: id, s: S }).then(function () { return art.publish(selfDoc()); }).then(function () {
+      kv.del(DRAFT);
     }, function (err) {
       var code = err && err.code;
       if (code === "conflict") return; // the page reloads; the pending copy restores these edits
-      store.del(PENDING);
+      S.rev = prev;
+      kv.del(PENDING);
       if (code === "not_writer" || code === "not_granted") {
         canSave = false; saveBtn.hidden = true;
         status("You can't save changes to this page. Your edits are kept in this browser; use Download website to keep a copy.");
       } else if (code === "too_large") {
-        status("Too large to save. Try removing or shrinking the image.");
+        status("Too large to save. Try removing a photo or two.");
       } else if (code === "rate_limited") {
         status("Saving too often. Wait a moment, then press Save again.");
       } else {
@@ -542,14 +871,13 @@ span[data-k] { display: inline-block; }
 
   $("ed-dl").addEventListener("click", function () {
     var html = siteDoc();
-    var local = function () {
+    if (!(window.claude && window.claude.use)) {
       var a = document.createElement("a");
       a.href = URL.createObjectURL(new Blob([html], { type: "text/html" }));
       a.download = "index.html";
       document.body.appendChild(a); a.click(); a.remove();
-    };
-    var use = window.claude && window.claude.use;
-    if (!use) return local();
+      return;
+    }
     window.claude.use("downloads").then(function (d) {
       if (!d) { status("Downloading isn't available in this view."); return; }
       return d.save({ filename: "index.html", data: html }).then(function () {
@@ -561,8 +889,28 @@ span[data-k] { display: inline-block; }
     });
   });
 
-  draw();
-  status(notice);
+  /* start */
+  refresh();
+  Promise.all([kv.get(PENDING), kv.get(DRAFT)]).then(function (r) {
+    var pending = r[0], draft = r[1];
+    kv.del(PENDING);
+    if (pending && pending.id && pending.id !== baseRev) {
+      S = merge(pending.s);
+      notice = "Your last save didn't go through. Your edits are still here: press Save again.";
+    } else if (draft && draft.base === baseRev) {
+      S = merge(draft.s);
+    } else {
+      // edits made in the first version of this page, which kept them in localStorage
+      try {
+        var old = JSON.parse(localStorage.getItem("lp-draft") || "null");
+        if (!old || baseRev) return;
+        S = merge(old.s);
+        localStorage.removeItem("lp-draft");
+      } catch (e) { return; }
+    }
+    dirty = true;
+    refresh();
+  });
   if (window.claude && window.claude.use) {
     window.claude.use("artifact").then(function (a) {
       if (!a) return;
