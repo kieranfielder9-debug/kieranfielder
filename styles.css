@@ -1,0 +1,259 @@
+/* =====================================================================
+   EDIT: change the look of the whole site from here.
+   ===================================================================== */
+:root {
+  --accent: #2f5d50;        /* buttons, labels and highlights */
+  --accent-text: #ffffff;   /* text on top of the accent colour */
+  --bg: #fbfaf7;            /* page background */
+  --bg-alt: #f1efe9;        /* background of alternating sections */
+  --text: #1d1f1e;          /* main text */
+  --muted: #5f6562;         /* secondary text */
+  --border: #dcd9d0;        /* lines and card outlines */
+
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-heading: Georgia, "Times New Roman", serif;
+
+  --max-width: 1040px;      /* how wide the content gets on big screens */
+  --radius: 10px;           /* roundness of buttons, cards and images */
+}
+
+/* Colours used when the visitor's device is in dark mode.
+   Delete this whole block if you want the site to always be light. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: #8fc7b3;
+    --accent-text: #10201b;
+    --bg: #141615;
+    --bg-alt: #1c1f1e;
+    --text: #eceeed;
+    --muted: #a3aaa6;
+    --border: #2f3432;
+  }
+}
+
+/* ============================ Base ============================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  line-height: 1.15;
+  margin: 0 0 1rem;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2.25rem, 6vw, 3.75rem); }
+h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+h3 { font-size: 1.25rem; }
+
+p { margin: 0 0 1rem; }
+a { color: var(--accent); }
+img { max-width: 100%; display: block; }
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+.narrow { max-width: 720px; }
+.narrow.no-pad { margin: 0; padding: 0; }
+.center { text-align: center; }
+
+/* ============================ Logo bar ============================ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0.9rem 0;
+}
+.brand {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* ==================== Headline, sub-headline, CTA ==================== */
+.hero { padding: clamp(4rem, 12vw, 8rem) 0; }
+.lead { font-size: 1.25rem; color: var(--muted); margin-bottom: 2rem; }
+
+.button {
+  display: inline-block;
+  padding: 0.85rem 1.75rem;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.button:hover { opacity: 0.88; }
+
+.note { color: var(--muted); font-size: 0.9rem; margin: 0.75rem 0 0; }
+
+/* ============================ Sections ============================ */
+.section { padding: clamp(3.5rem, 9vw, 6rem) 0; }
+.section-alt { background: var(--bg-alt); }
+.section-intro { color: var(--muted); }
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin: 0;
+}
+
+/* Bulleted lists (problem symptoms, what's included) */
+.list { list-style: none; margin: 1.5rem 0 0; padding: 0; }
+.list li {
+  position: relative;
+  padding: 0.6rem 0 0.6rem 1.75rem;
+  border-top: 1px solid var(--border);
+}
+.list li::before {
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  top: 1.15rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* Agitation: the stand-out line */
+.callout {
+  margin: 2rem 0 0;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  border-left: 4px solid var(--accent);
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  line-height: 1.35;
+}
+
+/* Solution: benefits and image */
+.feature { border-top: 2px solid var(--accent); padding-top: 1.25rem; }
+.feature p, .steps p { color: var(--muted); margin: 0; }
+.media {
+  aspect-ratio: 16 / 8;
+  width: 100%;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin-top: 3rem;
+}
+
+/* Grey boxes that stand in for images until you add your own */
+.placeholder {
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  border: 2px dashed var(--border);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* How it works: numbered steps */
+.steps { list-style: none; padding: 0; counter-reset: step; }
+.steps li { counter-increment: step; }
+.steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
+/* Proof: numbers and testimonials */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+.stats strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  line-height: 1.1;
+  color: var(--accent);
+}
+.stats span, figcaption span { color: var(--muted); font-size: 0.95rem; }
+figure blockquote { margin: 0 0 1.25rem; }
+figcaption strong { display: block; }
+
+/* Pricing and objections */
+.pricing {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 2.5rem;
+  align-items: start;
+  margin-top: 2.5rem;
+}
+.price-card { border: 2px solid var(--accent); text-align: center; }
+.price-card .list { text-align: left; margin-bottom: 1.5rem; }
+.price-card .button { display: block; }
+.price {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  line-height: 1.1;
+  margin: 0;
+}
+.price span {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--muted);
+  margin-left: 0.35rem;
+}
+
+.faq details { border-bottom: 1px solid var(--border); }
+.faq details:first-child { border-top: 1px solid var(--border); }
+.faq summary { cursor: pointer; padding: 1rem 0; font-weight: 600; }
+.faq details p { color: var(--muted); }
+
+/* Final CTA */
+.cta-band { background: var(--bg-alt); border-top: 1px solid var(--border); }
+
+/* ============================ Footer ============================ */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+.site-footer p { margin: 0; }
