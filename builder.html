@@ -285,6 +285,13 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .why { color: var(--b-dim); margin: 0 0 1.5rem; max-width: 40rem; }
 .chip { display: inline-block; margin-left: 0.4rem; padding: 0.05rem 0.5rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; vertical-align: 0.1em; background: var(--b-soft); color: var(--b-acc); }
 .chip.req { background: var(--b-line); color: var(--b-dim); }
+.chip.maybe { background: transparent; box-shadow: inset 0 0 0 1px var(--b-acc); }
+.tickbox { display: grid; place-items: center; width: 1.2rem; height: 1.2rem; border: 1.5px solid var(--b-line); border-radius: 4px; font-size: 0.8rem; font-weight: 800; color: var(--b-acc-fg); }
+.opt[aria-checked="true"] .tickbox { background: var(--b-acc); border-color: var(--b-acc); }
+.gauge { position: relative; height: 8px; margin: 0.9rem 0 0.4rem; border-radius: 4px; background: var(--b-line); }
+.g-range { position: absolute; top: 0; bottom: 0; border-radius: 4px; background: var(--b-soft); box-shadow: inset 0 0 0 1px var(--b-acc); }
+.g-mark { position: absolute; top: -4px; width: 4px; height: 16px; margin-left: -2px; border-radius: 2px; background: var(--b-fg); }
+.g-note { margin: 0; font-size: 0.85rem; color: var(--b-dim); }
 
 /* Top bar */
 .tb { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--b-panel); border-bottom: 1px solid var(--b-line); }
@@ -740,42 +747,72 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
      2. STAGE 1 QUESTIONS and the structure each set of answers suggests.
      ===================================================================== */
   var QS = [
-    { k: "goal", q: "What should your homepage get visitors to do?", why: "This sets your main button and which sections we suggest.",
-      opts: [["trial", "Start a free trial", "Self-serve sign-up for a product people can try on their own."], ["demo", "Book a demo", "For products that need a walkthrough, or a sales team."],
-             ["wait", "Join a waitlist", "You haven't launched yet and want to collect interest."], ["buy", "Buy or subscribe", "Visitors pay straight away."],
-             ["sales", "Contact sales", "Larger deals with custom pricing."]] },
-    { k: "phase", q: "Where is your product right now?", why: "This decides how much proof (logos, testimonials, numbers) we suggest. You can't quote customers you don't have yet.",
-      opts: [["pre", "Not launched yet", "No customers to quote yet."], ["early", "Launched, with early customers", "A handful of happy users."], ["est", "Established", "Lots of customers, reviews and results."]] },
-    { k: "length", q: "How long should your homepage be?", why: "Longer pages persuade harder; shorter ones are quicker to build. You can add or remove sections on the next step.",
-      opts: [["short", "Short and simple", "About 8 sections. Fastest to build."], ["std", "Standard", "About 12 sections. Covers the usual questions."], ["long", "Long and persuasive", "About 20 sections. For complex or pricier products."]] }
+    { k: "goal", q: "What's the one thing your homepage should get visitors to do?", why: "This sets the wording of your main buttons and shapes which sections we suggest. Pick the action that matters most.",
+      opts: [["trial", "Start a free trial", "Try the full product free for a set time."], ["account", "Create a free account", "A free plan or freemium sign-up."],
+             ["demo", "Book a demo", "A walkthrough with your team."], ["appointment", "Book an appointment", "A call or consultation at a set time."],
+             ["buy", "Buy", "Pay once, straight away."], ["subscribe", "Subscribe", "Pay monthly or yearly, straight away."],
+             ["quote", "Request a quote", "Prices depend on each customer's needs."], ["download", "Download a resource", "A free guide, template or report in return for an email."],
+             ["wait", "Join a waitlist", "You haven't launched yet and want to collect interest."], ["sales", "Contact sales", "Larger deals handled by a sales team."]] },
+    { k: "aud", q: "Who are you mainly selling to?", why: "Businesses, especially larger ones, expect to see security, integrations and detailed proof. Individuals want it quick and simple.",
+      opts: [["consumer", "Individuals", "People buying for themselves."], ["smb", "Small businesses and teams", "Founders, freelancers and small teams."], ["ent", "Larger companies", "Buying involves several people, IT and procurement."]] },
+    { k: "cx", q: "How easy is your product to understand at a glance?", why: "The harder it is to picture, the more the page needs to show and explain it.",
+      opts: [["simple", "Obvious from one sentence", "e.g. a scheduling tool or an invoice maker."], ["some", "Needs a little explaining", "People get it once they see it working."], ["complex", "Complex or technical", "Several parts, a new category, or a technical audience."]] },
+    { k: "price", q: "How is it priced?", why: "The more someone pays, the more reassurance they need before they act.",
+      opts: [["free", "Free or freemium", "Free to start; paid upgrades later."], ["low", "Low", "Roughly under £30 a month."], ["mid", "Mid-range", "Roughly £30 to £300 a month."], ["high", "High or custom", "Annual contracts or prices set per customer."]] },
+    { k: "proof", multi: true, q: "What proof do you have right now?", why: "Tick everything you could put on the page today. You can't quote customers you don't have yet, so we'll suggest other ways to build trust.",
+      opts: [["logos", "Well-known customers", "Companies whose names or logos you can show."], ["quotes", "Customer quotes", "Happy customers who'll let you quote them."],
+             ["numbers", "Results or numbers", "e.g. 10,000 users, 40% faster, 4.9 rating."], ["case", "A detailed customer story", "One customer whose results you can describe."],
+             ["reviews", "Reviews or awards", "G2, Capterra, Trustpilot, Product Hunt, press."], ["none", "Nothing yet", "Just launched, or not launched."]] },
+    { k: "length", q: "How long should your homepage be?", why: "Most SaaS homepages have between 9 and 13 sections. Shorter suits simple, cheaper products; longer suits complex or expensive ones. This only sets the starting point: you can add or remove sections next.",
+      opts: [["short", "Short: 5 to 8 sections", "Quick to read and quick to build."], ["std", "Standard: 9 to 13 sections", "The most common. Covers the usual questions."], ["long", "Long: 14 to 20 sections", "Answers everything for careful or bigger buyers."]] }
   ];
+  var LENGTHS = { short: [5, 8, 7, "short"], std: [9, 13, 11, "standard"], long: [14, 20, 17, "long"] };
   var CTAS = {
-    trial: ["Start free trial", "See how it works"], demo: ["Book a demo", "Watch the 2-minute demo"], wait: ["Join the waitlist", "Learn more"],
-    buy: ["Get started", "See pricing"], sales: ["Talk to sales", "See how it works"]
+    trial: ["Start free trial", "See how it works"], account: ["Create a free account", "See how it works"], demo: ["Book a demo", "Watch the 2-minute demo"],
+    appointment: ["Book an appointment", "See how it works"], buy: ["Buy now", "See what's included"], subscribe: ["Subscribe", "See plans"],
+    quote: ["Request a quote", "See how it works"], download: ["Download the free guide", "Learn more"], wait: ["Join the waitlist", "Learn more"],
+    sales: ["Talk to sales", "See how it works"]
   };
   function canon(list) {
     var seen = {};
     return CANON.filter(function (id) { return list.indexOf(id) >= 0 && !seen[id] && (seen[id] = 1); });
   }
+  // Every section gets a score from the answers. The highest-scoring sections fill the chosen length;
+  // the next few become "worth considering" so there's room to adjust.
+  function scores(q) {
+    var proof = q.proof || [], has = function (k) { return proof.indexOf(k) >= 0; };
+    var sc = { hero: 100, nav: 99, footer: 98, finalcta: 95, logos: has("logos") ? 88 : -1, testimonials: has("quotes") ? 85 : -1,
+      features: 80, faq: 75, pricing: 72, how: 70, problem: 72, solution: 68, benefits: 66, stats: has("numbers") ? 62 : -1,
+      showcase: 55, casestudy: has("case") ? 50 : -1, awards: has("reviews") ? 48 : -1, featurerows: 45, agitation: 40, beforeafter: 40,
+      usecases: 38, integrations: 35, comparison: 35, guarantee: 35, security: 30, founder: 30, contact: 25, leadmagnet: 15, resources: 15, announce: 10 };
+    function add(o) { Object.keys(o || {}).forEach(function (k) { if (sc[k] >= 0) sc[k] += o[k]; }); }
+    add({ trial: { pricing: 5 }, account: { pricing: -5, benefits: 5 }, buy: { pricing: 20, guarantee: 20, faq: 5 }, subscribe: { pricing: 20, guarantee: 15 },
+          demo: { pricing: -10, contact: 10, casestudy: 5, showcase: 10 }, appointment: { pricing: -5, contact: 25, how: 10, testimonials: 5 },
+          quote: { pricing: -25, contact: 25, how: 10, casestudy: 10 }, wait: { pricing: -40, founder: 25 },
+          download: { pricing: -40, leadmagnet: 75, resources: 25, founder: 5 }, sales: { pricing: -15, contact: 20, casestudy: 10, security: 10 } }[q.goal]);
+    add({ consumer: { usecases: -15, security: -15, integrations: -10, guarantee: 15, testimonials: 5 },
+          ent: { security: 35, casestudy: 15, integrations: 15, usecases: 15, contact: 10, comparison: 5 } }[q.aud]);
+    add({ simple: { how: -15, featurerows: -25, showcase: -5, benefits: 10 }, some: { how: 5, showcase: 5 },
+          complex: { how: 15, showcase: 20, featurerows: 25, usecases: 10, faq: 5, problem: 5 } }[q.cx]);
+    add({ free: { pricing: -15, guarantee: -35 }, low: { pricing: 10, guarantee: 5 }, mid: { pricing: 10, comparison: 10, guarantee: 10, stats: 5 },
+          high: { pricing: -20, casestudy: 15, security: 10, contact: 15, agitation: 15, comparison: 5 } }[q.price]);
+    if (!proof.length || has("none")) sc.founder += 40;
+    return sc;
+  }
   function recipe(q) {
-    var L = q.length || "std", pre = q.phase === "pre", est = q.phase === "est", g = q.goal || "trial";
-    var sell = g === "trial" || g === "buy";
-    var s = ["nav", "hero"];
-    if (!pre) s.push("logos");
-    if (L !== "short") s.push("problem", "solution");
-    if (L === "long") s.push("agitation", "beforeafter", "showcase", "featurerows", "integrations", "comparison");
-    s.push(L === "short" ? "benefits" : "features", "how");
-    if (!pre) {
-      s.push("testimonials");
-      if (L !== "short") s.push("stats");
-      if (L === "long" && est) s.push("casestudy", "awards");
-    }
-    if (est && L !== "short") s.push("security");
-    if (g !== "wait" && (sell || L === "long")) s.push("pricing");
-    if (L === "long" && sell) s.push("guarantee");
-    if (pre) s.push("founder");
-    s.push("faq", "finalcta", "footer");
-    return canon(s);
+    var sc = scores(q), n = (LENGTHS[q.length] || LENGTHS.std)[2];
+    var ids = Object.keys(sc).filter(function (k) { return sc[k] >= 20; }).sort(function (a, b) { return sc[b] - sc[a]; });
+    var sug = [], rest = [];
+    // Problem and Solution tell one story, so they're suggested together; Agitation only follows a Problem.
+    ids.forEach(function (id) {
+      if (sug.indexOf(id) >= 0) return;
+      var pair = id === "problem" ? "solution" : id === "solution" ? "problem" : "";
+      if (pair && ids.indexOf(pair) >= 0) {
+        if (sug.length + 2 <= n) sug.push(id, pair); else rest.push(id);
+      } else if (sug.length < n && !(id === "agitation" && sug.indexOf("problem") < 0)) sug.push(id);
+      else rest.push(id);
+    });
+    return { sug: canon(sug), opt: rest.filter(function (id) { return sug.indexOf(id) < 0; }).slice(0, 5) };
   }
 
   /* =====================================================================
@@ -853,7 +890,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     if (id === "pricing" && s.items[1]) s.items[1].pop = true;
     if (id === "hero" || id === "nav" || id === "finalcta") s.f.cta = g[0];
     if (id === "hero" || id === "finalcta") s.f.cta2 = g[1];
-    if (id === "hero" && S.q.goal === "wait") { s.el.email = true; s.layout = "text"; }
+    if (id === "hero" && (S.q.goal === "wait" || S.q.goal === "download")) { s.el.email = true; s.layout = "text"; }
     return s;
   }
   function blankItem(c, i) {
@@ -863,7 +900,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     return it;
   }
   function blankState() {
-    return { rev: "", stage: "structure", qstep: 0, q: { goal: "", phase: "", length: "" }, order: [], custom: false, sec: {},
+    return { rev: "", stage: "structure", qstep: 0, q: { goal: "", aud: "", cx: "", price: "", proof: [], length: "" }, order: [], custom: false, sec: {},
              brand: { name: "", logo: "", url: "", url2: "", login: "", form: "" }, d: Object.assign({}, DESIGN),
              cur: { sid: "style", did: "name" }, done: {}, pv: "desk" };
   }
@@ -875,6 +912,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       b[k] = (typeof b[k] === "object" && !Array.isArray(b[k])) ? Object.assign(b[k], src[k]) : src[k];
     });
     b.order = (b.order || []).filter(function (id) { return BY[id]; });
+    if (!Array.isArray(b.q.proof)) b.q.proof = [];
+    if (b.q.goal && !CTAS[b.q.goal]) b.q.goal = "";
     return b;
   }
   var S = blankState(), baseRev = "", dirty = false, notice = "";
@@ -1348,26 +1387,28 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   /* ---- Stage 1: structure ---- */
   function structureHTML() {
     if (S.qstep < QS.length) {
-      var Q = QS[S.qstep], cur = S.q[Q.k];
-      return '<div class="wiz"><div class="progress">' + [0, 1, 2, 3].map(function (i) { return '<i class="' + (i <= S.qstep ? "on" : "") + '"></i>'; }).join("") + "</div>" +
-        '<p class="kicker">Stage 1 · Structure · Question ' + (S.qstep + 1) + " of 3</p>" +
-        '<h1 class="ui-h1">' + esc(Q.q) + '</h1><p class="why">' + esc(Q.why) + "</p>" +
-        '<div class="opts" role="radiogroup" aria-label="' + esc(Q.q) + '">' + Q.opts.map(function (o) {
-          return '<button type="button" class="opt" role="radio" aria-checked="' + (cur === o[0]) + '" data-q="' + Q.k + '" data-v="' + o[0] + '"><b>' + esc(o[1]) + "</b><small>" + esc(o[2]) + "</small></button>";
+      var Q = QS[S.qstep], cur = S.q[Q.k], answered = Q.multi ? (cur || []).length > 0 : !!cur;
+      return '<div class="wiz"><div class="progress">' + QS.concat([0]).map(function (x, i) { return '<i class="' + (i <= S.qstep ? "on" : "") + '"></i>'; }).join("") + "</div>" +
+        '<p class="kicker">Stage 1 · Structure · Question ' + (S.qstep + 1) + " of " + QS.length + "</p>" +
+        '<h1 class="ui-h1">' + esc(Q.q) + '</h1><p class="why">' + esc(Q.why) + (Q.multi ? " <b>Tick all that apply.</b>" : "") + "</p>" +
+        '<div class="opts" role="' + (Q.multi ? "group" : "radiogroup") + '" aria-label="' + esc(Q.q) + '">' + Q.opts.map(function (o) {
+          var on = Q.multi ? (cur || []).indexOf(o[0]) >= 0 : cur === o[0];
+          return '<button type="button" class="opt" role="' + (Q.multi ? "checkbox" : "radio") + '" aria-checked="' + on + '" data-' + (Q.multi ? "qm" : "q") + '="' + Q.k + '" data-v="' + o[0] + '">' +
+            (Q.multi ? '<span class="tickbox" aria-hidden="true">' + (on ? "✓" : "") + "</span>" : "") + "<b>" + esc(o[1]) + "</b><small>" + esc(o[2]) + "</small></button>";
         }).join("") + "</div>" +
         '<div class="row-btns">' + (S.qstep > 0 ? '<button type="button" class="b-btn" data-qstep="' + (S.qstep - 1) + '">← Back</button>' : "") +
-        (cur ? '<button type="button" class="b-btn pri" data-qstep="' + (S.qstep + 1) + '">Next →</button>' : "") +
-        (S.order.length ? '<button type="button" class="b-btn" data-qstep="3">Skip to my sections</button>' : "") + "</div></div>";
+        (answered ? '<button type="button" class="b-btn pri" data-qstep="' + (S.qstep + 1) + '">Next →</button>' : "") +
+        (S.order.length ? '<button type="button" class="b-btn" data-qstep="' + QS.length + '">Skip to my sections</button>' : "") + "</div></div>";
     }
-    var sug = recipe(S.q), chosen = S.order;
+    var rec = recipe(S.q), sug = rec.sug, chosen = S.order, LEN = LENGTHS[S.q.length] || LENGTHS.std;
     var cats = CATS.map(function (cat) {
       return '<h2 class="ui-h2">' + esc(cat[1]) + " · <span style=\"text-transform:none;letter-spacing:0;font-weight:400\">" + esc(cat[2]) + '</span></h2><div class="cat-list">' +
         LIB.filter(function (c) { return c.cat === cat[0]; }).map(function (c) {
           var on = chosen.indexOf(c.id) >= 0;
           var n = c.layouts && c.layouts.length > 1 ? c.layouts.length + " layouts · " : "";
           return '<label class="sec-opt"><input type="checkbox" data-toggle="' + c.id + '"' + (on ? " checked" : "") + (c.required ? " disabled" : "") + "><span><b>" + esc(c.name) + "</b>" +
-            (c.required ? '<span class="chip req">Required</span>' : sug.indexOf(c.id) >= 0 ? '<span class="chip">Suggested</span>' : "") +
-            "<small>" + esc(c.desc) + '</small><small class="decs">' + n + c.els.length + " parts to choose from" + (c.items ? " · add " + esc(c.items.plural) : "") + "</small></span></label>";
+            (c.required ? '<span class="chip req">Required</span>' : sug.indexOf(c.id) >= 0 ? '<span class="chip">Suggested</span>' : rec.opt.indexOf(c.id) >= 0 ? '<span class="chip maybe">Worth considering</span>' : "") +
+            "<small>" + esc(c.desc) + '</small><small class="decs">' + n + c.els.length + (c.els.length === 1 ? " part" : " parts") + " to choose from" + (c.items ? " · add " + esc(c.items.plural) : "") + "</small></span></label>";
         }).join("") + "</div>";
     }).join("");
     var outline = chosen.map(function (id, i) {
@@ -1375,11 +1416,18 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         '<button type="button" class="ico" data-mv="' + i + ':1" aria-label="Move ' + esc(BY[id].name) + ' down"' + (i === chosen.length - 1 ? " disabled" : "") + ">↓</button>" +
         (BY[id].required ? "" : '<button type="button" class="ico" data-toggle-off="' + id + '" aria-label="Remove ' + esc(BY[id].name) + '">✕</button>') + "</li>";
     }).join("");
-    var same = sug.join() === chosen.join();
-    return '<div class="review"><div><div class="progress"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>' +
-      '<p class="kicker">Stage 1 · Structure · Step 4 of 4</p><h1 class="ui-h1">Choose your sections</h1>' +
-      '<p class="why">These are all ' + LIB.length + " sections a SaaS homepage might use. We've ticked the ones we suggest for your answers. Tick or untick anything, then put them in order on the right. Nothing is fixed: you can come back here any time from Structure in the top bar, and your content is kept.</p>" +
-      cats + '</div><aside class="outline" aria-label="Your homepage"><h2>Your homepage</h2><p class="muted" style="margin:0.2rem 0 0;color:var(--b-dim)">' + chosen.length + " sections, top to bottom</p>" +
+    var same = sug.join() === chosen.join(), n = chosen.length, MAX = 24;
+    var verdict = n < LEN[0] ? "Shorter than typical. Fine for a simple or low-cost product."
+      : n > LEN[1] ? "Longer than typical. Fine for a complex or pricier product, or untick a few."
+      : "Within the typical range for a " + LEN[3] + " page.";
+    var gauge = '<div class="gauge" aria-hidden="true"><span class="g-range" style="left:' + (LEN[0] / MAX * 100) + "%;width:" + ((LEN[1] - LEN[0]) / MAX * 100) + '%"></span>' +
+      '<span class="g-mark" style="left:' + (Math.min(n, MAX) / MAX * 100) + '%"></span></div>';
+    return '<div class="review"><div><div class="progress">' + QS.concat([0]).map(function () { return '<i class="on"></i>'; }).join("") + "</div>" +
+      '<p class="kicker">Stage 1 · Structure · Step ' + (QS.length + 1) + " of " + (QS.length + 1) + '</p><h1 class="ui-h1">Choose your sections</h1>' +
+      '<p class="why">These are all ' + LIB.length + " sections a SaaS homepage might use. Typical homepages have 9 to 13; yours is set up as a " + LEN[3] + " page (" + LEN[0] + " to " + LEN[1] + "). " +
+      "We've ticked " + sug.length + " to start with and marked a few more as <b>worth considering</b>. These are starting points, not rules: tick or untick anything, then put them in order on the right. You can come back here any time from Structure in the top bar, and your content is kept.</p>" +
+      cats + '</div><aside class="outline" aria-label="Your homepage"><h2>Your homepage</h2><p class="muted" style="margin:0.2rem 0 0;color:var(--b-dim)">' + n + " sections · typical for " + LEN[3] + ": " + LEN[0] + " to " + LEN[1] + "</p>" +
+      gauge + '<p class="g-note">' + esc(verdict) + "</p>" +
       "<ol>" + outline + "</ol>" +
       '<button type="button" class="b-btn pri" data-start>Start building →</button>' +
       (same ? "" : '<button type="button" class="b-btn" data-recipe>Use the suggested sections</button>') +
@@ -1631,7 +1679,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       if (si + 1 >= list.length) { S.stage = "finish"; changed(); render(); top(); return; }
       S.cur = { sid: list[si + 1], did: decs(list[si + 1])[0].id, di: 0 };
     } else if (di < 0) {
-      if (si === 0) { S.stage = "structure"; S.qstep = 3; changed(); render(); return; }
+      if (si === 0) { S.stage = "structure"; S.qstep = QS.length; changed(); render(); return; }
       var prev = decs(list[si - 1]);
       S.cur = { sid: list[si - 1], did: prev[prev.length - 1].id, di: prev.length - 1 };
     } else S.cur = { sid: S.cur.sid, did: ds[di].id, di: di };
@@ -1643,7 +1691,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   function go(stage) {
     if (stage !== "structure" && !S.order.length) return;
     S.stage = stage;
-    if (stage === "structure" && S.order.length) S.qstep = 3;
+    if (stage === "structure" && S.order.length) S.qstep = QS.length;
     changed(); render(); top();
   }
 
@@ -1658,17 +1706,26 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       var old = S.q.goal;
       S.q[d.q] = d.v;
       if (d.q === "goal") applyGoal(old, d.v);
-      if (!S.custom || !S.order.length) S.order = recipe(S.q);
+      if (!S.custom || !S.order.length) S.order = recipe(S.q).sug;
       S.qstep += 1;
-      changed(); render(); return;
+      changed(); render(); top(); return;
     }
-    if (d.qstep != null) { S.qstep = +d.qstep; if (S.qstep >= 3 && !S.order.length) S.order = recipe(S.q); changed(); render(); top(); return; }
+    if (d.qm) {
+      var arr = (S.q[d.qm] || []).slice(), at = arr.indexOf(d.v);
+      if (at >= 0) arr.splice(at, 1);
+      else if (d.v === "none") arr = ["none"];
+      else arr = arr.filter(function (x) { return x !== "none"; }).concat([d.v]);
+      S.q[d.qm] = arr;
+      if (!S.custom || !S.order.length) S.order = recipe(S.q).sug;
+      changed(); render(true); return;
+    }
+    if (d.qstep != null) { S.qstep = +d.qstep; if (S.qstep >= QS.length && !S.order.length) S.order = recipe(S.q).sug; changed(); render(); top(); return; }
     if (d.mv) {
       var m = d.mv.split(":"), i = +m[0], j = i + +m[1], o = S.order.slice(), t = o[i]; o[i] = o[j]; o[j] = t;
       S.order = o; S.custom = true; changed(); render(true); return;
     }
     if (d.toggleOff) { S.order = S.order.filter(function (x) { return x !== d.toggleOff; }); S.custom = true; changed(); render(); return; }
-    if ("recipe" in d) { S.order = recipe(S.q); S.custom = false; changed(); render(); return; }
+    if ("recipe" in d) { S.order = recipe(S.q).sug; S.custom = false; changed(); render(); return; }
     if ("start" in d) {
       S.stage = "build";
       if (buildList().indexOf(S.cur.sid) < 0) S.cur = { sid: "style", did: "name", di: 0 };
