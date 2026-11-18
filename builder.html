@@ -1,0 +1,1852 @@
+<title>SaaS Site Builder</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style id="site">
+/* The finished website. Everything is scoped to .site so the builder's own screens are untouched.
+   Layout: full-width bands, one per section, each choosing its own background from five colour roles. */
+.site {
+  --c-accent: #2f5d50; --c-accent-text: #ffffff; --c-bg: #fbfaf7; --c-alt: #f1efe9; --c-text: #1d1f1e;
+  --c-inv-acc: #8fc7b3; --c-inv-acc-text: #10201b;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-heading: Georgia, "Times New Roman", serif;
+  --scale: 1; --h-scale: 1; --h-weight: 700; --radius: 10px; --btn-radius: 10px; --space: 1; --max: 1120px;
+  container-type: inline-size; position: relative;
+  font-family: var(--font-body); font-size: calc(1.0625rem * var(--scale)); line-height: 1.6;
+  background: var(--c-bg); color: var(--c-text); -webkit-font-smoothing: antialiased;
+}
+body.site { margin: 0; }
+.site *, .site *::before, .site *::after { box-sizing: border-box; }
+.bgx {
+  --muted: color-mix(in srgb, var(--text) 70%, var(--bg));
+  --border: color-mix(in srgb, var(--text) 14%, var(--bg));
+  --surface: color-mix(in srgb, var(--text) 4%, var(--bg));
+  background-color: var(--bg); color: var(--text);
+}
+.bg-plain { --bg: var(--c-bg); --text: var(--c-text); --accent: var(--c-accent); --accent-text: var(--c-accent-text); }
+.bg-tint { --bg: var(--c-alt); --text: var(--c-text); --accent: var(--c-accent); --accent-text: var(--c-accent-text); }
+.bg-brand { --bg: var(--c-accent); --text: var(--c-accent-text); --accent: var(--c-accent-text); --accent-text: var(--c-accent); }
+.bg-inv { --bg: var(--c-text); --text: var(--c-bg); --accent: var(--c-inv-acc); --accent-text: var(--c-inv-acc-text); }
+.bg-photo { --bg: #1b1d1f; --text: #ffffff; --accent: #ffffff; --accent-text: #111111; background-size: cover; background-position: center; }
+.bg-photo .card { --surface: rgba(0, 0, 0, 0.35); }
+
+:where(.site) h1, :where(.site) h2, :where(.site) h3 {
+  font-family: var(--font-heading); font-weight: var(--h-weight);
+  line-height: 1.12; letter-spacing: -0.01em; margin: 0 0 0.75rem; text-wrap: balance;
+}
+:where(.site) h1 { font-size: calc(clamp(2.25rem, 6vw, 4rem) * var(--h-scale)); font-size: calc(clamp(2.25rem, 6.5cqi, 4rem) * var(--h-scale)); }
+:where(.site) h2 { font-size: calc(clamp(1.75rem, 4vw, 2.75rem) * var(--h-scale)); font-size: calc(clamp(1.75rem, 4.2cqi, 2.75rem) * var(--h-scale)); }
+:where(.site) h3 { font-size: calc(1.2rem * var(--h-scale)); }
+:where(.site) p { margin: 0 0 1rem; }
+:where(.site) a { color: var(--accent); }
+:where(.site) img { max-width: 100%; display: block; }
+:where(.site) ul, :where(.site) ol { margin: 0; padding: 0; list-style: none; }
+:where(.site) blockquote { margin: 0; }
+.site .ph { opacity: 0.5; font-style: italic; }
+
+.w { max-width: var(--max); margin: 0 auto; padding-inline: max(1.25rem, env(safe-area-inset-left, 0px)) max(1.25rem, env(safe-area-inset-right, 0px)); }
+.s { padding-block: calc(clamp(3.5rem, 9cqi, 6.5rem) * var(--space)); }
+.s-head { max-width: 46rem; margin-bottom: 2.75rem; }
+.s-head:last-child { margin-bottom: 0; }
+.al-center .s-head, .al-center .prose, .al-center .hero-txt, .al-center .cta-txt { margin-inline: auto; text-align: center; }
+.eb { color: var(--accent); font-size: 0.8em; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.intro, .lead { color: var(--muted); font-size: 1.12em; }
+.prose { max-width: 44rem; }
+.muted { color: var(--muted); }
+.note { color: var(--muted); font-size: 0.875em; margin: 0.9rem 0 0; }
+
+.btns { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
+.al-center .btns, .al-center .sub { justify-content: center; }
+.btn {
+  display: inline-block; padding: 0.85rem 1.5rem; border: 2px solid var(--accent); border-radius: var(--btn-radius);
+  background: var(--accent); color: var(--accent-text); font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;
+}
+.btn:hover { opacity: 0.9; }
+.btn2 { background: transparent; color: var(--text); border-color: var(--border); }
+.sub { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.75rem; }
+.sub input {
+  flex: 1 1 14rem; max-width: 22rem; min-width: 0; padding: 0.85rem 1rem; font: inherit;
+  border: 2px solid var(--border); border-radius: var(--btn-radius); background: var(--bg); color: var(--text);
+}
+.sub + .btns { margin-top: 0.75rem; }
+
+.grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr)); }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(min(21rem, 100%), 1fr)); }
+.grid > *, .split > * { min-width: 0; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
+.card > :last-child { margin-bottom: 0; }
+.split { display: grid; gap: clamp(2rem, 5cqi, 4rem); align-items: center; grid-template-columns: repeat(auto-fit, minmax(min(21rem, 100%), 1fr)); }
+.split .s-head { margin-bottom: 0; text-align: left; }
+.ic {
+  display: block; width: 2.75rem; height: 2.75rem; padding: 0.6rem; margin-bottom: 1rem; border-radius: var(--radius);
+  background: color-mix(in srgb, var(--accent) 14%, var(--bg)); color: var(--accent);
+}
+.slot {
+  display: grid; place-items: center; width: 100%; aspect-ratio: 16 / 10; padding: 1rem; text-align: center;
+  border: 2px dashed var(--border); border-radius: var(--radius); background: var(--surface); color: var(--muted); font-size: 0.9em;
+}
+.shot { width: 100%; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.45); }
+
+.list li { position: relative; padding: 0.55rem 0 0.55rem 1.9rem; border-top: 1px solid var(--border); }
+.list li:last-child { border-bottom: 1px solid var(--border); }
+.list li::before { content: ""; position: absolute; left: 0.2rem; top: 1.05em; width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--accent); }
+.list.check li::before, .list.cross li::before { width: auto; height: auto; background: none; top: 0.55rem; font-weight: 700; }
+.list.check li::before { content: "✓"; color: var(--accent); }
+.list.cross li::before { content: "✕"; color: var(--muted); }
+.list.plain li { border: 0; padding-block: 0.3rem; }
+
+/* Navigation and announcement */
+.ann { padding-block: 0.6rem; text-align: center; font-size: 0.9em; }
+.ann a { color: inherit; font-weight: 700; margin-left: 0.5rem; }
+.nav { padding-block: 0.9rem; border-bottom: 1px solid var(--border); }
+.nav.sticky { position: sticky; top: 0; z-index: 5; }
+.nav .w { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; }
+.brand { display: flex; align-items: center; gap: 0.6rem; margin-right: auto; color: var(--text); text-decoration: none; font-family: var(--font-heading); font-weight: 700; font-size: 1.2em; }
+.brand img { height: 2rem; width: auto; }
+.links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.4rem; }
+.links a, .login { color: var(--muted); text-decoration: none; }
+.links a:hover, .login:hover { color: var(--text); }
+.nav .btn { padding: 0.55rem 1.05rem; }
+.nav-center .w { flex-direction: column; }
+.nav-center .brand { margin: 0; }
+@container (max-width: 720px) { .nav-left .links { order: 3; width: 100%; } }
+
+/* Hero */
+.hero { padding-block: calc(clamp(4rem, 11cqi, 8rem) * var(--space)); }
+.hero-txt { max-width: 46rem; }
+.al-center .hero-txt { max-width: 54rem; }
+.hero .lead { font-size: 1.22em; }
+.badge { display: inline-block; padding: 0.3rem 0.85rem; margin-bottom: 1.25rem; border: 1px solid var(--border); border-radius: 999px; font-size: 0.85em; font-weight: 600; color: var(--accent); background: var(--surface); }
+.rating { margin: 1.25rem 0 0; color: var(--muted); font-size: 0.9em; }
+.stars { color: var(--accent); letter-spacing: 0.1em; margin-right: 0.4rem; }
+.hero-img { margin-top: clamp(2.5rem, 6cqi, 4rem); }
+
+/* Proof and product */
+.logos-h { color: var(--muted); font-size: 0.9em; font-weight: 600; margin-bottom: 1.5rem; }
+.logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.25rem 2.75rem; }
+.al-left .logos { justify-content: flex-start; }
+.logos span { font-family: var(--font-heading); font-weight: 700; font-size: 1.2em; color: var(--muted); }
+.logos img { height: 2.25rem; width: auto; filter: grayscale(1); opacity: 0.75; }
+.big { font-family: var(--font-heading); font-weight: var(--h-weight); font-size: clamp(3.5rem, 12cqi, 7rem); line-height: 1; color: var(--accent); margin-bottom: 0.5rem; }
+.callout { margin-top: 2rem; padding: 0.2rem 0 0.2rem 1.25rem; border-left: 4px solid var(--accent); font-family: var(--font-heading); font-size: 1.35em; line-height: 1.35; }
+.al-center .callout { border-left: 0; padding: 0; }
+.ba .after { border: 2px solid var(--accent); }
+.flist { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(21rem, 100%), 1fr)); }
+.flist > div { display: flex; gap: 1rem; align-items: flex-start; min-width: 0; }
+.flist .ic { flex: none; margin: 0; }
+.flist h3 { margin-bottom: 0.25rem; }
+.flist p { color: var(--muted); margin: 0; }
+.card p, .steps p { color: var(--muted); }
+.card .eb + h3 { margin-top: -0.25rem; }
+.more { display: inline-block; margin-top: 0.75rem; font-weight: 600; text-decoration: none; }
+.frame { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--surface); box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.45); }
+.frame::before {
+  content: ""; display: block; height: 2.1rem; border-bottom: 1px solid var(--border);
+  background: radial-gradient(circle at 1.1rem 50%, #ff5f57 0.3rem, transparent 0.33rem),
+              radial-gradient(circle at 2rem 50%, #febc2e 0.3rem, transparent 0.33rem),
+              radial-gradient(circle at 2.9rem 50%, #28c840 0.3rem, transparent 0.33rem);
+}
+.frame .shot, .frame .slot { border: 0; border-radius: 0; box-shadow: none; }
+.video { position: relative; display: block; }
+.play {
+  position: absolute; inset: 0; margin: auto; width: 5rem; height: 5rem; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+.play::after { content: ""; position: absolute; left: 2.05rem; top: 1.55rem; border-left: 1.4rem solid var(--accent-text); border-top: 0.95rem solid transparent; border-bottom: 0.95rem solid transparent; }
+.cap { color: var(--muted); font-size: 0.9em; text-align: center; margin-top: 1rem; }
+.rows { display: grid; gap: clamp(3rem, 8cqi, 6rem); }
+.rows .eb { margin-bottom: 0.5rem; }
+.rows h3 { font-size: calc(clamp(1.5rem, 3.2cqi, 2.1rem) * var(--h-scale)); }
+.rows p { color: var(--muted); }
+.rows.alt .split:nth-child(even) > :last-child { order: -1; }
+.steps { counter-reset: step; }
+.steps li { counter-increment: step; }
+.steps li::before {
+  content: counter(step); display: grid; place-items: center; width: 2.6rem; height: 2.6rem; margin-bottom: 1rem;
+  border-radius: 50%; background: var(--accent); color: var(--accent-text); font-weight: 700;
+}
+.tl { max-width: 40rem; display: grid; gap: 0; }
+.al-center .tl { margin-inline: auto; }
+.tl li { position: relative; padding: 0 0 2rem 3.75rem; text-align: left; }
+.tl li::before { position: absolute; left: 0; top: 0; margin: 0; }
+.tl li:not(:last-child)::after { content: ""; position: absolute; left: 1.25rem; top: 2.9rem; bottom: 0.3rem; width: 2px; background: var(--border); }
+.tiles { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(9.5rem, 100%), 1fr)); }
+.tile { display: grid; place-items: center; gap: 0.5rem; min-height: 6.5rem; padding: 1rem; text-align: center; font-weight: 600; }
+.tile img, .flist .lg { height: 2.5rem; width: auto; }
+.flist .lg { flex: none; width: 2.5rem; object-fit: contain; }
+.badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+.al-left .badges { justify-content: flex-start; }
+.badges > * { display: flex; align-items: center; gap: 0.6rem; padding: 0.75rem 1.1rem; border-radius: var(--radius); font-weight: 600; }
+.badges .ic { width: 2rem; height: 2rem; padding: 0.35rem; margin: 0; }
+.badges img { height: 3.5rem; width: auto; }
+.stats { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr)); }
+.al-center .stats { text-align: center; }
+.stats strong { display: block; font-family: var(--font-heading); font-weight: var(--h-weight); font-size: clamp(2.4rem, 6cqi, 3.5rem); line-height: 1.05; color: var(--accent); }
+.stats span { display: block; color: var(--muted); margin-top: 0.35rem; }
+.quote blockquote { margin-bottom: 1.25rem; }
+.who { display: flex; align-items: center; gap: 0.8rem; text-align: left; }
+.who strong { display: block; }
+.who span { display: block; color: var(--muted); font-size: 0.9em; }
+.avatar { width: 3rem; height: 3rem; border-radius: 50%; object-fit: cover; flex: none; }
+.slot.avatar { aspect-ratio: 1; padding: 0; font-size: 0.6em; }
+.featured { max-width: 50rem; margin-inline: auto; text-align: center; }
+.featured blockquote { font-family: var(--font-heading); font-size: clamp(1.4rem, 3.4cqi, 2.1rem); line-height: 1.3; margin-bottom: 1.75rem; }
+.featured .who { justify-content: center; }
+.cs-stats { display: flex; flex-wrap: wrap; gap: 1.5rem 2.5rem; margin: 1.75rem 0; }
+.cs-stats strong { display: block; font-family: var(--font-heading); font-size: 2em; line-height: 1.1; color: var(--accent); }
+.cs-stats span { color: var(--muted); font-size: 0.9em; }
+.cs-quote { border-left: 4px solid var(--accent); padding-left: 1.25rem; margin-bottom: 1.25rem; font-size: 1.08em; }
+.cs-right > :first-child { order: 2; }
+.tbl { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.tbl table { width: 100%; border-collapse: collapse; min-width: 30rem; }
+.tbl th, .tbl td { padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--border); text-align: left; }
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl th { font-size: 0.9em; }
+.tbl .us { color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.yes { color: var(--accent); font-weight: 700; }
+.no { color: var(--muted); }
+
+/* Conversion */
+.billing { text-align: center; color: var(--muted); margin-bottom: 1.75rem; }
+.al-left .billing { text-align: left; }
+.plans { display: grid; gap: 1.5rem; align-items: start; grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr)); }
+.plans.one { max-width: 26rem; margin-inline: auto; }
+.al-left .plans.one { margin-inline: 0; }
+.plan { position: relative; display: flex; flex-direction: column; text-align: left; }
+.plan.pop { border: 2px solid var(--accent); }
+.tag { position: absolute; top: -0.8rem; left: 1.5rem; padding: 0.2rem 0.7rem; border-radius: 999px; background: var(--accent); color: var(--accent-text); font-size: 0.75em; font-weight: 700; }
+.price { font-family: var(--font-heading); font-weight: var(--h-weight); font-size: 2.6em; line-height: 1.1; margin: 0.25rem 0 1rem; color: var(--text); }
+.per { font-family: var(--font-body); font-weight: 400; font-size: 0.38em; color: var(--muted); margin-left: 0.3rem; }
+.plan .list { margin-bottom: 1.5rem; }
+.plan .btn { display: block; text-align: center; margin-top: auto; }
+.al-center .plans + .note { text-align: center; }
+.guar { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem 2rem; max-width: 50rem; }
+.al-center .guar { margin-inline: auto; justify-content: center; text-align: center; }
+.guar .ic { width: 4.5rem; height: 4.5rem; padding: 1rem; margin: 0; }
+.guar > div { flex: 1 1 20rem; }
+.guar p { color: var(--muted); margin: 0; }
+.faq { max-width: 50rem; }
+.al-center .faq { margin-inline: auto; }
+.faq details { border-bottom: 1px solid var(--border); }
+.faq details:first-child { border-top: 1px solid var(--border); }
+.faq summary { cursor: pointer; padding: 1.1rem 0; font-weight: 600; text-align: left; }
+.faq details p { color: var(--muted); text-align: left; }
+.faq2 h3 { font-size: calc(1.05rem * var(--h-scale)); margin-bottom: 0.4rem; }
+.faq2 p { color: var(--muted); margin: 0; }
+.faq-c { margin-top: 2rem; color: var(--muted); }
+.al-center .faq-c { text-align: center; }
+.cta-txt { max-width: 44rem; }
+.portrait { width: 100%; max-width: 22rem; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); }
+.slot.portrait { aspect-ratio: 4 / 5; }
+.sign { margin-top: 1.5rem; }
+.sign strong { display: block; font-family: var(--font-heading); font-size: 1.2em; }
+.sign span { color: var(--muted); }
+.art img, .art .slot { aspect-ratio: 16 / 9; object-fit: cover; width: 100%; border-radius: calc(var(--radius) - 2px); margin-bottom: 1.1rem; }
+.art h3 a { color: inherit; text-decoration: none; }
+.contact-list { display: grid; gap: 0.6rem; margin-top: 1.25rem; }
+.al-center .contact-list { justify-items: center; }
+.contact-list a { font-weight: 600; }
+
+/* Footer */
+.ft { padding-block: 2.75rem; border-top: 1px solid var(--border); font-size: 0.92em; color: var(--muted); }
+.ft .w { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.25rem 2rem; }
+.ft .brand { font-size: 1.1em; margin: 0; }
+.ft p { margin: 0; }
+.ft-split .w { align-items: flex-start; }
+.ft-split .ft-brand { display: grid; gap: 0.6rem; max-width: 24rem; }
+.ft-simple .w { justify-content: center; text-align: center; flex-direction: column; }
+.ft .links a { color: var(--muted); }
+</style>
+<style id="ui">
+/* The builder itself. None of this is included in the downloaded website. */
+:root {
+  --b-bg: #f2f3f5; --b-panel: #ffffff; --b-fg: #16181d; --b-dim: #5b6270; --b-line: #dfe2e7;
+  --b-acc: #0b7a66; --b-acc-fg: #ffffff; --b-soft: #e1f2ed; --b-hl: #f59e0b; --b-ink: #16181d; --b-ink-fg: #f2f3f5;
+  --b-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --b-bg: #0f1114; --b-panel: #181b20; --b-fg: #eceef1; --b-dim: #9aa1ad; --b-line: #2b3038;
+    --b-acc: #3bd1b2; --b-acc-fg: #04221c; --b-soft: #11342d; --b-hl: #fbbf24; --b-ink: #e9ecef; --b-ink-fg: #121417; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --b-bg: #0f1114; --b-panel: #181b20; --b-fg: #eceef1; --b-dim: #9aa1ad; --b-line: #2b3038;
+  --b-acc: #3bd1b2; --b-acc-fg: #04221c; --b-soft: #11342d; --b-hl: #fbbf24; --b-ink: #e9ecef; --b-ink-fg: #121417; color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--b-bg); color: var(--b-fg); font: 15px/1.5 var(--b-font); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--b-panel); }
+#root { min-height: 100%; display: flex; flex-direction: column; }
+#root :is(button, input, select, textarea):not(.site *) { font: inherit; color: inherit; }
+.site button, .site input { font: inherit; }
+#root :focus-visible { outline: 2px solid var(--b-acc); outline-offset: 2px; }
+.ui-h1 { font-size: clamp(1.4rem, 3vw, 1.85rem); line-height: 1.2; margin: 0 0 0.5rem; text-wrap: balance; letter-spacing: -0.01em; }
+.ui-h2 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--b-dim); margin: 1.75rem 0 0.6rem; }
+.kicker { margin: 0 0 0.4rem; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--b-acc); }
+.why { color: var(--b-dim); margin: 0 0 1.5rem; max-width: 40rem; }
+.chip { display: inline-block; margin-left: 0.4rem; padding: 0.05rem 0.5rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; vertical-align: 0.1em; background: var(--b-soft); color: var(--b-acc); }
+.chip.req { background: var(--b-line); color: var(--b-dim); }
+
+/* Top bar */
+.tb { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--b-panel); border-bottom: 1px solid var(--b-line); }
+.tb-in {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; padding-block: 0.6rem;
+  padding-left: max(1rem, env(safe-area-inset-left, 0px)); padding-right: max(1rem, env(safe-area-inset-right, 0px));
+}
+.tb-name { font-weight: 800; letter-spacing: -0.01em; }
+.stepper { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+.stepper button { border: 0; background: none; padding: 0.4rem 0.7rem; border-radius: 6px; cursor: pointer; color: var(--b-dim); font-weight: 600; }
+.stepper button[aria-current="step"] { background: var(--b-soft); color: var(--b-acc); }
+.stepper button:disabled { opacity: 0.45; cursor: default; }
+.status { flex: 1 1 10rem; min-width: 0; color: var(--b-dim); font-size: 0.85rem; text-align: right; }
+.b-btn { padding: 0.5rem 0.95rem; border-radius: 8px; border: 1px solid var(--b-line); background: var(--b-panel); cursor: pointer; font-weight: 600; }
+.b-btn:hover { border-color: var(--b-dim); }
+.b-btn.pri { background: var(--b-acc); border-color: var(--b-acc); color: var(--b-acc-fg); }
+.b-btn:disabled { opacity: 0.5; cursor: default; }
+.b-btn.sm { padding: 0.3rem 0.6rem; font-size: 0.85rem; }
+.main { flex: 1; }
+@media (min-width: 860px) {
+  #root { height: 100%; }
+  .main { min-height: 0; overflow: auto; }
+  .main.is-build { overflow: hidden; }
+}
+
+/* Stage 1 */
+.wiz { max-width: 48rem; margin: 0 auto; padding: clamp(1.5rem, 5vw, 3.5rem) max(1rem, env(safe-area-inset-right, 0px)) 4rem max(1rem, env(safe-area-inset-left, 0px)); }
+.opts { display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fit, minmax(min(13.5rem, 100%), 1fr)); }
+.opt {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0.25rem; padding: 0.85rem 1rem; text-align: left;
+  border: 1.5px solid var(--b-line); border-radius: 10px; background: var(--b-panel); cursor: pointer; min-width: 0;
+}
+.opt:hover { border-color: var(--b-dim); }
+.opt[aria-checked="true"] { border-color: var(--b-acc); background: var(--b-soft); box-shadow: inset 0 0 0 1px var(--b-acc); }
+.opt b { font-weight: 650; }
+.opt small { color: var(--b-dim); font-size: 0.85rem; line-height: 1.4; }
+.opt .chip { margin: 0.2rem 0 0; }
+.row-btns { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.75rem; align-items: center; }
+.progress { display: flex; gap: 0.35rem; margin-bottom: 1.5rem; }
+.progress i { flex: 1; height: 4px; border-radius: 2px; background: var(--b-line); }
+.progress i.on { background: var(--b-acc); }
+.review { display: grid; grid-template-columns: minmax(0, 1fr) 21rem; gap: 2rem; max-width: 76rem; margin: 0 auto; padding: 2rem max(1rem, env(safe-area-inset-right, 0px)) 4rem max(1rem, env(safe-area-inset-left, 0px)); }
+.cat-list { display: grid; gap: 0.5rem; grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr)); }
+.sec-opt { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.75rem 0.9rem; border: 1.5px solid var(--b-line); border-radius: 10px; background: var(--b-panel); cursor: pointer; }
+.sec-opt:has(input:checked) { border-color: var(--b-acc); background: var(--b-soft); }
+.sec-opt input { margin-top: 0.25rem; accent-color: var(--b-acc); width: 1.05rem; height: 1.05rem; flex: none; }
+.sec-opt small { display: block; color: var(--b-dim); margin-top: 0.15rem; line-height: 1.4; }
+.sec-opt .decs { font-size: 0.75rem; margin-top: 0.35rem; }
+.outline { position: sticky; top: 1rem; align-self: start; background: var(--b-panel); border: 1px solid var(--b-line); border-radius: 12px; padding: 1.1rem; }
+.outline h2 { margin: 0; font-size: 1.05rem; }
+.outline ol { list-style: none; margin: 0.75rem 0 1rem; padding: 0; display: grid; gap: 0.3rem; max-height: 50vh; overflow-y: auto; counter-reset: o; }
+.outline li { counter-increment: o; display: flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.5rem; border-radius: 7px; background: var(--b-bg); font-size: 0.9rem; }
+.outline li::before { content: counter(o); color: var(--b-dim); font-size: 0.78rem; width: 1.3rem; font-variant-numeric: tabular-nums; }
+.outline li span { flex: 1; min-width: 0; }
+.ico { border: 0; background: none; cursor: pointer; padding: 0.15rem 0.35rem; border-radius: 5px; color: var(--b-dim); line-height: 1; }
+.ico:hover { background: var(--b-line); color: var(--b-fg); }
+.ico:disabled { opacity: 0.3; cursor: default; background: none; }
+.outline .b-btn { width: 100%; margin-top: 0.4rem; }
+@media (max-width: 900px) { .review { grid-template-columns: 1fr; } .outline { position: static; } }
+
+/* Stage 2 */
+.build { display: grid; grid-template-columns: 16rem minmax(22rem, 27rem) minmax(0, 1fr); height: 100%; }
+.rail, .panel { overflow-y: auto; border-right: 1px solid var(--b-line); }
+.rail { padding: 1rem 0.6rem 3rem; background: var(--b-bg); }
+.rail-top { display: flex; justify-content: space-between; align-items: center; padding: 0 0.4rem 0.6rem; }
+.rail-top span { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--b-dim); }
+.rail ol { list-style: none; margin: 0; padding: 0; }
+.r-h { display: flex; width: 100%; gap: 0.55rem; align-items: center; padding: 0.45rem 0.5rem; border: 0; border-radius: 7px; background: none; cursor: pointer; text-align: left; font-weight: 600; }
+.r-h:hover { background: var(--b-line); }
+.r-cur > .r-h { background: var(--b-panel); box-shadow: 0 0 0 1px var(--b-line); }
+.r-n { display: grid; place-items: center; flex: none; width: 1.4rem; height: 1.4rem; border-radius: 50%; font-size: 0.72rem; border: 1.5px solid var(--b-line); color: var(--b-dim); font-variant-numeric: tabular-nums; }
+.r-done .r-n { background: var(--b-acc); border-color: var(--b-acc); color: var(--b-acc-fg); }
+.r-dec { padding: 0.15rem 0 0.4rem 2.35rem !important; }
+.r-dec button { display: flex; gap: 0.45rem; width: 100%; padding: 0.2rem 0.4rem; border: 0; background: none; border-radius: 5px; cursor: pointer; text-align: left; font-size: 0.85rem; color: var(--b-dim); }
+.r-dec button:hover { color: var(--b-fg); }
+.r-dec button[aria-current="step"] { color: var(--b-acc); font-weight: 700; }
+.r-dec .d-t { width: 0.9rem; flex: none; color: var(--b-acc); }
+.panel { background: var(--b-panel); padding: 1.5rem 1.4rem 4rem; }
+.jump { display: none; width: 100%; margin-bottom: 1rem; padding: 0.5rem; border: 1px solid var(--b-line); border-radius: 8px; background: var(--b-panel); }
+.dec-body { display: grid; gap: 0.75rem; }
+.panel .opts { grid-template-columns: 1fr; }
+.panel .opts.two { grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr)); }
+.sw { display: flex; width: 100%; height: 2.4rem; border-radius: 6px; overflow: hidden; border: 1px solid var(--b-line); margin-bottom: 0.35rem; align-items: center; padding-left: 0.7rem; font-weight: 700; }
+.alg { display: grid; gap: 4px; width: 4.5rem; padding: 0.4rem 0; }
+.alg i { display: block; height: 4px; border-radius: 2px; background: var(--b-dim); }
+.alg.c { justify-items: center; }
+.alg i:nth-child(1) { width: 100%; height: 6px; background: var(--b-fg); }
+.alg i:nth-child(2) { width: 80%; }
+.alg i:nth-child(3) { width: 55%; }
+.chk { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.7rem 0.85rem; border: 1.5px solid var(--b-line); border-radius: 10px; cursor: pointer; }
+.chk:has(input:checked) { border-color: var(--b-acc); background: var(--b-soft); }
+.chk input { accent-color: var(--b-acc); width: 1.05rem; height: 1.05rem; margin-top: 0.2rem; flex: none; }
+.chk small { display: block; color: var(--b-dim); line-height: 1.4; }
+.fld { display: grid; gap: 0.3rem; }
+.fld > span { font-weight: 600; font-size: 0.88rem; }
+.fld input, .fld textarea, .fld select, .item select {
+  width: 100%; min-width: 0; padding: 0.55rem 0.7rem; border: 1px solid var(--b-line); border-radius: 8px; background: var(--b-bg);
+}
+.fld textarea { min-height: 5rem; resize: vertical; }
+.fld input:focus, .fld textarea:focus { border-color: var(--b-acc); outline: none; box-shadow: 0 0 0 3px var(--b-soft); }
+.fld small { color: var(--b-dim); }
+.fld input[type="color"] { width: 3.25rem; height: 2.25rem; padding: 0.15rem; cursor: pointer; }
+.fld-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.fld-row > span { font-weight: 600; font-size: 0.88rem; }
+.item { border: 1px solid var(--b-line); border-radius: 10px; padding: 0.75rem 0.85rem 0.9rem; display: grid; gap: 0.6rem; margin: 0; min-width: 0; }
+.item legend { padding: 0 0.35rem; font-weight: 700; font-size: 0.85rem; }
+.item-top { display: flex; justify-content: flex-end; gap: 0.15rem; margin: -0.4rem 0 -0.3rem; }
+.item .chk { padding: 0.45rem 0.6rem; }
+.add { padding: 0.6rem; border: 1.5px dashed var(--b-line); border-radius: 10px; background: none; cursor: pointer; color: var(--b-dim); font-weight: 600; }
+.add:hover { border-color: var(--b-acc); color: var(--b-acc); }
+.slot-row { display: flex; gap: 0.9rem; align-items: center; padding: 0.75rem; border: 1px solid var(--b-line); border-radius: 10px; }
+.thumb { flex: none; width: 5.5rem; height: 4rem; border-radius: 6px; border: 1.5px dashed var(--b-line); background: var(--b-bg) center / cover no-repeat; }
+.thumb.has { border-style: solid; }
+.thumb.contain { background-size: contain; }
+.slot-row > div:last-child { min-width: 0; display: grid; gap: 0.35rem; justify-items: start; }
+.slot-row small { color: var(--b-dim); line-height: 1.35; }
+.slot-row .btns-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.pals { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.45rem; }
+.pal { display: flex; height: 2.4rem; padding: 0; overflow: hidden; border: 1.5px solid var(--b-line); border-radius: 8px; cursor: pointer; background: none; }
+.pal[aria-checked="true"] { border-color: var(--b-acc); box-shadow: 0 0 0 2px var(--b-acc); }
+.pal i { flex: 1; }
+.fnt { font-size: 1.35rem; line-height: 1.2; }
+.fnt + small { font-family: var(--b-font); }
+.shape-demo { display: inline-block; padding: 0.35rem 0.9rem; background: var(--b-ink); color: var(--b-ink-fg); font-size: 0.85rem; font-weight: 700; }
+.nav-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.6rem; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--b-line); }
+.pv { display: flex; flex-direction: column; min-width: 0; background: var(--b-bg); }
+.pv-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.55rem 1rem; border-bottom: 1px solid var(--b-line); background: var(--b-panel); font-size: 0.85rem; color: var(--b-dim); }
+.seg { display: inline-flex; border: 1px solid var(--b-line); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; background: none; padding: 0.3rem 0.75rem; cursor: pointer; font-size: 0.85rem; }
+.seg button[aria-pressed="true"] { background: var(--b-soft); color: var(--b-acc); font-weight: 700; }
+.pv-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 1rem; }
+.pv-frame { max-width: 100%; margin: 0 auto; border-radius: 10px; overflow: hidden; border: 1px solid var(--b-line); box-shadow: 0 8px 30px -18px rgba(0, 0, 0, 0.35); }
+.pv-frame.phone { max-width: 390px; border-radius: 22px; }
+.pv-frame .site [data-sid] { scroll-margin-top: 0; }
+.pv-frame .site .b-cur { outline: 3px solid var(--b-hl); outline-offset: -3px; }
+.pv-frame .site a, .pv-frame .site button { cursor: default; }
+@media (max-width: 1180px) {
+  .build { grid-template-columns: minmax(20rem, 25rem) minmax(0, 1fr); }
+  .rail { display: none; }
+  .jump { display: block; }
+}
+@media (max-width: 859px) {
+  .build { display: block; height: auto; }
+  .panel { border-right: 0; padding-inline: max(1rem, env(safe-area-inset-left, 0px)) max(1rem, env(safe-area-inset-right, 0px)); }
+  .pv-scroll { height: 75vh; flex: none; }
+}
+
+/* Stage 3 */
+.finish { max-width: 76rem; margin: 0 auto; padding: 2rem max(1rem, env(safe-area-inset-right, 0px)) 4rem max(1rem, env(safe-area-inset-left, 0px)); display: grid; gap: 1.5rem; }
+.fin-top { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr)); align-items: start; }
+.todo { background: var(--b-panel); border: 1px solid var(--b-line); border-radius: 12px; padding: 1.1rem 1.2rem; }
+.todo h2 { margin: 0 0 0.5rem; font-size: 1rem; }
+.todo ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; max-height: 16rem; overflow-y: auto; }
+.todo li { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; font-size: 0.9rem; }
+.todo p { margin: 0; color: var(--b-dim); }
+.fin-pv { border-radius: 12px; overflow: hidden; border: 1px solid var(--b-line); }
+.fin-pv .pv-scroll { height: auto; max-height: none; overflow: visible; }
+.file-in { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; pointer-events: none; }
+</style>
+<div id="root"></div>
+<script type="application/json" id="state">{}</script>
+<script id="main">
+(function () {
+  "use strict";
+  var TITLE = "SaaS Site Builder";
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  };
+
+  /* Unsaved work is kept in this browser (IndexedDB, so photos fit). Every call resolves, never rejects. */
+  var kv = (function () {
+    var dbp;
+    function db() {
+      return dbp || (dbp = new Promise(function (res, rej) {
+        try {
+          var r = indexedDB.open("saas-site-builder", 1);
+          r.onupgradeneeded = function () { r.result.createObjectStore("kv"); };
+          r.onsuccess = function () { res(r.result); };
+          r.onerror = function () { rej(r.error); };
+        } catch (e) { rej(e); }
+      }));
+    }
+    function run(mode, fn) {
+      return db().then(function (d) {
+        return new Promise(function (res, rej) {
+          var tx = d.transaction("kv", mode), rq = fn(tx.objectStore("kv"));
+          tx.oncomplete = function () { res(rq.result); };
+          tx.onerror = tx.onabort = function () { rej(tx.error); };
+        });
+      }).catch(function () { return null; });
+    }
+    return {
+      get: function (k) { return run("readonly", function (s) { return s.get(k); }); },
+      set: function (k, v) { return run("readwrite", function (s) { return s.put(v, k); }); },
+      del: function (k) { return run("readwrite", function (s) { return s.delete(k); }); }
+    };
+  })();
+
+  /* =====================================================================
+     1. THE SECTION CATALOGUE: every section a SaaS homepage might use.
+     Each element is something the user can switch on or off; each item
+     list is something they add to. Placeholders double as writing prompts.
+     ===================================================================== */
+  function el(k, label, on, ph, type, hint, only) { return { k: k, label: label, on: on, ph: ph || "", type: type || "text", hint: hint || "", only: only }; }
+  function EB(ph, on) { return el("eyebrow", "Small label above the heading", on !== false, ph, "text", "A few words naming the section."); }
+  function HD(ph) { return el("heading", "Heading", true, ph, "text", "The one line most people will read."); }
+  function IN(ph, on) { return el("intro", "Intro sentence", on !== false, ph, "long", "One or two sentences under the heading."); }
+  function ICONS_EL() { return el("icons", "Icons", true, "", "flag", "A small icon on each item."); }
+  function BTN(k, label, ph, on, which) {
+    return el(k, label, on, ph, "button", which === 2 ? "Goes to your secondary link." : "Goes to your main button link.");
+  }
+
+  var CATS = [
+    ["top", "Top of page", "What visitors see first."],
+    ["value", "Problem and value", "Why they should care."],
+    ["product", "Product", "What it is and how it works."],
+    ["proof", "Proof", "Why they should believe you."],
+    ["convert", "Conversion", "Getting them to act."],
+    ["company", "Company and support", "Who you are and how to reach you."]
+  ];
+
+  var LIB = [
+    { id: "announce", cat: "top", name: "Announcement bar", desc: "A thin strip above everything for news: a launch, an offer or an event.",
+      bgs: ["brand", "inv", "tint"], bg: "brand",
+      els: [el("text", "Announcement", true, "New: [Product] now works with Slack"), el("link", "Link text", true, "Read more →", "text", "Goes to your secondary link.")] },
+    { id: "nav", cat: "top", name: "Navigation bar", desc: "Your logo, links to the main parts of the page, a log-in link and a sign-up button.",
+      layouts: [["left", "Logo left, links right", "The standard for SaaS sites."], ["center", "Logo centred, links underneath", "Feels more editorial."]],
+      bgs: ["plain", "tint", "brand", "inv"], bg: "plain",
+      els: [el("links", "Page links", true, "", "flag", "Links to sections of this page or to other pages."),
+            el("login", "Log in link", true, "Log in", "text", "For existing customers. Goes to your log-in page link."),
+            BTN("cta", "Sign-up button", "Start free trial", true),
+            el("sticky", "Stay visible while scrolling", true, "", "flag", "The bar follows visitors down the page.")],
+      items: { label: "link", plural: "links", when: "links", count: 4,
+               why: "Four or five is plenty. To jump to a section on this page, type # and its name, e.g. #pricing or #faq.",
+               fields: [["t", "Link text", ["Features", "Pricing", "Customers", "FAQ"]], ["u", "Goes to", ["#features", "#pricing", "#testimonials", "#faq"], "url"]] } },
+    { id: "hero", cat: "top", name: "Hero", required: true, desc: "Your headline, sub-headline and main call to action. The most important section.",
+      layouts: [["stack", "Text, with product image below", "Shows the product straight away. The most common SaaS hero."],
+                ["split", "Text left, image right", "Fits more above the fold on wide screens."],
+                ["text", "Text only", "Bold and simple. Pairs well with a photo background."]],
+      bg: "plain", align: "center", noAlign: ["split"],
+      els: [el("eyebrow", "Small badge above the headline", false, "New: version 2.0 is live", "text", "For news or a short category label."),
+            el("headline", "Headline", true, "The main outcome your customer wants", "text", "Say what they get, not what the product is."),
+            el("sub", "Sub-headline", true, "How [Product] delivers it, who it's for, and how fast", "long", "One or two sentences that back up the headline."),
+            el("email", "Email box before the main button", false, "", "flag", "Visitors type their email, then press the main button. Good for waitlists."),
+            BTN("cta", "Main button", "Start free trial", true),
+            BTN("cta2", "Second button", "See how it works", false, 2),
+            el("note", "Reassurance line", true, "No credit card required · Cancel anytime", "text", "Removes a worry right at the button."),
+            el("rating", "Rating line", false, "Rated 4.9/5 by 1,200+ teams", "text", "Shown with five stars.")],
+      imgs: function (s) { return s.layout === "text" ? [] : [["main", "Product screenshot", "photo", "Your product's best screen. Wide images work best."]]; } },
+    { id: "logos", cat: "top", name: "Customer logos", desc: "A row of customers' names or logos. The fastest way to build trust.",
+      layouts: [["names", "Company names as text", "Quick: no files needed."], ["images", "Logo images", "More polished: upload each company's logo."]],
+      bgs: ["plain", "tint", "inv"], bg: "plain", align: "center",
+      els: [el("heading", "Line above the logos", true, "Trusted by 2,000+ teams at", "text")],
+      items: { label: "company", plural: "companies", count: 5, img: "logo", imgWhen: function (s) { return s.layout === "images"; },
+               fields: [["name", "Company name", ["Northwind", "Globex", "Initech", "Umbrella", "Hooli"]]] } },
+    { id: "problem", cat: "value", name: "Problem", desc: "Name the problem your customer has, in their words, so they think: that's me.",
+      layouts: [["list", "Heading and a bullet list", "Quick to scan."], ["cards", "Pain points as cards", "Room for a sentence on each."]],
+      bg: "tint", align: "left",
+      els: [EB("THE PROBLEM"), HD("Sound familiar?"), IN("Describe the situation they're in right now.")],
+      items: { label: "pain point", plural: "pain points", count: 3,
+               fields: [["h", "Pain point", ["Hours lost to manual updates", "Information spread across five tools", "Nobody knows what's current"]],
+                        ["p", "Detail", "One sentence on why it hurts.", "long", function (s) { return s.layout === "cards"; }]] } },
+    { id: "agitation", cat: "value", name: "Agitation (cost of doing nothing)", desc: "Show what the problem costs them, so fixing it feels urgent.",
+      layouts: [["story", "Paragraphs and a stand-out line", "A short persuasive argument."], ["stat", "One big number", "Let a single striking figure do the work."]],
+      bg: "plain", align: "left",
+      els: [EB("WHY IT MATTERS"), HD("What this is really costing you"),
+            el("stat", "Big number", true, "9 hrs", "text", "", ["stat"]),
+            el("statl", "What the number means", true, "lost by every team, every single week", "text", "", ["stat"]),
+            el("body", "Paragraph", true, "Spell out the consequences: lost time, lost money, missed deadlines, stress.", "long"),
+            el("body2", "Second paragraph", false, "Why the usual fixes haven't worked, and what happens if nothing changes.", "long"),
+            el("callout", "Stand-out line", true, "That's a full working day, gone, every week.", "text", "", ["story"])] },
+    { id: "solution", cat: "value", name: "Solution", desc: "Introduce your product as the answer to the problem.",
+      layouts: [["side", "Text beside an image", "Balanced and easy to scan."], ["below", "Text, then a wide image", "Gives the image more room."], ["text", "Text only", "When you have no image yet."]],
+      bg: "plain", align: "left", noAlign: ["side"],
+      els: [EB("THE SOLUTION"), HD("Meet [Product]: everything in one place"), IN("What it is, and why it solves the problem above."),
+            el("points", "Key points list", true, "", "flag", "Three short bullet points."), BTN("cta", "Button", "Start free trial", false)],
+      items: { label: "key point", plural: "key points", when: "points", count: 3,
+               fields: [["t", "Point", ["Set up in five minutes", "Works with the tools you already use", "Built for teams of any size"]]] },
+      imgs: function (s) { return s.layout === "text" ? [] : [["main", "Product image", "photo", "A screenshot or photo of the product in use."]]; } },
+    { id: "beforeafter", cat: "value", name: "Before and after", desc: "Contrast life without your product against life with it.",
+      bg: "tint", align: "center",
+      els: [EB("THE DIFFERENCE"), HD("Before and after [Product]"), IN("", false),
+            el("bt", "Left column title", true, "Without [Product]"), el("at", "Right column title", true, "With [Product]")],
+      items: { label: "comparison", plural: "comparisons", count: 4, why: "Each row pairs a 'before' with its 'after'.",
+               fields: [["b", "Before", ["Status updates by email", "Hours of copy and paste", "Guessing what's next", "Surprises at deadline"]],
+                        ["a", "After", ["One live dashboard", "Everything syncs automatically", "Clear next steps for everyone", "Problems flagged early"]]] } },
+    { id: "benefits", cat: "value", name: "Benefits", desc: "The outcomes customers get, as opposed to the features that deliver them.",
+      layouts: [["cards", "Cards in a row", "Each benefit gets equal weight."], ["list", "List with icons", "Compact; good for four or more."]],
+      bg: "plain", align: "center",
+      els: [EB("WHY TEAMS SWITCH"), HD("Spend less time managing work and more time doing it"), IN("", false), ICONS_EL()],
+      items: { label: "benefit", plural: "benefits", count: 3, icon: true,
+               fields: [["ic", "Icon", "", "icon"], ["h", "Benefit", ["Save 10 hours a week", "Never miss a deadline", "Everyone stays in sync"]],
+                        ["p", "Explanation", "What changes for the customer, and why it matters.", "long"]] } },
+    { id: "usecases", cat: "value", name: "Use cases (who it's for)", desc: "Show how different roles, teams or industries use your product.",
+      layouts: [["cards", "Cards", "One card per audience."], ["list", "Simple list", "Compact."]],
+      bg: "tint", align: "center",
+      els: [EB("WHO IT'S FOR"), HD("Built for every team"), IN("", false)],
+      items: { label: "use case", plural: "use cases", count: 3,
+               fields: [["h", "Who", ["For marketing teams", "For product teams", "For agencies"]], ["p", "How they use it", "What this group does with [Product].", "long"],
+                        ["l", "Link text (optional)", "Learn more →"], ["u", "Link goes to", "https://…", "url"]] } },
+    { id: "showcase", cat: "product", name: "Product showcase", desc: "A large screenshot or video of your product in action.",
+      layouts: [["frame", "Screenshot in a browser window", "Looks finished even with a plain screenshot."], ["shot", "Screenshot on its own", "Clean and minimal."], ["video", "Video", "Opens your YouTube, Vimeo or Loom video."]],
+      bg: "tint", align: "center",
+      els: [EB("SEE IT IN ACTION"), HD("Your whole team's work, on one screen"), IN("", false),
+            el("video", "Video link", true, "https://youtube.com/watch?v=…", "url", "Where the play button goes.", ["video"]),
+            el("caption", "Caption under the image", false, "The [Product] dashboard, updated in real time.")],
+      imgs: function (s) { return [["main", s.layout === "video" ? "Video cover image" : "Screenshot", "photo", "A wide image works best."]]; } },
+    { id: "features", cat: "product", name: "Features", desc: "What your product does: the capabilities behind the benefits.",
+      layouts: [["g3", "Grid of three", "The standard; fits six features neatly."], ["g2", "Grid of two", "More room for each explanation."], ["list", "Compact list", "For a long list of features."]],
+      bg: "plain", align: "center",
+      els: [EB("FEATURES"), HD("Everything you need to run projects"), IN("Powerful enough for big teams, simple enough to start today."), ICONS_EL(), BTN("cta2", "Button", "See all features", false, 2)],
+      items: { label: "feature", plural: "features", count: 6, icon: true,
+               fields: [["ic", "Icon", "", "icon"], ["h", "Feature", ["Real-time dashboards", "Automations", "Shared workspaces", "Smart alerts", "Integrations", "Reporting"]],
+                        ["p", "What it does", "One sentence on what it does for the customer.", "long"]] } },
+    { id: "featurerows", cat: "product", name: "Feature deep-dives", desc: "Two or three key features, each with its own image and explanation.",
+      layouts: [["alt", "Image alternates left and right", "Keeps a long section lively."], ["right", "Image always on the right", "Calmer and more consistent."]],
+      bg: "plain", align: "center",
+      els: [EB("HOW IT HELPS", false), HD("Built for the way you work"), IN("", false)],
+      items: { label: "feature", plural: "features", count: 3, img: "photo",
+               fields: [["e", "Small label", ["AUTOMATE", "COLLABORATE", "REPORT"]], ["h", "Heading", ["Put busywork on autopilot", "Work together in real time", "Know where everything stands"]],
+                        ["p", "Explanation", "Two or three sentences on what it does and why it matters.", "long"],
+                        ["l", "Link text (optional)", "Learn more →"], ["u", "Link goes to", "https://…", "url"]] } },
+    { id: "how", cat: "product", name: "How it works", desc: "The steps from sign-up to result, so getting started feels easy.",
+      layouts: [["cols", "Numbered steps in a row", "Best for three or four steps."], ["timeline", "Vertical timeline", "Room for more steps or more detail."]],
+      bg: "tint", align: "center",
+      els: [EB("HOW IT WORKS"), HD("Up and running in three steps"), IN("", false), BTN("cta", "Button", "Get started", false)],
+      items: { label: "step", plural: "steps", count: 3,
+               fields: [["h", "Step", ["Sign up in seconds", "Connect your tools", "See everything in one place"]], ["p", "What happens", "What the customer does, or what happens for them.", "long"]] } },
+    { id: "integrations", cat: "product", name: "Integrations", desc: "The tools your product connects to.",
+      layouts: [["grid", "Logo tiles", "Quick to scan."], ["list", "List with descriptions", "Explains what each connection does."]],
+      bg: "plain", align: "center",
+      els: [EB("INTEGRATIONS"), HD("Works with the tools you already use"), IN("", false), BTN("cta2", "Button", "See all integrations", false, 2)],
+      items: { label: "integration", plural: "integrations", count: 6, img: "logo",
+               fields: [["name", "Name", ["Slack", "Google Drive", "Salesforce", "HubSpot", "Zapier", "Notion"]],
+                        ["p", "What it does", "e.g. Send updates to any channel", "text", function (s) { return s.layout === "list"; }]] } },
+    { id: "stats", cat: "proof", name: "Results in numbers", desc: "Big numbers that prove it works: customers, time saved, ratings.",
+      layouts: [["row", "Big numbers in a row", "Bold and simple."], ["cards", "Numbers in cards", "More structured."]],
+      bg: "brand", align: "center",
+      els: [EB("", false), HD("The numbers speak for themselves"), IN("", false)],
+      items: { label: "number", plural: "numbers", count: 3,
+               fields: [["n", "Number", ["10,000+", "4.9/5", "32%"]], ["l", "What it measures", ["teams use [Product]", "average customer rating", "faster delivery, on average"]]] } },
+    { id: "testimonials", cat: "proof", name: "Testimonials", desc: "Quotes from happy customers, with names and photos.",
+      layouts: [["grid", "Grid of quotes", "Shows breadth: lots of happy customers."], ["featured", "One big featured quote", "Shows depth: one powerful story."]],
+      bg: "tint", align: "center",
+      els: [EB("CUSTOMERS"), HD("Loved by teams like yours"), IN("", false),
+            el("photos", "Customer photos", true, "", "flag", "Faces make quotes more believable."), el("stars", "Five-star rating on each quote", false, "", "flag")],
+      items: { label: "testimonial", plural: "testimonials", count: 3, img: "avatar", imgWhen: function (s) { return !!s.el.photos; },
+               why: "The best quotes mention a specific result. With the featured layout, only the first quote is shown.",
+               fields: [["q", "Quote", "What result did they get? Use their exact words.", "long"], ["n", "Name", ["Priya Shah", "Marcus Lee", "Ana Gómez"]],
+                        ["r", "Role and company", ["Head of Operations, Northwind", "Founder, Globex", "Product Manager, Initech"]]] } },
+    { id: "casestudy", cat: "proof", name: "Featured case study", desc: "One customer's story in detail, with the results they got.",
+      layouts: [["left", "Image on the left", ""], ["right", "Image on the right", ""]],
+      bg: "plain",
+      els: [EB("CASE STUDY"), HD("How Northwind cut reporting time by 80%"), el("body", "The story", true, "What they struggled with, what they did, and what changed.", "long"),
+            el("results", "Result numbers", true, "", "flag", "Two or three numbers from their results."),
+            el("quote", "Customer quote", true, "We got back a whole day every week.", "long"), el("person", "Who said it", true, "Name, role at company"),
+            BTN("cta2", "Link to the full story", "Read the full story →", true, 2)],
+      items: { label: "result", plural: "results", when: "results", count: 3,
+               fields: [["n", "Number", ["80%", "3×", "£40k"]], ["l", "Result", ["less time on reports", "faster onboarding", "saved every year"]]] },
+      imgs: function () { return [["main", "Image", "photo", "The customer's team, their logo, or your product."]]; } },
+    { id: "awards", cat: "proof", name: "Reviews and awards", desc: "Ratings and badges from review sites like G2, Capterra or Product Hunt.",
+      bg: "plain", align: "center",
+      els: [HD("Rated highly by real users"), el("rating", "Rating line", true, "4.8 out of 5 from 600+ reviews", "text", "Shown with five stars.")],
+      items: { label: "badge", plural: "badges", count: 3, img: "logo",
+               fields: [["name", "Badge or award", ["G2 Leader, Winter 2026", "Capterra Best Value", "Product Hunt #1 Product of the Day"]]] } },
+    { id: "comparison", cat: "proof", name: "Comparison table", desc: "How you compare with the alternatives, feature by feature.",
+      bg: "plain", align: "center",
+      els: [EB("COMPARE"), HD("Why teams choose [Product]"), IN("", false),
+            el("us", "Your column", true, "[Product]"), el("them", "Second column", true, "Spreadsheets"), el("them2", "Third column", false, "Other tools")],
+      items: { label: "row", plural: "rows", count: 4, why: "Type yes or no to show a tick or a cross, or write a short answer.",
+               fields: [["f", "Feature", ["Real-time updates", "Set-up time", "Automations", "Price per user"]], ["a", "You", ["yes", "5 minutes", "yes", "£9"]],
+                        ["b", "Second column", ["no", "Days", "no", "Free"]], ["c", "Third column", ["yes", "Weeks", "yes", "£25"], "text", function (s) { return !!s.el.them2; }]] } },
+    { id: "security", cat: "proof", name: "Security and compliance", desc: "Reassure buyers their data is safe: certifications, encryption, uptime.",
+      layouts: [["cards", "Cards", "Room to explain each one."], ["badges", "Row of badges", "Quick reassurance."]],
+      bg: "inv", align: "center",
+      els: [EB("SECURITY"), HD("Enterprise-grade security, built in"), IN("", false), ICONS_EL(), BTN("cta2", "Button", "Visit our trust centre", false, 2)],
+      items: { label: "point", plural: "security points", count: 3, icon: true,
+               fields: [["ic", "Icon", "", "icon"], ["h", "Title", ["SOC 2 Type II", "GDPR compliant", "99.99% uptime"]],
+                        ["p", "Detail", "One sentence of detail.", "long", function (s) { return s.layout === "cards"; }]] } },
+    { id: "pricing", cat: "convert", name: "Pricing", desc: "Your plans and prices, so visitors can see what it costs.",
+      layouts: [["plans", "Plan cards side by side", "Two to four plans."], ["single", "One plan", "Simple pricing; only the first plan is shown."]],
+      bg: "plain", align: "center",
+      els: [EB("PRICING"), HD("Simple, transparent pricing"), IN("", false), el("billing", "Billing note above the plans", false, "Save 20% with yearly billing"),
+            el("note", "Note under the plans", true, "Every plan includes a 14-day free trial.")],
+      items: { label: "plan", plural: "plans", count: 3, why: "Highlight the plan most people should choose.",
+               fields: [["name", "Plan name", ["Starter", "Pro", "Business"]], ["price", "Price", ["£0", "£12", "£24"]], ["per", "Per", ["/ month", "/ user / month", "/ user / month"]],
+                        ["d", "Who it's for", ["For individuals getting started", "For growing teams", "For larger organisations"]],
+                        ["feat", "What's included (one per line)", ["3 projects\nBasic reporting\nEmail support", "Unlimited projects\nAutomations\nPriority support", "Everything in Pro\nSSO and audit log\nDedicated manager"], "lines"],
+                        ["cta", "Button text", ["Start free", "Start free trial", "Talk to sales"]], ["pop", "Highlight as most popular", "", "check"]] } },
+    { id: "guarantee", cat: "convert", name: "Guarantee", desc: "Remove the risk of buying: a money-back promise, free trial or easy cancelling.",
+      bg: "tint", align: "center",
+      els: [el("icon", "Shield icon", true, "", "flag"), HD("30-day money-back guarantee"),
+            el("body", "Explanation", true, "Try [Product] for 30 days. If it's not right for you, email us for a full refund. No questions asked.", "long")] },
+    { id: "faq", cat: "convert", name: "FAQ and objections", desc: "Answer the doubts that stop people buying.",
+      layouts: [["accordion", "Click to open each answer", "Tidy, even with many questions."], ["open", "All answers shown in two columns", "Nothing hidden; good for five or fewer."]],
+      bg: "plain", align: "center",
+      els: [EB("FAQ"), HD("Questions? Answered."), IN("", false), el("contact", "Contact line", false, "Still have questions? Email hello@yourproduct.com")],
+      items: { label: "question", plural: "questions", count: 5, why: "Cover price, set-up time, switching from another tool, security and cancelling.",
+               fields: [["q", "Question", ["How long does set-up take?", "Can I cancel anytime?", "Is my data secure?", "Can I import from another tool?", "What if I need help?"]],
+                        ["a", "Answer", "Be direct and specific.", "long"]] } },
+    { id: "founder", cat: "company", name: "Founder note", desc: "A personal message from the founder. Builds trust, especially before launch.",
+      layouts: [["photo", "With a photo", "A face makes it personal."], ["text", "Text only", "A simple letter."]],
+      bg: "tint", align: "left", noAlign: ["photo"],
+      els: [EB("WHY WE BUILT THIS"), HD("We were tired of losing a day a week to admin"),
+            el("body", "Message", true, "Tell the story: what you saw, why it bothered you, and what you set out to build.", "long"),
+            el("name", "Name", true, "Alex Morgan"), el("role", "Role", true, "Founder and CEO")],
+      imgs: function (s) { return s.layout === "photo" ? [["main", "Founder photo", "photo", "A friendly, well-lit portrait."]] : []; } },
+    { id: "resources", cat: "company", name: "Articles and resources", desc: "Your latest blog posts, guides or webinars.",
+      layouts: [["cards", "Cards with images", "More visual."], ["list", "Simple list", "Text only."]],
+      bg: "plain", align: "left",
+      els: [EB("RESOURCES"), HD("From the blog"), IN("", false), BTN("cta2", "Button", "View all articles", false, 2)],
+      items: { label: "article", plural: "articles", count: 3, img: "photo", imgWhen: function (s) { return s.layout === "cards"; },
+               fields: [["tag", "Category", ["GUIDE", "CASE STUDY", "PRODUCT"]], ["h", "Title", ["How to run a weekly review in 15 minutes", "How Globex scaled to 40 teams", "What's new in [Product] 2.0"]],
+                        ["p", "Summary", "One sentence on what readers will learn.", "long"], ["u", "Link", "https://…", "url"]] } },
+    { id: "leadmagnet", cat: "convert", name: "Newsletter or free resource", desc: "Capture emails from visitors who aren't ready to buy yet.",
+      layouts: [["center", "Centred", "Simple and focused."], ["side", "Beside an image", "Show the guide or resource."]],
+      bg: "brand", align: "center", noAlign: ["side"],
+      els: [EB("FREE GUIDE", false), HD("Get the 2026 team productivity playbook"), el("body", "Description", true, "20 pages of tactics from 500 high-performing teams.", "long"),
+            el("ph", "Text inside the email box", true, "you@company.com"), el("btn", "Button text", true, "Send it to me"),
+            el("note", "Small print", true, "No spam. Unsubscribe anytime.")],
+      imgs: function (s) { return s.layout === "side" ? [["main", "Image", "photo", "e.g. the guide's cover."]] : []; } },
+    { id: "contact", cat: "company", name: "Contact and support", desc: "How to reach you: email, phone, help centre.",
+      layouts: [["center", "Centred", ""], ["split", "Text and contact details side by side", ""]],
+      bg: "tint", align: "center", noAlign: ["split"],
+      els: [EB("CONTACT", false), HD("We're here to help"), el("body", "Intro", true, "Questions about plans, set-up or anything else? We reply within one working day.", "long"),
+            el("email", "Email address", true, "hello@yourproduct.com"), el("phone", "Phone", false, "+44 20 1234 5678"), el("address", "Address", false, "1 Example Street, London"),
+            BTN("cta2", "Button", "Visit the help centre", false, 2)] },
+    { id: "finalcta", cat: "convert", name: "Final call to action", desc: "One last push: restate the promise and ask them to act.",
+      layouts: [["center", "Centred band", "The classic closer."], ["split", "Text beside an image", "Adds one more look at the product."]],
+      bg: "brand", align: "center", noAlign: ["split"],
+      els: [HD("Ready to get your week back?"), el("body", "Supporting line", true, "Join 10,000 teams who run their work on [Product].", "long"),
+            BTN("cta", "Main button", "Start free trial", true), BTN("cta2", "Second button", "Book a demo", false, 2),
+            el("note", "Reassurance line", true, "Free for 14 days. No credit card needed.")],
+      imgs: function (s) { return s.layout === "split" ? [["main", "Image", "photo", ""]] : []; } },
+    { id: "footer", cat: "company", name: "Footer", desc: "The bottom of the page: your name, links to legal pages, copyright.",
+      layouts: [["split", "Brand left, links right", "The standard."], ["simple", "Everything centred", "Minimal."]],
+      bgs: ["plain", "tint", "inv", "brand"], bg: "plain",
+      els: [el("tagline", "Tagline", true, "Project tracking for busy teams."), el("links", "Links", true, "", "flag", "e.g. Privacy, Terms, Contact."),
+            el("copy", "Copyright line", true, "", "flag", "Shows © the current year and your name.")],
+      items: { label: "link", plural: "footer links", when: "links", count: 4,
+               fields: [["t", "Link text", ["Privacy", "Terms", "Contact", "Status"]], ["u", "Goes to", "https://…", "url"]] } }
+  ];
+  var BY = {};
+  LIB.forEach(function (c) { BY[c.id] = c; });
+  var CANON = ["announce", "nav", "hero", "logos", "problem", "agitation", "solution", "beforeafter", "benefits", "usecases", "showcase",
+    "features", "featurerows", "how", "integrations", "stats", "testimonials", "casestudy", "awards", "comparison", "security", "pricing",
+    "guarantee", "faq", "founder", "resources", "leadmagnet", "contact", "finalcta", "footer"];
+
+  /* =====================================================================
+     2. STAGE 1 QUESTIONS and the structure each set of answers suggests.
+     ===================================================================== */
+  var QS = [
+    { k: "goal", q: "What should your homepage get visitors to do?", why: "This sets your main button and which sections we suggest.",
+      opts: [["trial", "Start a free trial", "Self-serve sign-up for a product people can try on their own."], ["demo", "Book a demo", "For products that need a walkthrough, or a sales team."],
+             ["wait", "Join a waitlist", "You haven't launched yet and want to collect interest."], ["buy", "Buy or subscribe", "Visitors pay straight away."],
+             ["sales", "Contact sales", "Larger deals with custom pricing."]] },
+    { k: "phase", q: "Where is your product right now?", why: "This decides how much proof (logos, testimonials, numbers) we suggest. You can't quote customers you don't have yet.",
+      opts: [["pre", "Not launched yet", "No customers to quote yet."], ["early", "Launched, with early customers", "A handful of happy users."], ["est", "Established", "Lots of customers, reviews and results."]] },
+    { k: "length", q: "How long should your homepage be?", why: "Longer pages persuade harder; shorter ones are quicker to build. You can add or remove sections on the next step.",
+      opts: [["short", "Short and simple", "About 8 sections. Fastest to build."], ["std", "Standard", "About 12 sections. Covers the usual questions."], ["long", "Long and persuasive", "About 20 sections. For complex or pricier products."]] }
+  ];
+  var CTAS = {
+    trial: ["Start free trial", "See how it works"], demo: ["Book a demo", "Watch the 2-minute demo"], wait: ["Join the waitlist", "Learn more"],
+    buy: ["Get started", "See pricing"], sales: ["Talk to sales", "See how it works"]
+  };
+  function canon(list) {
+    var seen = {};
+    return CANON.filter(function (id) { return list.indexOf(id) >= 0 && !seen[id] && (seen[id] = 1); });
+  }
+  function recipe(q) {
+    var L = q.length || "std", pre = q.phase === "pre", est = q.phase === "est", g = q.goal || "trial";
+    var sell = g === "trial" || g === "buy";
+    var s = ["nav", "hero"];
+    if (!pre) s.push("logos");
+    if (L !== "short") s.push("problem", "solution");
+    if (L === "long") s.push("agitation", "beforeafter", "showcase", "featurerows", "integrations", "comparison");
+    s.push(L === "short" ? "benefits" : "features", "how");
+    if (!pre) {
+      s.push("testimonials");
+      if (L !== "short") s.push("stats");
+      if (L === "long" && est) s.push("casestudy", "awards");
+    }
+    if (est && L !== "short") s.push("security");
+    if (g !== "wait" && (sell || L === "long")) s.push("pricing");
+    if (L === "long" && sell) s.push("guarantee");
+    if (pre) s.push("founder");
+    s.push("faq", "finalcta", "footer");
+    return canon(s);
+  }
+
+  /* =====================================================================
+     3. LOOK AND FEEL OPTIONS
+     ===================================================================== */
+  var SANS = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', SERIF = 'Georgia, "Times New Roman", serif';
+  var FONTS = [
+    ["System", SANS, "", "Plain and fast; looks native on every device."], ["Georgia", SERIF, "", "A classic serif, built into every device."],
+    ["Inter", SANS, "400;600;700", "Clean, modern; the SaaS standard."], ["DM Sans", SANS, "400;500;700", "Friendly and geometric."],
+    ["Manrope", SANS, "400;600;700", "Modern with a technical edge."], ["Plus Jakarta Sans", SANS, "400;600;700", "Crisp and contemporary."],
+    ["Poppins", SANS, "400;600;700", "Round and approachable."], ["Montserrat", SANS, "400;600;700", "Wide and confident."],
+    ["Work Sans", SANS, "400;600;700", "Neutral and readable."], ["Space Grotesk", SANS, "400;500;700", "Quirky, techy character."],
+    ["Sora", SANS, "400;600;700", "Geometric and futuristic."], ["Outfit", SANS, "400;600;700", "Simple and stylish."],
+    ["Nunito", SANS, "400;600;700", "Soft and warm."], ["Raleway", SANS, "400;600;700", "Elegant and light."],
+    ["Oswald", SANS, "400;600;700", "Tall and condensed; strong headlines."], ["Bebas Neue", SANS, "400", "All capitals; loud headlines only."],
+    ["Playfair Display", SERIF, "400;700", "High-contrast and editorial."], ["Fraunces", SERIF, "400;600;700", "Characterful, a little vintage."],
+    ["Lora", SERIF, "400;600;700", "Calm and literary."], ["Merriweather", SERIF, "400;700", "Sturdy and very readable."],
+    ["DM Serif Display", SERIF, "400", "Bold display serif."], ["Instrument Serif", SERIF, "400", "Refined, magazine-like."],
+    ["Libre Baskerville", SERIF, "400;700", "Traditional and trustworthy."], ["Source Serif 4", SERIF, "400;600;700", "Modern and readable serif."]
+  ];
+  var PALETTES = [
+    ["Forest", "#2f5d50", "#fbfaf7", "#f1efe9", "#1d1f1e"], ["Ocean", "#1d4ed8", "#ffffff", "#eef3fb", "#0f172a"],
+    ["Sunset", "#d9480f", "#fffaf5", "#fdeee0", "#2b1a12"], ["Berry", "#9d174d", "#fffafc", "#fbeaf1", "#2a1320"],
+    ["Mint", "#0f766e", "#f6fffb", "#e3f6ef", "#10201c"], ["Grape", "#6d28d9", "#fdfcff", "#f3effc", "#1e1530"],
+    ["Slate", "#334155", "#f8fafc", "#eef2f6", "#0f172a"], ["Lime", "#4d7c0f", "#fbfdf7", "#eef5e2", "#1a2310"],
+    ["Mono", "#111827", "#ffffff", "#f3f4f6", "#111827"], ["Coral", "#e11d48", "#fffbfb", "#fdecef", "#241417"],
+    ["Midnight", "#7dd3fc", "#0b1220", "#131c2e", "#e5edf7"], ["Gold on charcoal", "#e0b84c", "#17181a", "#222429", "#f2efe8"]
+  ];
+  var DESIGN = { accent: "#2f5d50", bg: "#fbfaf7", alt: "#f1efe9", text: "#1d1f1e", hf: "Georgia", bf: "System",
+                 size: "1", hsize: "1", hweight: "700", radius: "10", btn: "round", space: "1" };
+  var CHOICES = {
+    size: [["0.94", "Small"], ["1", "Regular"], ["1.1", "Large"]],
+    hsize: [["0.85", "Small"], ["1", "Regular"], ["1.2", "Large"]],
+    hweight: [["400", "Regular"], ["700", "Bold"]],
+    btn: [["square", "Square", "Sharp and serious."], ["round", "Rounded", "The safe, friendly default."], ["pill", "Pill", "Soft and modern."]],
+    space: [["0.7", "Compact", "More fits on screen; feels busy."], ["1", "Regular", "Balanced."], ["1.3", "Roomy", "Calm and premium."]]
+  };
+  var ICONS = {
+    check: '<path d="M5 12l5 5 9-10"/>', star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+    bolt: '<path d="M13 3L5 14h6l-1 7 8-11h-6z"/>', clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    shield: '<path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/>', lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+    chart: '<path d="M5 20V11M11 20V5M17 20v-6M3 20h18"/>', trend: '<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',
+    people: '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.2c2.6.4 4.5 2.7 4.5 5.8"/>',
+    chat: '<path d="M4 5h16v11H9l-5 4z"/>', globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/>',
+    target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+    calendar: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>', sync: '<path d="M20 12a8 8 0 0 1-14 5.3M4 12a8 8 0 0 1 14-5.3M18 3v4h-4M6 21v-4h4"/>',
+    plug: '<path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4"/>', cloud: '<path d="M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z"/>',
+    code: '<path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/>', layers: '<path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5"/>',
+    search: '<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/>', bell: '<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4"/>',
+    heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>', rocket: '<path d="M12 15l-3-3c1-5 4-8 10-9-1 6-4 9-9 10M9 12l-4 1-2 3 4 1M12 15l-1 4 3 2 1-4"/>',
+    gift: '<rect x="4" y="10" width="16" height="10"/><path d="M3 7h18v3H3zM12 7v13M12 7c-2-4-6-3-5 0M12 7c2-4 6-3 5 0"/>',
+    tag: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/>'
+  };
+  function icon(name, cls) {
+    return ICONS[name] ? '<svg class="ic' + (cls ? " " + cls : "") + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS[name] + "</svg>" : "";
+  }
+  var STYLE_DECS = [
+    ["name", "Name and logo", "What's your product called?", "Your name and logo appear in the navigation bar and footer. The logo is optional."],
+    ["colours", "Colours", "Choose your colours", "Start from a ready-made scheme, then fine-tune any colour. The accent colour is for buttons and highlights."],
+    ["hfont", "Heading font", "Choose a font for headings", "Headings set the personality of your site."],
+    ["bfont", "Body font", "Choose a font for body text", "Pick something easy to read at small sizes. A plain sans-serif is the safe choice."],
+    ["shape", "Buttons and corners", "Choose your button shape and corners", "Rounder feels friendlier; squarer feels more serious."],
+    ["space", "Spacing", "How much space between sections?", ""],
+    ["links", "Button links", "Where should your buttons and links go?", "Paste web addresses. You can leave these empty for now and add them before you publish."]
+  ];
+
+  /* =====================================================================
+     4. STATE
+     ===================================================================== */
+  function freshSec(id) {
+    var c = BY[id], g = CTAS[S.q.goal] || CTAS.trial;
+    var s = { layout: c.layouts ? c.layouts[0][0] : "", bg: c.bg || "plain", align: c.align || "", el: {}, f: {}, items: [], img: {} };
+    c.els.forEach(function (e) { s.el[e.k] = e.on; });
+    if (c.items) for (var i = 0; i < c.items.count; i++) s.items.push(blankItem(c, i));
+    if (id === "pricing" && s.items[1]) s.items[1].pop = true;
+    if (id === "hero" || id === "nav" || id === "finalcta") s.f.cta = g[0];
+    if (id === "hero" || id === "finalcta") s.f.cta2 = g[1];
+    if (id === "hero" && S.q.goal === "wait") { s.el.email = true; s.layout = "text"; }
+    return s;
+  }
+  function blankItem(c, i) {
+    var it = {};
+    c.items.fields.forEach(function (f) { it[f[0]] = f[3] === "check" ? false : ""; });
+    if (c.items.icon) it.ic = ["bolt", "clock", "people", "chart", "shield", "sync"][i % 6];
+    return it;
+  }
+  function blankState() {
+    return { rev: "", stage: "structure", qstep: 0, q: { goal: "", phase: "", length: "" }, order: [], custom: false, sec: {},
+             brand: { name: "", logo: "", url: "", url2: "", login: "", form: "" }, d: Object.assign({}, DESIGN),
+             cur: { sid: "style", did: "name" }, done: {}, pv: "desk" };
+  }
+  function merge(src) {
+    var b = blankState();
+    src = src || {};
+    Object.keys(b).forEach(function (k) {
+      if (src[k] == null) return;
+      b[k] = (typeof b[k] === "object" && !Array.isArray(b[k])) ? Object.assign(b[k], src[k]) : src[k];
+    });
+    b.order = (b.order || []).filter(function (id) { return BY[id]; });
+    return b;
+  }
+  var S = blankState(), baseRev = "", dirty = false, notice = "";
+  try { S = merge(JSON.parse($("state").textContent.trim() || "{}")); } catch (e) {}
+  baseRev = S.rev;
+
+  function sd(id) { return S.sec[id] || (S.sec[id] = freshSec(id)); }
+  function getP(path) { return path.split(".").reduce(function (o, k) { return o == null ? undefined : o[k]; }, S); }
+  function setP(path, v) {
+    var a = path.split("."), o = S;
+    for (var i = 0; i < a.length - 1; i++) { if (o[a[i]] == null) o[a[i]] = {}; o = o[a[i]]; }
+    o[a[a.length - 1]] = v;
+  }
+
+  /* =====================================================================
+     5. DESIGN TOKENS
+     ===================================================================== */
+  function hex(v, fb) { return /^#[0-9a-f]{6}$/i.test(v) ? v : fb; }
+  function pick(key) { var v = String(S.d[key]); return CHOICES[key].some(function (c) { return c[0] === v; }) ? v : DESIGN[key]; }
+  function lum(h) {
+    var c = [1, 3, 5].map(function (i) { var x = parseInt(h.substr(i, 2), 16) / 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  function contrast(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  function onColor(h) { return lum(h) > 0.179 ? "#111111" : "#ffffff"; }
+  function font(name) { return FONTS.filter(function (f) { return f[0] === name; })[0] || FONTS[0]; }
+  function stack(name) { var f = font(name); return f[2] ? '"' + f[0] + '", ' + f[1] : f[1]; }
+  function fontQuery(names) {
+    var seen = {}, parts = [];
+    names.forEach(function (n) {
+      var f = font(n);
+      if (!f[2] || seen[f[0]]) return;
+      seen[f[0]] = 1;
+      parts.push("family=" + f[0].replace(/ /g, "+") + ":wght@" + f[2]);
+    });
+    return parts.length ? "https://fonts.googleapis.com/css2?" + parts.join("&") + "&display=swap" : "";
+  }
+  function siteFonts() { return fontQuery([S.d.hf, S.d.bf]); }
+  function isDarkSite() { return lum(hex(S.d.bg, DESIGN.bg)) < 0.25; }
+  function vars() {
+    var d = S.d, accent = hex(d.accent, DESIGN.accent), bg = hex(d.bg, DESIGN.bg), text = hex(d.text, DESIGN.text);
+    var inv = contrast(accent, text) >= 3 ? accent : bg;
+    var radius = Math.max(0, Math.min(28, parseInt(d.radius, 10) || 0)), btn = pick("btn");
+    return ["--c-accent:" + accent, "--c-accent-text:" + onColor(accent), "--c-bg:" + bg, "--c-alt:" + hex(d.alt, DESIGN.alt), "--c-text:" + text,
+      "--c-inv-acc:" + inv, "--c-inv-acc-text:" + onColor(inv),
+      "--font-heading:" + stack(d.hf), "--font-body:" + stack(d.bf),
+      "--scale:" + pick("size"), "--h-scale:" + pick("hsize"), "--h-weight:" + pick("hweight"),
+      "--radius:" + radius + "px", "--btn-radius:" + (btn === "square" ? "0px" : btn === "pill" ? "999px" : radius + "px"),
+      "--space:" + pick("space"), "color-scheme:" + (isDarkSite() ? "dark" : "light")].join(";");
+  }
+  function useFonts(id, href) {
+    var l = $(id);
+    if (!l) { l = document.createElement("link"); l.id = id; l.rel = "stylesheet"; document.head.appendChild(l); }
+    if (href) { if (l.getAttribute("href") !== href) l.setAttribute("href", href); } else l.removeAttribute("href");
+  }
+
+  /* =====================================================================
+     6. RENDERING THE WEBSITE  (PV = preview: show prompts and image slots)
+     ===================================================================== */
+  var PV = false;
+  function nm() { return (S.brand.name || "").trim(); }
+  function prod(t) { return String(t).replace(/\[Product\]/g, nm() || "[Product]"); }
+  function link(u, fb) { u = (u || "").trim(); if (!u) return fb || "#"; return /^(https?:|mailto:|tel:|#|\/)/i.test(u) ? u : "https://" + u; }
+  function L1() { return link(S.brand.url, "#"); }
+  function L2() { return link(S.brand.url2, "#"); }
+  function elOf(c, k) { return c.els.filter(function (e) { return e.k === k; })[0]; }
+  function isOn(s, c, k) { var e = elOf(c, k); return !!(e && s.el[k] && (!e.only || e.only.indexOf(s.layout) >= 0)); }
+  function lines(v) { return esc(v).replace(/\n/g, "<br>"); }
+  function tag(t, cls, inner) { return "<" + t + (cls ? ' class="' + cls + '"' : "") + ">" + inner + "</" + t + ">"; }
+  function T(s, c, k, t, cls) {
+    if (!isOn(s, c, k)) return "";
+    var v = (s.f[k] || "").trim(), e = elOf(c, k);
+    if (v) return tag(t, cls, e.type === "long" ? lines(v) : esc(v));
+    return PV && e.ph ? tag(t, (cls ? cls + " " : "") + "ph", esc(prod(e.ph))) : "";
+  }
+  function B(s, c, k) {
+    if (!isOn(s, c, k)) return "";
+    var v = (s.f[k] || "").trim(), txt = v || (PV ? prod(elOf(c, k).ph) : "");
+    if (!txt) return "";
+    var two = k === "cta2";
+    return '<a class="btn' + (two ? " btn2" : "") + (v ? "" : " ph") + '" href="' + esc(two ? L2() : L1()) + '">' + esc(txt) + "</a>";
+  }
+  function Bs(s, c, keys) { var h = keys.map(function (k) { return B(s, c, k); }).join(""); return h ? '<div class="btns">' + h + "</div>" : ""; }
+  function head(s, c) {
+    var h = T(s, c, "eyebrow", "p", "eb") + T(s, c, "heading", "h2", "") + T(s, c, "intro", "p", "intro");
+    return h ? '<div class="s-head">' + h + "</div>" : "";
+  }
+  function fdef(c, k) { return c.items.fields.filter(function (f) { return f[0] === k; })[0]; }
+  function iv(it, k) { return String(it[k] == null ? "" : it[k]).trim(); }
+  function iph(c, k, i) { var f = fdef(c, k), p = f && f[2]; return prod(Array.isArray(p) ? p[i % p.length] : (p || "")); }
+  function I(c, it, i, k, t, cls) {
+    var v = iv(it, k), f = fdef(c, k);
+    if (v) return tag(t, cls, f && (f[3] === "long" || f[3] === "lines") ? lines(v) : esc(v));
+    var p = iph(c, k, i);
+    return PV && p ? tag(t, (cls ? cls + " " : "") + "ph", esc(p)) : "";
+  }
+  function IT(s, c) {
+    if (!c.items || (c.items.when && !s.el[c.items.when])) return [];
+    return s.items.map(function (it, i) { return { it: it, i: i }; }).filter(function (o) {
+      return PV || o.it.img || c.items.fields.some(function (f) { return f[3] !== "check" && f[3] !== "icon" && iv(o.it, f[0]); });
+    });
+  }
+  function IMG(src, cls, label, alt) {
+    if (src) return '<img class="' + cls + '" src="' + esc(src) + '" alt="' + esc(alt || "") + '">';
+    return PV ? '<div class="slot ' + cls + '">' + esc(label) + "</div>" : "";
+  }
+  function stars() { return '<span class="stars" aria-hidden="true">★★★★★</span>'; }
+  function align(s, c) { return c.align ? ((c.noAlign || []).indexOf(s.layout) >= 0 ? "left" : (s.align || c.align)) : "center"; }
+  function itemIcon(s, c, it) {
+    if (!isOn(s, c, "icons") || !it.ic) return "";
+    return icon(it.ic);
+  }
+  function form(btnText, ph, cls) {
+    return '<form class="sub ' + (cls || "") + '" action="' + esc(link(S.brand.form, "#")) + '" method="get"><input type="email" name="email" placeholder="' +
+      esc(ph || "you@company.com") + '" aria-label="Email address"><button class="btn" type="submit">' + esc(btnText) + "</button></form>";
+  }
+  function brandMark(inFooter) {
+    var logo = S.brand.logo, name = nm();
+    var txt = name ? "<span>" + esc(name) + "</span>" : (PV && !logo ? '<span class="ph">Your product</span>' : "");
+    if (!logo && !txt) return "";
+    return '<a class="brand" href="#top">' + (logo ? '<img src="' + esc(logo) + '" alt="' + esc(name || "Logo") + '">' : "") + (inFooter && logo && !name ? "" : txt) + "</a>";
+  }
+
+  function wrap(id, s, c, inner, extra) {
+    var style = "";
+    if (s.bg === "photo" && s.img.bg) style = " style=\"background-image:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.6)),url('" + esc(s.img.bg) + "')\"";
+    return '<section id="' + id + '" data-sid="' + id + '" class="s bgx bg-' + s.bg + " al-" + align(s, c) + " s-" + id + (extra ? " " + extra : "") + '"' + style + '><div class="w">' + inner + "</div></section>";
+  }
+  function cards(s, c, list, inner, gridCls) {
+    return list.length ? '<div class="grid ' + (gridCls || "") + '">' + list.map(function (o) { return '<div class="card">' + inner(o.it, o.i) + "</div>"; }).join("") + "</div>" : "";
+  }
+
+  var R = {
+    announce: function (s, c) {
+      var t = T(s, c, "text", "span", ""), l = isOn(s, c, "link") && ((s.f.link || "").trim() || PV) ? '<a href="' + esc(L2()) + '"' + ((s.f.link || "").trim() ? "" : ' class="ph"') + ">" + esc((s.f.link || "").trim() || elOf(c, "link").ph) + "</a>" : "";
+      return t || l ? '<div class="ann bgx bg-' + s.bg + '" data-sid="announce"><div class="w">' + t + l + "</div></div>" : "";
+    },
+    nav: function (s, c) {
+      var links = IT(s, c).map(function (o) { return '<a href="' + esc(link(o.it.u, "#")) + '">' + (iv(o.it, "t") ? esc(o.it.t) : '<span class="ph">' + esc(iph(c, "t", o.i)) + "</span>") + "</a>"; }).join("");
+      var login = "";
+      if (isOn(s, c, "login")) { var lv = (s.f.login || "").trim() || (PV ? elOf(c, "login").ph : ""); if (lv) login = '<a class="login" href="' + esc(link(S.brand.login, "#")) + '">' + esc(lv) + "</a>"; }
+      return '<header class="nav bgx bg-' + s.bg + " nav-" + s.layout + (isOn(s, c, "sticky") ? " sticky" : "") + '" data-sid="nav"><div class="w">' + brandMark() +
+        (links ? '<nav class="links" aria-label="Main">' + links + "</nav>" : "") + login + B(s, c, "cta") + "</div></header>";
+    },
+    hero: function (s, c) {
+      var cta = "";
+      if (isOn(s, c, "email")) {
+        var t = (s.f.cta || "").trim() || (PV ? elOf(c, "cta").ph : "Sign up");
+        cta = form(t) + Bs(s, c, ["cta2"]);
+      } else cta = Bs(s, c, ["cta", "cta2"]);
+      var rating = isOn(s, c, "rating") ? ((s.f.rating || "").trim() ? '<p class="rating">' + stars() + esc(s.f.rating.trim()) + "</p>" : (PV ? '<p class="rating ph">' + stars() + esc(elOf(c, "rating").ph) + "</p>" : "")) : "";
+      var txt = T(s, c, "eyebrow", "p", "badge") + T(s, c, "headline", "h1", "") + T(s, c, "sub", "p", "lead") + cta + T(s, c, "note", "p", "note") + rating;
+      var shot = s.layout === "text" ? "" : IMG(s.img.main, "shot", "Your product screenshot goes here", "Screenshot of " + (nm() || "the product"));
+      var inner = s.layout === "split"
+        ? '<div class="split"><div class="hero-txt">' + txt + "</div><div>" + shot + "</div></div>"
+        : '<div class="hero-txt">' + txt + "</div>" + (shot ? '<div class="hero-img">' + shot + "</div>" : "");
+      return wrap("hero", s, c, inner, "hero h-" + s.layout);
+    },
+    logos: function (s, c) {
+      var list = IT(s, c).map(function (o) {
+        if (s.layout === "images" && o.it.img) return '<img src="' + esc(o.it.img) + '" alt="' + esc(iv(o.it, "name")) + '">';
+        return I(c, o.it, o.i, "name", "span", "");
+      }).join("");
+      return list ? wrap("logos", s, c, T(s, c, "heading", "p", "logos-h") + '<div class="logos">' + list + "</div>", "") : "";
+    },
+    problem: function (s, c) {
+      var list = IT(s, c), body = "";
+      if (s.layout === "cards") body = cards(s, c, list, function (it, i) { return I(c, it, i, "h", "h3", "") + I(c, it, i, "p", "p", ""); });
+      else if (list.length) body = '<ul class="list cross prose">' + list.map(function (o) { return I(c, o.it, o.i, "h", "li", ""); }).join("") + "</ul>";
+      return wrap("problem", s, c, head(s, c) + body);
+    },
+    agitation: function (s, c) {
+      var top = T(s, c, "eyebrow", "p", "eb") + T(s, c, "heading", "h2", "");
+      var stat = s.layout === "stat" ? T(s, c, "stat", "p", "big") + T(s, c, "statl", "p", "lead") : "";
+      var body = T(s, c, "body", "p", "") + T(s, c, "body2", "p", "") + T(s, c, "callout", "blockquote", "callout");
+      return wrap("agitation", s, c, '<div class="prose">' + top + stat + body + "</div>");
+    },
+    solution: function (s, c) {
+      var pts = IT(s, c);
+      var txt = head(s, c) + (pts.length ? '<ul class="list check" style="margin-top:1.5rem">' + pts.map(function (o) { return I(c, o.it, o.i, "t", "li", ""); }).join("") + "</ul>" : "") + Bs(s, c, ["cta"]);
+      var im = s.layout === "text" ? "" : IMG(s.img.main, "shot", "Your product image goes here", "");
+      if (s.layout === "side") return wrap("solution", s, c, '<div class="split"><div>' + txt + "</div><div>" + im + "</div></div>");
+      return wrap("solution", s, c, '<div class="prose">' + txt + "</div>" + (im ? '<div class="hero-img">' + im + "</div>" : ""));
+    },
+    beforeafter: function (s, c) {
+      var list = IT(s, c);
+      var col = function (k, title, cls, after) {
+        var lis = list.map(function (o) { return I(c, o.it, o.i, k, "li", ""); }).join("");
+        return '<div class="card ' + (after ? "after" : "") + '">' + T(s, c, title, "h3", "") + (lis ? '<ul class="list plain ' + cls + '">' + lis + "</ul>" : "") + "</div>";
+      };
+      return wrap("beforeafter", s, c, head(s, c) + '<div class="grid g2 ba">' + col("b", "bt", "cross") + col("a", "at", "check", true) + "</div>");
+    },
+    benefits: function (s, c) {
+      var list = IT(s, c), body;
+      if (s.layout === "list") body = '<div class="flist">' + list.map(function (o) { return "<div>" + itemIcon(s, c, o.it) + "<div>" + I(c, o.it, o.i, "h", "h3", "") + I(c, o.it, o.i, "p", "p", "") + "</div></div>"; }).join("") + "</div>";
+      else body = cards(s, c, list, function (it, i) { return itemIcon(s, c, it) + I(c, it, i, "h", "h3", "") + I(c, it, i, "p", "p", ""); });
+      return wrap("benefits", s, c, head(s, c) + body);
+    },
+    usecases: function (s, c) {
+      var list = IT(s, c);
+      var one = function (it, i) {
+        var l = iv(it, "l");
+        return I(c, it, i, "h", "h3", "") + I(c, it, i, "p", "p", "") + (l ? '<a class="more" href="' + esc(link(it.u, "#")) + '">' + esc(l) + "</a>" : "");
+      };
+      var body = s.layout === "list"
+        ? '<div class="flist">' + list.map(function (o) { return "<div><div>" + one(o.it, o.i) + "</div></div>"; }).join("") + "</div>"
+        : cards(s, c, list, one);
+      return wrap("usecases", s, c, head(s, c) + body);
+    },
+    showcase: function (s, c) {
+      var im = IMG(s.img.main, "shot", s.layout === "video" ? "Your video's cover image goes here" : "Your screenshot goes here", "");
+      var media = im;
+      if (s.layout === "frame" && im) media = '<div class="frame">' + im + "</div>";
+      if (s.layout === "video" && im) media = '<a class="video" href="' + esc(link(s.f.video, "#")) + '" target="_blank" rel="noopener" aria-label="Play video">' + im + '<span class="play"></span></a>';
+      return wrap("showcase", s, c, head(s, c) + media + T(s, c, "caption", "p", "cap"));
+    },
+    features: function (s, c) {
+      var list = IT(s, c), body;
+      if (s.layout === "list") body = '<div class="flist">' + list.map(function (o) { return "<div>" + itemIcon(s, c, o.it) + "<div>" + I(c, o.it, o.i, "h", "h3", "") + I(c, o.it, o.i, "p", "p", "") + "</div></div>"; }).join("") + "</div>";
+      else body = cards(s, c, list, function (it, i) { return itemIcon(s, c, it) + I(c, it, i, "h", "h3", "") + I(c, it, i, "p", "p", ""); }, s.layout === "g2" ? "g2" : "");
+      return wrap("features", s, c, head(s, c) + body + Bs(s, c, ["cta2"]));
+    },
+    featurerows: function (s, c) {
+      var rows = IT(s, c).map(function (o) {
+        var l = iv(o.it, "l");
+        var txt = I(c, o.it, o.i, "e", "p", "eb") + I(c, o.it, o.i, "h", "h3", "") + I(c, o.it, o.i, "p", "p", "") + (l ? '<a class="more" href="' + esc(link(o.it.u, "#")) + '">' + esc(l) + "</a>" : "");
+        return '<div class="split"><div>' + txt + "</div><div>" + IMG(o.it.img, "shot", "Image for this feature", "") + "</div></div>";
+      }).join("");
+      return wrap("featurerows", s, c, head(s, c) + '<div class="rows' + (s.layout === "alt" ? " alt" : "") + '">' + rows + "</div>");
+    },
+    how: function (s, c) {
+      var list = IT(s, c).map(function (o) { return "<li>" + I(c, o.it, o.i, "h", "h3", "") + I(c, o.it, o.i, "p", "p", "") + "</li>"; }).join("");
+      var body = list ? (s.layout === "timeline" ? '<ol class="steps tl">' : '<ol class="steps grid">') + list + "</ol>" : "";
+      return wrap("how", s, c, head(s, c) + body + Bs(s, c, ["cta"]));
+    },
+    integrations: function (s, c) {
+      var list = IT(s, c), body;
+      if (s.layout === "list") {
+        body = '<div class="flist">' + list.map(function (o) {
+          return "<div>" + (o.it.img ? '<img class="lg" src="' + esc(o.it.img) + '" alt="">' : "") + "<div>" + I(c, o.it, o.i, "name", "h3", "") + I(c, o.it, o.i, "p", "p", "") + "</div></div>";
+        }).join("") + "</div>";
+      } else {
+        body = '<div class="tiles">' + list.map(function (o) {
+          return '<div class="card tile">' + (o.it.img ? '<img src="' + esc(o.it.img) + '" alt="">' : "") + I(c, o.it, o.i, "name", "span", "") + "</div>";
+        }).join("") + "</div>";
+      }
+      return wrap("integrations", s, c, head(s, c) + body + Bs(s, c, ["cta2"]));
+    },
+    stats: function (s, c) {
+      var list = IT(s, c).map(function (o) {
+        return '<div class="' + (s.layout === "cards" ? "card" : "") + '">' + I(c, o.it, o.i, "n", "strong", "") + I(c, o.it, o.i, "l", "span", "") + "</div>";
+      }).join("");
+      return wrap("stats", s, c, head(s, c) + (list ? '<div class="stats">' + list + "</div>" : ""));
+    },
+    testimonials: function (s, c) {
+      var list = IT(s, c), photos = isOn(s, c, "photos"), st = isOn(s, c, "stars");
+      var who = function (it, i) {
+        var face = photos ? IMG(it.img, "avatar", "Photo", "") : "";
+        var w = I(c, it, i, "n", "strong", "") + I(c, it, i, "r", "span", "");
+        return w || face ? '<div class="who">' + face + "<div>" + w + "</div></div>" : "";
+      };
+      var body;
+      if (s.layout === "featured") {
+        body = list.length ? '<figure class="featured quote" style="margin:0">' + (st ? '<p class="stars">★★★★★</p>' : "") + I(c, list[0].it, list[0].i, "q", "blockquote", "") + who(list[0].it, list[0].i) + "</figure>" : "";
+      } else {
+        body = cards(s, c, list, function (it, i) { return (st ? '<p class="stars">★★★★★</p>' : "") + '<figure class="quote" style="margin:0">' + I(c, it, i, "q", "blockquote", "") + who(it, i) + "</figure>"; });
+      }
+      return wrap("testimonials", s, c, head(s, c) + body);
+    },
+    casestudy: function (s, c) {
+      var res = IT(s, c).map(function (o) { return "<div>" + I(c, o.it, o.i, "n", "strong", "") + I(c, o.it, o.i, "l", "span", "") + "</div>"; }).join("");
+      var txt = T(s, c, "eyebrow", "p", "eb") + T(s, c, "heading", "h2", "") + T(s, c, "body", "p", "muted") + (res ? '<div class="cs-stats">' + res + "</div>" : "") +
+        T(s, c, "quote", "blockquote", "cs-quote") + T(s, c, "person", "p", "muted") + Bs(s, c, ["cta2"]);
+      var im = IMG(s.img.main, "shot", "Case study image", "");
+      return wrap("casestudy", s, c, '<div class="split' + (s.layout === "right" ? " cs-right" : "") + '"><div>' + im + "</div><div>" + txt + "</div></div>");
+    },
+    awards: function (s, c) {
+      var rating = isOn(s, c, "rating") ? ((s.f.rating || "").trim() ? '<p class="rating">' + stars() + esc(s.f.rating.trim()) + "</p>" : (PV ? '<p class="rating ph">' + stars() + esc(elOf(c, "rating").ph) + "</p>" : "")) : "";
+      var list = IT(s, c).map(function (o) {
+        return o.it.img ? '<div><img src="' + esc(o.it.img) + '" alt="' + esc(iv(o.it, "name")) + '"></div>' : '<div class="card">' + icon("star") + I(c, o.it, o.i, "name", "span", "") + "</div>";
+      }).join("");
+      var hd = T(s, c, "heading", "h2", "") + rating;
+      return wrap("awards", s, c, (hd ? '<div class="s-head">' + hd + "</div>" : "") + (list ? '<div class="badges">' + list + "</div>" : ""));
+    },
+    comparison: function (s, c) {
+      var three = isOn(s, c, "them2");
+      var cell = function (it, i, k) {
+        var v = iv(it, k), ph = !v, t = v || (PV ? iph(c, k, i) : "");
+        var cls = ph ? "ph" : "";
+        if (/^(yes|y|✓|true)$/i.test(t)) return '<td class="' + cls + '"><span class="yes" aria-label="Yes">✓</span></td>';
+        if (/^(no|n|✕|x|false|-)$/i.test(t)) return '<td class="' + cls + '"><span class="no" aria-label="No">✕</span></td>';
+        return '<td class="' + cls + '">' + esc(t) + "</td>";
+      };
+      var th = function (k) { var v = (s.f[k] || "").trim(); return v ? esc(v) : (PV ? '<span class="ph">' + esc(prod(elOf(c, k).ph)) + "</span>" : ""); };
+      var rows = IT(s, c).map(function (o) { return "<tr>" + I(c, o.it, o.i, "f", "td", "") + cell(o.it, o.i, "a").replace("<td", '<td data-us') + cell(o.it, o.i, "b") + (three ? cell(o.it, o.i, "c") : "") + "</tr>"; }).join("");
+      rows = rows.replace(/<td class="([^"]*)" data-us|<td data-us class="([^"]*)"/g, function (m, a, b) { return '<td class="us ' + (a || b || "") + '"'; });
+      var table = rows ? '<div class="tbl"><table><thead><tr><th></th><th class="us">' + th("us") + "</th><th>" + th("them") + "</th>" + (three ? "<th>" + th("them2") + "</th>" : "") + "</tr></thead><tbody>" + rows + "</tbody></table></div>" : "";
+      return wrap("comparison", s, c, head(s, c) + table);
+    },
+    security: function (s, c) {
+      var list = IT(s, c), body;
+      if (s.layout === "badges") body = '<div class="badges">' + list.map(function (o) { return '<div class="card">' + itemIcon(s, c, o.it) + I(c, o.it, o.i, "h", "span", "") + "</div>"; }).join("") + "</div>";
+      else body = cards(s, c, list, function (it, i) { return itemIcon(s, c, it) + I(c, it, i, "h", "h3", "") + I(c, it, i, "p", "p", ""); });
+      return wrap("security", s, c, head(s, c) + body + Bs(s, c, ["cta2"]));
+    },
+    pricing: function (s, c) {
+      var list = IT(s, c);
+      if (s.layout === "single") list = list.slice(0, 1);
+      var plans = list.map(function (o) {
+        var it = o.it, i = o.i, pop = !!it.pop && s.layout !== "single";
+        var feats = iv(it, "feat") || (PV ? iph(c, "feat", i) : "");
+        var fl = feats ? '<ul class="list check plain' + (iv(it, "feat") ? "" : " ph") + '">' + feats.split("\n").filter(function (x) { return x.trim(); }).map(function (x) { return "<li>" + esc(x.trim()) + "</li>"; }).join("") + "</ul>" : "";
+        var price = I(c, it, i, "price", "span", ""), per = I(c, it, i, "per", "span", "per");
+        var btn = iv(it, "cta") || (PV ? iph(c, "cta", i) : "");
+        return '<div class="card plan' + (pop ? " pop" : "") + '">' + (pop ? '<span class="tag">Most popular</span>' : "") + I(c, it, i, "name", "h3", "") + I(c, it, i, "d", "p", "muted") +
+          (price || per ? '<p class="price">' + price + per + "</p>" : "") + fl +
+          (btn ? '<a class="btn' + (pop ? "" : " btn2") + (iv(it, "cta") ? "" : " ph") + '" href="' + esc(L1()) + '">' + esc(btn) + "</a>" : "") + "</div>";
+      }).join("");
+      return wrap("pricing", s, c, head(s, c) + T(s, c, "billing", "p", "billing") + (plans ? '<div class="plans' + (s.layout === "single" ? " one" : "") + '">' + plans + "</div>" : "") + T(s, c, "note", "p", "note"));
+    },
+    guarantee: function (s, c) {
+      var txt = T(s, c, "heading", "h2", "") + T(s, c, "body", "p", "");
+      return wrap("guarantee", s, c, '<div class="guar">' + (isOn(s, c, "icon") ? icon("shield") : "") + (txt ? "<div>" + txt + "</div>" : "") + "</div>");
+    },
+    faq: function (s, c) {
+      var list = IT(s, c), body = "";
+      if (s.layout === "open") body = '<div class="grid g2 faq2">' + list.map(function (o) { return "<div>" + I(c, o.it, o.i, "q", "h3", "") + I(c, o.it, o.i, "a", "p", "") + "</div>"; }).join("") + "</div>";
+      else if (list.length) {
+        body = '<div class="faq">' + list.map(function (o, n) {
+          var q = I(c, o.it, o.i, "q", "summary", "");
+          return q ? "<details" + (n === 0 ? " open" : "") + ">" + q + I(c, o.it, o.i, "a", "p", "") + "</details>" : "";
+        }).join("") + "</div>";
+      }
+      return wrap("faq", s, c, head(s, c) + body + T(s, c, "contact", "p", "faq-c"));
+    },
+    founder: function (s, c) {
+      var nameRole = T(s, c, "name", "strong", "") + T(s, c, "role", "span", "");
+      var txt = T(s, c, "eyebrow", "p", "eb") + T(s, c, "heading", "h2", "") + T(s, c, "body", "p", "") + (nameRole ? '<div class="sign">' + nameRole + "</div>" : "");
+      if (s.layout === "photo") return wrap("founder", s, c, '<div class="split"><div>' + IMG(s.img.main, "portrait", "Founder photo", nameRole ? (s.f.name || "") : "") + "</div><div>" + txt + "</div></div>");
+      return wrap("founder", s, c, '<div class="prose">' + txt + "</div>");
+    },
+    resources: function (s, c) {
+      var list = IT(s, c), body;
+      var title = function (it, i) { var h = I(c, it, i, "h", "span", ""); return h ? "<h3>" + (iv(it, "u") ? '<a href="' + esc(link(it.u)) + '">' + h + "</a>" : h) + "</h3>" : ""; };
+      if (s.layout === "list") body = '<div class="flist">' + list.map(function (o) { return "<div><div>" + I(c, o.it, o.i, "tag", "p", "eb") + title(o.it, o.i) + I(c, o.it, o.i, "p", "p", "") + "</div></div>"; }).join("") + "</div>";
+      else body = '<div class="grid">' + list.map(function (o) { return '<div class="card art">' + IMG(o.it.img, "", "Article image", "") + I(c, o.it, o.i, "tag", "p", "eb") + title(o.it, o.i) + I(c, o.it, o.i, "p", "p", "") + "</div>"; }).join("") + "</div>";
+      return wrap("resources", s, c, head(s, c) + body + Bs(s, c, ["cta2"]));
+    },
+    leadmagnet: function (s, c) {
+      var b = (s.f.btn || "").trim() || elOf(c, "btn").ph;
+      var txt = T(s, c, "eyebrow", "p", "eb") + T(s, c, "heading", "h2", "") + T(s, c, "body", "p", "lead") +
+        form(isOn(s, c, "btn") ? b : "Sign up", isOn(s, c, "ph") ? ((s.f.ph || "").trim() || elOf(c, "ph").ph) : "") + T(s, c, "note", "p", "note");
+      if (s.layout === "side") return wrap("leadmagnet", s, c, '<div class="split"><div>' + txt + "</div><div>" + IMG(s.img.main, "shot", "Image goes here", "") + "</div></div>");
+      return wrap("leadmagnet", s, c, '<div class="cta-txt">' + txt + "</div>");
+    },
+    contact: function (s, c) {
+      var e = (s.f.email || "").trim(), p = (s.f.phone || "").trim();
+      var det = (isOn(s, c, "email") ? (e ? '<a href="mailto:' + esc(e) + '">' + esc(e) + "</a>" : T(s, c, "email", "span", "")) : "") +
+        (isOn(s, c, "phone") ? (p ? '<a href="tel:' + esc(p.replace(/[^+\d]/g, "")) + '">' + esc(p) + "</a>" : T(s, c, "phone", "span", "")) : "") + T(s, c, "address", "span", "muted");
+      var top = T(s, c, "eyebrow", "p", "eb") + T(s, c, "heading", "h2", "") + T(s, c, "body", "p", "lead");
+      if (s.layout === "split") return wrap("contact", s, c, '<div class="split"><div>' + top + "</div><div class=\"card\"><div class=\"contact-list\" style=\"margin:0\">" + det + "</div>" + Bs(s, c, ["cta2"]) + "</div></div>");
+      return wrap("contact", s, c, '<div class="cta-txt">' + top + (det ? '<div class="contact-list">' + det + "</div>" : "") + Bs(s, c, ["cta2"]) + "</div>");
+    },
+    finalcta: function (s, c) {
+      var txt = T(s, c, "heading", "h2", "") + T(s, c, "body", "p", "lead") + Bs(s, c, ["cta", "cta2"]) + T(s, c, "note", "p", "note");
+      if (s.layout === "split") return wrap("finalcta", s, c, '<div class="split"><div>' + txt + "</div><div>" + IMG(s.img.main, "shot", "Image goes here", "") + "</div></div>");
+      return wrap("finalcta", s, c, '<div class="cta-txt">' + txt + "</div>");
+    },
+    footer: function (s, c) {
+      var links = IT(s, c).map(function (o) { return '<a href="' + esc(link(o.it.u, "#")) + '">' + (iv(o.it, "t") ? esc(o.it.t) : '<span class="ph">' + esc(iph(c, "t", o.i)) + "</span>") + "</a>"; }).join("");
+      var copy = isOn(s, c, "copy") ? "<p>© " + (PV ? new Date().getFullYear() : '<span class="yr"></span>') + " " + esc(nm()) + "</p>" : "";
+      var brand = '<div class="ft-brand">' + brandMark(true) + T(s, c, "tagline", "p", "") + (s.layout === "split" ? copy : "") + "</div>";
+      return '<footer class="ft bgx bg-' + s.bg + " ft-" + s.layout + '" data-sid="footer"><div class="w">' + brand +
+        (links ? '<nav class="links" aria-label="Footer">' + links + "</nav>" : "") + (s.layout === "simple" ? copy : "") + "</div></footer>";
+    }
+  };
+  // In the finished site a section with nothing filled in is left out, rather than showing an empty band.
+  function sectionHTML(id) {
+    var html = R[id](sd(id), BY[id]) || "";
+    if (PV || /<img/.test(html)) return html;
+    return html.replace(/<[^>]+>/g, "").replace(/&[a-z#0-9]+;/g, "x").trim() ? html : "";
+  }
+  function page(preview) {
+    PV = preview;
+    var out = S.order.map(sectionHTML).join("");
+    PV = false;
+    return out;
+  }
+
+  /* =====================================================================
+     7. THE DECISIONS for each section, in the order we suggest making them
+     ===================================================================== */
+  var BG_OPTS = [["plain", "Plain", "Your page background colour."], ["tint", "Tinted", "A soft tint that sets the section apart."],
+                 ["brand", "Brand colour", "Your accent colour. Bold: use it once or twice per page."], ["inv", "Dark", "High contrast. Good for security, numbers or the footer."],
+                 ["photo", "Photo", "A photo behind the text, darkened so the text stays readable."]];
+  function bgOpts(c) {
+    var allowed = c.bgs || ["plain", "tint", "brand", "inv", "photo"];
+    return BG_OPTS.filter(function (o) { return allowed.indexOf(o[0]) >= 0; }).map(function (o) {
+      return o[0] === "inv" && isDarkSite() ? ["inv", "Light", "High contrast against your dark page."] : o;
+    });
+  }
+  function visEls(c, s) { return c.els.filter(function (e) { return !e.only || e.only.indexOf(s.layout) >= 0; }); }
+  function textEls(c, s) { return visEls(c, s).filter(function (e) { return e.type !== "flag" && s.el[e.k]; }); }
+  function slots(c, s) {
+    var a = c.imgs ? c.imgs(s) : [];
+    if (s.bg === "photo") a = a.concat([["bg", "Background photo", "photo", "Shown behind the text with a dark overlay. A calm, uncluttered photo works best."]]);
+    return a;
+  }
+  function itemsOn(c, s) { return c.items && (!c.items.when || s.el[c.items.when]); }
+  function decs(id) {
+    if (id === "style") return STYLE_DECS.map(function (d) { return { id: d[0], label: d[1], q: d[2], why: d[3] }; });
+    var c = BY[id], s = sd(id), L = [];
+    if (c.layouts && c.layouts.length > 1) L.push({ id: "layout", label: "Layout", q: "How should this section be laid out?", why: "Choose an arrangement. The preview updates as you click." });
+    if (bgOpts(c).length > 1) L.push({ id: "bg", label: "Background", q: "Which background should this section have?", why: "Alternating backgrounds help visitors see where one section ends and the next begins." });
+    if (c.align && (c.noAlign || []).indexOf(s.layout) < 0) L.push({ id: "align", label: "Alignment", q: "Centred or left-aligned?", why: "Centred suits short text and calls to action. Left-aligned is easier to read when there's more text." });
+    if (visEls(c, s).length > 1) L.push({ id: "els", label: "What to include", q: "What should this section include?", why: "Tick the parts you want. You'll write them on the next step." });
+    if (textEls(c, s).length) L.push({ id: "text", label: "Write the text", q: "Write the text", why: "The faded examples show what each part is for. Anything you leave empty won't appear on your finished site." });
+    if (itemsOn(c, s)) L.push({ id: "items", label: "Add " + c.items.plural, q: "Add your " + c.items.plural, why: c.items.why || "Add, remove or reorder them. Empty ones are left out of your finished site." });
+    if (slots(c, s).length) L.push({ id: "images", label: "Images", q: "Add your images", why: "Optional while you build: the preview shows where each image will go." });
+    return L;
+  }
+  function buildList() { return ["style"].concat(S.order); }
+  function secName(id) { return id === "style" ? "Brand and style" : BY[id].name; }
+  function secDone(id) { return decs(id).every(function (d) { return S.done[id + ":" + d.id]; }); }
+  function fixCur() {
+    var list = buildList();
+    if (list.indexOf(S.cur.sid) < 0) S.cur = { sid: "style", did: "name" };
+    var ds = decs(S.cur.sid);
+    if (!ds.some(function (d) { return d.id === S.cur.did; })) S.cur.did = (ds[Math.min(S.cur.di || 0, ds.length - 1)] || ds[0]).id;
+    S.cur.di = ds.map(function (d) { return d.id; }).indexOf(S.cur.did);
+  }
+
+  /* =====================================================================
+     8. BUILDER SCREENS
+     ===================================================================== */
+  var root = $("root");
+  var expandAll = false, lastSid = "", fileTarget = null, art = null, canSave = false;
+  root.innerHTML =
+    '<header class="tb" id="tb"><div class="tb-in">' +
+      '<span class="tb-name">Site Builder</span>' +
+      '<nav class="stepper" aria-label="Stages" id="stepper"></nav>' +
+      '<span class="status" id="status" role="status"></span>' +
+      '<button type="button" class="b-btn pri" id="save" hidden>Save</button>' +
+      '<button type="button" class="b-btn" id="dl">Download website</button>' +
+    "</div></header>" +
+    '<div class="main" id="main"></div>' +
+    '<input type="file" accept="image/*" class="file-in" id="file" tabindex="-1" aria-hidden="true">';
+  var main = $("main"), statusEl = $("status"), saveBtn = $("save");
+
+  function opt(path, v, label, hint, cur, rec, extra) {
+    return '<button type="button" class="opt" role="radio" aria-checked="' + (cur === v) + '" data-set="' + path + '" data-v="' + esc(v) + '">' +
+      (extra || "") + "<b>" + esc(label) + "</b>" + (hint ? "<small>" + esc(hint) + "</small>" : "") + (rec === v ? '<span class="chip">Suggested</span>' : "") + "</button>";
+  }
+  function fld(label, path, val, ph, type, hint) {
+    var ctl = type === "long" || type === "lines"
+      ? '<textarea data-set="' + path + '" placeholder="' + esc(ph) + '" rows="' + (type === "lines" ? 4 : 3) + '">' + esc(val) + "</textarea>"
+      : '<input type="' + (type === "url" ? "url" : "text") + '" data-set="' + path + '" value="' + esc(val) + '" placeholder="' + esc(ph) + '"' + (type === "url" ? ' inputmode="url"' : "") + ">";
+    return '<label class="fld"><span>' + esc(label) + "</span>" + ctl + (hint ? "<small>" + esc(hint) + "</small>" : "") + "</label>";
+  }
+  function selFld(label, path, list, cur) {
+    return '<label class="fld-row"><span>' + esc(label) + '</span><select data-set="' + path + '">' + list.map(function (o) {
+      return '<option value="' + o[0] + '"' + (String(cur) === o[0] ? " selected" : "") + ">" + esc(o[1]) + "</option>";
+    }).join("") + "</select></label>";
+  }
+  function slotRow(path, kind, label, hint, src) {
+    return '<div class="slot-row"><div class="thumb' + (src ? " has" : "") + (kind === "logo" ? " contain" : "") + '"' + (src ? " style=\"background-image:url('" + esc(src) + "')\"" : "") + '></div><div><b>' + esc(label) + "</b>" +
+      (hint ? "<small>" + esc(hint) + "</small>" : "") + '<div class="btns-row"><button type="button" class="b-btn sm" data-up="' + path + '" data-kind="' + kind + '">' + (src ? "Replace" : "Upload") + "</button>" +
+      (src ? '<button type="button" class="b-btn sm" data-rmimg="' + path + '">Remove</button>' : "") + "</div></div></div>";
+  }
+
+  /* ---- Stage 1: structure ---- */
+  function structureHTML() {
+    if (S.qstep < QS.length) {
+      var Q = QS[S.qstep], cur = S.q[Q.k];
+      return '<div class="wiz"><div class="progress">' + [0, 1, 2, 3].map(function (i) { return '<i class="' + (i <= S.qstep ? "on" : "") + '"></i>'; }).join("") + "</div>" +
+        '<p class="kicker">Stage 1 · Structure · Question ' + (S.qstep + 1) + " of 3</p>" +
+        '<h1 class="ui-h1">' + esc(Q.q) + '</h1><p class="why">' + esc(Q.why) + "</p>" +
+        '<div class="opts" role="radiogroup" aria-label="' + esc(Q.q) + '">' + Q.opts.map(function (o) {
+          return '<button type="button" class="opt" role="radio" aria-checked="' + (cur === o[0]) + '" data-q="' + Q.k + '" data-v="' + o[0] + '"><b>' + esc(o[1]) + "</b><small>" + esc(o[2]) + "</small></button>";
+        }).join("") + "</div>" +
+        '<div class="row-btns">' + (S.qstep > 0 ? '<button type="button" class="b-btn" data-qstep="' + (S.qstep - 1) + '">← Back</button>' : "") +
+        (cur ? '<button type="button" class="b-btn pri" data-qstep="' + (S.qstep + 1) + '">Next →</button>' : "") +
+        (S.order.length ? '<button type="button" class="b-btn" data-qstep="3">Skip to my sections</button>' : "") + "</div></div>";
+    }
+    var sug = recipe(S.q), chosen = S.order;
+    var cats = CATS.map(function (cat) {
+      return '<h2 class="ui-h2">' + esc(cat[1]) + " · <span style=\"text-transform:none;letter-spacing:0;font-weight:400\">" + esc(cat[2]) + '</span></h2><div class="cat-list">' +
+        LIB.filter(function (c) { return c.cat === cat[0]; }).map(function (c) {
+          var on = chosen.indexOf(c.id) >= 0;
+          var n = c.layouts && c.layouts.length > 1 ? c.layouts.length + " layouts · " : "";
+          return '<label class="sec-opt"><input type="checkbox" data-toggle="' + c.id + '"' + (on ? " checked" : "") + (c.required ? " disabled" : "") + "><span><b>" + esc(c.name) + "</b>" +
+            (c.required ? '<span class="chip req">Required</span>' : sug.indexOf(c.id) >= 0 ? '<span class="chip">Suggested</span>' : "") +
+            "<small>" + esc(c.desc) + '</small><small class="decs">' + n + c.els.length + " parts to choose from" + (c.items ? " · add " + esc(c.items.plural) : "") + "</small></span></label>";
+        }).join("") + "</div>";
+    }).join("");
+    var outline = chosen.map(function (id, i) {
+      return "<li><span>" + esc(BY[id].name) + '</span><button type="button" class="ico" data-mv="' + i + ':-1" aria-label="Move ' + esc(BY[id].name) + ' up"' + (i === 0 ? " disabled" : "") + '>↑</button>' +
+        '<button type="button" class="ico" data-mv="' + i + ':1" aria-label="Move ' + esc(BY[id].name) + ' down"' + (i === chosen.length - 1 ? " disabled" : "") + ">↓</button>" +
+        (BY[id].required ? "" : '<button type="button" class="ico" data-toggle-off="' + id + '" aria-label="Remove ' + esc(BY[id].name) + '">✕</button>') + "</li>";
+    }).join("");
+    var same = sug.join() === chosen.join();
+    return '<div class="review"><div><div class="progress"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>' +
+      '<p class="kicker">Stage 1 · Structure · Step 4 of 4</p><h1 class="ui-h1">Choose your sections</h1>' +
+      '<p class="why">These are all ' + LIB.length + " sections a SaaS homepage might use. We've ticked the ones we suggest for your answers. Tick or untick anything, then put them in order on the right. Nothing is fixed: you can come back here any time from Structure in the top bar, and your content is kept.</p>" +
+      cats + '</div><aside class="outline" aria-label="Your homepage"><h2>Your homepage</h2><p class="muted" style="margin:0.2rem 0 0;color:var(--b-dim)">' + chosen.length + " sections, top to bottom</p>" +
+      "<ol>" + outline + "</ol>" +
+      '<button type="button" class="b-btn pri" data-start>Start building →</button>' +
+      (same ? "" : '<button type="button" class="b-btn" data-recipe>Use the suggested sections</button>') +
+      '<button type="button" class="b-btn" data-qstep="0">Change my answers</button></aside></div>';
+  }
+
+  /* ---- Stage 2: build, one decision at a time ---- */
+  function decisionBody(sid, did) {
+    if (sid === "style") return styleBody(did);
+    var c = BY[sid], s = sd(sid), p = "sec." + sid;
+    if (did === "layout") {
+      return '<div class="opts" role="radiogroup">' + c.layouts.map(function (o) { return opt(p + ".layout", o[0], o[1], o[2], s.layout, c.layouts[0][0]); }).join("") + "</div>";
+    }
+    if (did === "bg") {
+      var acc = hex(S.d.accent, DESIGN.accent), bg = hex(S.d.bg, DESIGN.bg), alt = hex(S.d.alt, DESIGN.alt), tx = hex(S.d.text, DESIGN.text);
+      var sw = { plain: [bg, tx], tint: [alt, tx], brand: [acc, onColor(acc)], inv: [tx, bg], photo: ["#3a3d40", "#ffffff"] };
+      return '<div class="opts two" role="radiogroup">' + bgOpts(c).map(function (o) {
+        var x = sw[o[0]];
+        var swatch = '<span class="sw" style="background:' + (o[0] === "photo" ? "linear-gradient(135deg,#55606b,#24282c)" : x[0]) + ";color:" + x[1] + '">Aa</span>';
+        return opt(p + ".bg", o[0], o[1], o[2], s.bg, c.bg || "plain", swatch);
+      }).join("") + "</div>";
+    }
+    if (did === "align") {
+      return '<div class="opts two" role="radiogroup">' +
+        opt(p + ".align", "center", "Centred", "Best for short text and calls to action.", s.align, c.align, '<span class="alg c"><i></i><i></i><i></i></span>') +
+        opt(p + ".align", "left", "Left-aligned", "Easier to read when there's more text.", s.align, c.align, '<span class="alg"><i></i><i></i><i></i></span>') + "</div>";
+    }
+    if (did === "els") {
+      return visEls(c, s).map(function (e) {
+        return '<label class="chk"><input type="checkbox" data-set="' + p + ".el." + e.k + '"' + (s.el[e.k] ? " checked" : "") + (e.k === "headline" ? " disabled" : "") +
+          "><span><b>" + esc(e.label) + "</b>" + (e.hint ? "<small>" + esc(e.hint) + "</small>" : "") + "</span></label>";
+      }).join("");
+    }
+    if (did === "text") {
+      return textEls(c, s).map(function (e) {
+        return fld(e.type === "button" ? e.label + " text" : e.label, p + ".f." + e.k, s.f[e.k] || "", prod(e.ph), e.type, e.type === "button" ? e.hint : "");
+      }).join("");
+    }
+    if (did === "items") {
+      var I_ = c.items;
+      return s.items.map(function (it, i) {
+        var fs = I_.fields.filter(function (f) { return !f[4] || f[4](s); }).map(function (f) {
+          var path = p + ".items." + i + "." + f[0], ph = iph(c, f[0], i);
+          if (f[3] === "check") return '<label class="chk"><input type="checkbox" data-set="' + path + '"' + (it[f[0]] ? " checked" : "") + "><span><b>" + esc(f[1]) + "</b></span></label>";
+          if (f[3] === "icon") {
+            if (!s.el.icons) return "";
+            return '<label class="fld-row"><span>Icon</span><select data-set="' + path + '"><option value="">No icon</option>' + Object.keys(ICONS).map(function (n) {
+              return '<option value="' + n + '"' + (it.ic === n ? " selected" : "") + ">" + n + "</option>";
+            }).join("") + "</select></label>";
+          }
+          return fld(f[1], path, it[f[0]] || "", ph ? "e.g. " + ph.replace(/\n/g, ", ") : "", f[3]);
+        }).join("");
+        var wantImg = I_.img && (!I_.imgWhen || I_.imgWhen(s));
+        var lbl = I_.label.charAt(0).toUpperCase() + I_.label.slice(1) + " " + (i + 1);
+        return '<fieldset class="item"><legend>' + esc(lbl) + '</legend><div class="item-top">' +
+          '<button type="button" class="ico" data-imv="' + sid + ":" + i + ':-1" aria-label="Move ' + esc(lbl) + ' up"' + (i === 0 ? " disabled" : "") + ">↑</button>" +
+          '<button type="button" class="ico" data-imv="' + sid + ":" + i + ':1" aria-label="Move ' + esc(lbl) + ' down"' + (i === s.items.length - 1 ? " disabled" : "") + ">↓</button>" +
+          '<button type="button" class="ico" data-irm="' + sid + ":" + i + '" aria-label="Remove ' + esc(lbl) + '">✕</button></div>' + fs +
+          (wantImg ? slotRow(p + ".items." + i + ".img", I_.img, I_.img === "avatar" ? "Photo" : I_.img === "logo" ? "Logo" : "Image", "", it.img) : "") + "</fieldset>";
+      }).join("") + '<button type="button" class="add" data-iadd="' + sid + '">+ Add ' + esc(I_.label) + "</button>";
+    }
+    if (did === "images") {
+      return slots(c, s).map(function (sl) { return slotRow(p + ".img." + sl[0], sl[2], sl[1], sl[3], s.img[sl[0]]); }).join("");
+    }
+    return "";
+  }
+  function styleBody(did) {
+    var d = S.d;
+    if (did === "name") {
+      return fld("Product or company name", "brand.name", S.brand.name, "e.g. Northwind", "text") + slotRow("brand.logo", "logo", "Logo (optional)", "A PNG with a transparent background works best.", S.brand.logo);
+    }
+    if (did === "colours") {
+      return '<div class="pals" role="radiogroup" aria-label="Colour schemes">' + PALETTES.map(function (pl, i) {
+        var on = d.accent === pl[1] && d.bg === pl[2] && d.alt === pl[3] && d.text === pl[4];
+        return '<button type="button" class="pal" role="radio" aria-checked="' + on + '" data-pal="' + i + '" title="' + esc(pl[0]) + '" aria-label="' + esc(pl[0]) + '">' +
+          '<i style="background:' + pl[2] + '"></i><i style="background:' + pl[3] + '"></i><i style="background:' + pl[1] + '"></i><i style="background:' + pl[4] + '"></i></button>';
+      }).join("") + "</div>" +
+        [["accent", "Accent: buttons and highlights"], ["bg", "Page background"], ["alt", "Tinted sections"], ["text", "Text"]].map(function (x) {
+          return '<label class="fld-row"><span>' + x[1] + '</span><span class="fld"><input type="color" data-set="d.' + x[0] + '" value="' + esc(hex(d[x[0]], DESIGN[x[0]])) + '"></span></label>';
+        }).join("");
+    }
+    if (did === "hfont" || did === "bfont") {
+      var key = did === "hfont" ? "hf" : "bf";
+      return '<div class="opts" role="radiogroup">' + FONTS.map(function (f) {
+        return '<button type="button" class="opt" role="radio" aria-checked="' + (d[key] === f[0]) + '" data-set="d.' + key + '" data-v="' + esc(f[0]) + '">' +
+          '<span class="fnt" style="font-family:' + esc(stack(f[0])) + (key === "hf" ? ";font-weight:700" : "") + '">' + esc(f[0] === "System" ? "System sans-serif" : f[0]) + "</span><small>" + esc(f[3]) + "</small>" +
+          ((key === "hf" ? "Georgia" : "System") === f[0] ? '<span class="chip">Suggested</span>' : "") + "</button>";
+      }).join("") + "</div>" +
+        (key === "hf" ? selFld("Heading size", "d.hsize", CHOICES.hsize, d.hsize) + selFld("Heading weight", "d.hweight", CHOICES.hweight, d.hweight) : selFld("Text size", "d.size", CHOICES.size, d.size));
+    }
+    if (did === "shape") {
+      var r = Math.max(0, Math.min(28, parseInt(d.radius, 10) || 0));
+      return '<div class="opts two" role="radiogroup">' + CHOICES.btn.map(function (o) {
+        var rad = o[0] === "square" ? "0" : o[0] === "pill" ? "999px" : r + "px";
+        return opt("d.btn", o[0], o[1], o[2], d.btn, "round", '<span class="shape-demo" style="border-radius:' + rad + '">Button</span>');
+      }).join("") + "</div>" +
+        '<label class="fld"><span>Corner roundness on cards and images: <output id="rad-out">' + r + 'px</output></span><input type="range" min="0" max="28" step="1" data-set="d.radius" value="' + r + '"></label>';
+    }
+    if (did === "space") {
+      return '<div class="opts" role="radiogroup">' + CHOICES.space.map(function (o) { return opt("d.space", o[0], o[1], o[2], d.space, "1"); }).join("") + "</div>";
+    }
+    if (did === "links") {
+      return fld("Main button link", "brand.url", S.brand.url, "https://app.yourproduct.com/signup", "url", "Your sign-up, booking or checkout page. Used by every main button.") +
+        fld("Secondary link", "brand.url2", S.brand.url2, "https://yourproduct.com/demo", "url", "Used by second buttons and the announcement bar.") +
+        fld("Log-in page", "brand.login", S.brand.login, "https://app.yourproduct.com/login", "url", "For the Log in link in the navigation bar.") +
+        fld("Email sign-up form address (optional)", "brand.form", S.brand.form, "https://your-email-tool.com/subscribe/…", "url", "If you use an email box, paste the form address your email tool gives you (e.g. Mailchimp, ConvertKit). Emails are sent there.");
+    }
+    return "";
+  }
+  function buildHTML() {
+    fixCur();
+    var list = buildList(), sid = S.cur.sid, ds = decs(sid), di = S.cur.di, d = ds[di], si = list.indexOf(sid);
+    var nextLabel;
+    if (di < ds.length - 1) nextLabel = "Next: " + ds[di + 1].label + " →";
+    else if (si < list.length - 1) nextLabel = "Next section: " + secName(list[si + 1]) + " →";
+    else nextLabel = "Finish →";
+    var rail = '<nav class="rail" aria-label="Sections and decisions"><div class="rail-top"><span>Your homepage</span><button type="button" class="b-btn sm" data-expand>' + (expandAll ? "Collapse" : "Expand all") + "</button></div><ol>" +
+      list.map(function (id, n) {
+        var cur = id === sid, done = secDone(id), sub = "";
+        if (cur || expandAll) {
+          sub = '<ol class="r-dec">' + decs(id).map(function (x) {
+            return '<li><button type="button" data-jump="' + id + ":" + x.id + '"' + (cur && x.id === d.id ? ' aria-current="step"' : "") + '><span class="d-t">' + (S.done[id + ":" + x.id] ? "✓" : "") + "</span>" + esc(x.label) + "</button></li>";
+          }).join("") + "</ol>";
+        }
+        return '<li class="' + (cur ? "r-cur " : "") + (done ? "r-done" : "") + '"><button type="button" class="r-h" data-jump="' + id + '"><span class="r-n">' + (done ? "✓" : n + 1) + "</span>" + esc(secName(id)) + "</button>" + sub + "</li>";
+      }).join("") + "</ol></nav>";
+    var jump = '<select class="jump" data-jumpsel aria-label="Jump to a section">' + list.map(function (id, n) {
+      return '<option value="' + id + '"' + (id === sid ? " selected" : "") + ">" + (n + 1) + ". " + esc(secName(id)) + (secDone(id) ? " ✓" : "") + "</option>";
+    }).join("") + "</select>";
+    var panel = '<section class="panel" id="panel" aria-labelledby="dq">' + jump +
+      '<p class="kicker">Section ' + (si + 1) + " of " + list.length + " · " + esc(secName(sid)) + " · Decision " + (di + 1) + " of " + ds.length + "</p>" +
+      '<h1 class="ui-h1" id="dq">' + esc(d.q) + "</h1>" + (d.why ? '<p class="why">' + esc(d.why) + "</p>" : "") +
+      '<div class="dec-body">' + decisionBody(sid, d.id) + "</div>" +
+      '<div class="nav-row"><button type="button" class="b-btn" data-step="-1">← Back</button><button type="button" class="b-btn pri" data-step="1">' + esc(nextLabel) + "</button></div></section>";
+    return '<div class="build">' + rail + panel + previewHTML() + "</div>";
+  }
+  function previewHTML() {
+    return '<section class="pv" aria-label="Live preview"><div class="pv-bar"><span>Live preview' + (S.stage === "build" ? " · the highlighted section is the one you're editing" : "") + '</span><span class="seg" role="group" aria-label="Preview width">' +
+      '<button type="button" data-pv="desk" aria-pressed="' + (S.pv !== "phone") + '">Desktop</button><button type="button" data-pv="phone" aria-pressed="' + (S.pv === "phone") + '">Phone</button></span></div>' +
+      '<div class="pv-scroll" id="pv-scroll"><div class="pv-frame ' + (S.pv === "phone" ? "phone" : "") + '"><div class="site" id="pv-site"></div></div></div></section>';
+  }
+
+  /* ---- Stage 3: finish ---- */
+  function todos() {
+    var out = [];
+    if (!nm()) out.push(["style", "name", "Brand and style: add your product name"]);
+    if (!(S.brand.url || "").trim()) out.push(["style", "links", "Brand and style: add your main button link"]);
+    S.order.forEach(function (id) {
+      var c = BY[id], s = sd(id), n = c.name;
+      textEls(c, s).forEach(function (e) {
+        if ((e.k === "heading" || e.k === "headline") && !(s.f[e.k] || "").trim()) out.push([id, "text", n + ": write the " + e.label.toLowerCase()]);
+      });
+      if (itemsOn(c, s) && !IT_final(s, c).length) out.push([id, "items", n + ": add your " + c.items.plural]);
+      slots(c, s).forEach(function (sl) { if (!s.img[sl[0]]) out.push([id, "images", n + ": add the " + sl[1].toLowerCase()]); });
+    });
+    return out;
+  }
+  function IT_final(s, c) { var keep = PV; PV = false; var r = IT(s, c); PV = keep; return r; }
+  function finishHTML() {
+    var t = todos();
+    return '<div class="finish"><div class="fin-top"><div><p class="kicker">Stage 3 · Finish</p><h1 class="ui-h1">Your homepage is built</h1>' +
+      '<p class="why">This is your finished page with ' + S.order.length + " sections. Download it as a single file, <b>index.html</b>, and upload it to any web host " +
+      "(for example Netlify Drop, Cloudflare Pages or GitHub Pages) to put it online. You can come back and change anything at any time.</p>" +
+      '<div class="row-btns" style="margin-top:0"><button type="button" class="b-btn pri" data-download>Download website</button><button type="button" class="b-btn" data-stage="build">Keep editing</button><button type="button" class="b-btn" data-stage="structure">Change structure</button></div></div>' +
+      '<div class="todo"><h2>' + (t.length ? "Still to fill in (" + t.length + ")" : "Everything is filled in") + "</h2>" +
+      (t.length ? "<ul>" + t.map(function (x) { return "<li><span>" + esc(x[2]) + '</span><button type="button" class="b-btn sm" data-jump="' + x[0] + ":" + x[1] + '">Fill in</button></li>'; }).join("") + "</ul>"
+                : "<p>Every heading, list and image slot has something in it.</p>") +
+      (t.length ? '<p style="margin-top:0.6rem">Empty parts are simply left out of the downloaded site.</p>' : "") + "</div></div>" +
+      '<div class="fin-pv">' + previewHTML() + "</div></div>";
+  }
+
+  /* ---- render ---- */
+  function renderStepper() {
+    var ok = S.order.length > 0;
+    $("stepper").innerHTML = [["structure", "1 Structure"], ["build", "2 Build"], ["finish", "3 Finish"]].map(function (x) {
+      return '<button type="button" data-stage="' + x[0] + '"' + (S.stage === x[0] ? ' aria-current="step"' : "") + (x[0] !== "structure" && !ok ? " disabled" : "") + ">" + x[1] + "</button>";
+    }).join("");
+  }
+  function renderPreview() {
+    var el = $("pv-site");
+    if (!el) return;
+    el.style.cssText = vars();
+    el.innerHTML = page(true);
+    if (S.stage === "build") {
+      var cur = el.querySelector('[data-sid="' + S.cur.sid + '"]');
+      if (cur) cur.classList.add("b-cur");
+    }
+  }
+  function scrollPreview(force) {
+    var sc = $("pv-scroll"), el = $("pv-site");
+    if (!sc || !el || S.stage !== "build") return;
+    if (!force && lastSid === S.cur.sid) return;
+    lastSid = S.cur.sid;
+    var target = S.cur.sid === "style" ? null : el.querySelector('[data-sid="' + S.cur.sid + '"]');
+    sc.scrollTop = target ? Math.max(0, target.offsetTop - 12) : 0;
+  }
+  function render(keepFocus) {
+    var active = keepFocus && document.activeElement, key = active && active.getAttribute && (active.getAttribute("data-set") || active.getAttribute("data-toggle"));
+    var panelTop = $("panel") ? $("panel").scrollTop : 0, pvTop = $("pv-scroll") ? $("pv-scroll").scrollTop : 0, sameSid = lastSid === S.cur.sid;
+    renderStepper();
+    useFonts("site-fonts", siteFonts());
+    main.className = "main" + (S.stage === "build" ? " is-build" : "");
+    if (S.stage === "build" && S.order.length) main.innerHTML = buildHTML();
+    else if (S.stage === "finish" && S.order.length) main.innerHTML = finishHTML();
+    else { S.stage = "structure"; main.innerHTML = structureHTML(); }
+    if (S.stage === "build" && S.cur.sid === "style" && /font$/.test(S.cur.did)) useFonts("all-fonts", fontQuery(FONTS.map(function (f) { return f[0]; })));
+    renderPreview();
+    if (keepFocus && $("panel")) $("panel").scrollTop = panelTop;
+    if (keepFocus && sameSid && $("pv-scroll")) $("pv-scroll").scrollTop = pvTop;
+    else scrollPreview(true);
+    if (key) {
+      var again = main.querySelector('[data-set="' + key + '"],[data-toggle="' + key + '"]');
+      if (again) again.focus({ preventScroll: true });
+    }
+    status(notice);
+  }
+  var pvTimer;
+  function previewSoon() { clearTimeout(pvTimer); pvTimer = setTimeout(renderPreview, 120); }
+
+  /* ---- state changes ---- */
+  var keepTimer;
+  function changed() {
+    dirty = true; notice = "";
+    status();
+    clearTimeout(keepTimer);
+    keepTimer = setTimeout(keep, 400);
+  }
+  function keep() { if (dirty) kv.set("draft", { base: baseRev, s: S }); }
+  window.addEventListener("pagehide", keep);
+  function status(msg) {
+    statusEl.textContent = msg || (dirty ? (canSave ? "Unsaved changes" : "Changes are kept in this browser") : (canSave ? "All changes saved" : ""));
+    saveBtn.disabled = !dirty;
+  }
+  function applyGoal(oldG, newG) {
+    var o = CTAS[oldG], n = CTAS[newG];
+    if (!n) return;
+    ["hero", "nav", "finalcta"].forEach(function (id) {
+      var s = S.sec[id];
+      if (!s) return;
+      if (!s.f.cta || (o && s.f.cta === o[0])) s.f.cta = n[0];
+      if (id !== "nav" && (!s.f.cta2 || (o && s.f.cta2 === o[1]))) s.f.cta2 = n[1];
+    });
+  }
+  function step(dir) {
+    var list = buildList(), si = list.indexOf(S.cur.sid), ds = decs(S.cur.sid), di = S.cur.di;
+    if (dir > 0) S.done[S.cur.sid + ":" + S.cur.did] = 1;
+    di += dir;
+    if (di >= ds.length) {
+      if (si + 1 >= list.length) { S.stage = "finish"; changed(); render(); top(); return; }
+      S.cur = { sid: list[si + 1], did: decs(list[si + 1])[0].id, di: 0 };
+    } else if (di < 0) {
+      if (si === 0) { S.stage = "structure"; S.qstep = 3; changed(); render(); return; }
+      var prev = decs(list[si - 1]);
+      S.cur = { sid: list[si - 1], did: prev[prev.length - 1].id, di: prev.length - 1 };
+    } else S.cur = { sid: S.cur.sid, did: ds[di].id, di: di };
+    changed(); render();
+    var pn = $("panel"); if (pn) pn.scrollTop = 0;
+    if (window.innerWidth < 860) window.scrollTo(0, 0);
+  }
+  function top() { main.scrollTop = 0; if (window.innerWidth < 860) window.scrollTo(0, 0); }
+  function go(stage) {
+    if (stage !== "structure" && !S.order.length) return;
+    S.stage = stage;
+    if (stage === "structure" && S.order.length) S.qstep = 3;
+    changed(); render(); top();
+  }
+
+  /* ---- events ---- */
+  main.addEventListener("submit", function (e) { e.preventDefault(); });
+  main.addEventListener("click", function (e) {
+    if (e.target.closest(".site a")) { e.preventDefault(); return; }
+    var b = e.target.closest("button");
+    if (!b || b.disabled) return;
+    var d = b.dataset;
+    if (d.q) {
+      var old = S.q.goal;
+      S.q[d.q] = d.v;
+      if (d.q === "goal") applyGoal(old, d.v);
+      if (!S.custom || !S.order.length) S.order = recipe(S.q);
+      S.qstep += 1;
+      changed(); render(); return;
+    }
+    if (d.qstep != null) { S.qstep = +d.qstep; if (S.qstep >= 3 && !S.order.length) S.order = recipe(S.q); changed(); render(); top(); return; }
+    if (d.mv) {
+      var m = d.mv.split(":"), i = +m[0], j = i + +m[1], o = S.order.slice(), t = o[i]; o[i] = o[j]; o[j] = t;
+      S.order = o; S.custom = true; changed(); render(true); return;
+    }
+    if (d.toggleOff) { S.order = S.order.filter(function (x) { return x !== d.toggleOff; }); S.custom = true; changed(); render(); return; }
+    if ("recipe" in d) { S.order = recipe(S.q); S.custom = false; changed(); render(); return; }
+    if ("start" in d) {
+      S.stage = "build";
+      if (buildList().indexOf(S.cur.sid) < 0) S.cur = { sid: "style", did: "name", di: 0 };
+      changed(); render(); top(); return;
+    }
+    if (d.stage) { go(d.stage); return; }
+    if (d.set && d.v != null) {
+      setP(d.set, d.v);
+      if (d.set.indexOf("sec.") === 0 && /\.layout$/.test(d.set)) fixCur();
+      changed(); render(true); return;
+    }
+    if (d.pal) {
+      var p = PALETTES[+d.pal];
+      S.d.accent = p[1]; S.d.bg = p[2]; S.d.alt = p[3]; S.d.text = p[4];
+      changed(); render(true); return;
+    }
+    if (d.up) { fileTarget = { path: d.up, kind: d.kind }; var fi = $("file"); fi.value = ""; fi.click(); return; }
+    if (d.rmimg) { setP(d.rmimg, ""); changed(); render(true); return; }
+    if (d.iadd) {
+      var c = BY[d.iadd], s = sd(d.iadd);
+      s.items.push(blankItem(c, s.items.length));
+      changed(); render(true);
+      var pn = $("panel"); if (pn) pn.scrollTop = pn.scrollHeight;
+      return;
+    }
+    if (d.irm) { var a = d.irm.split(":"); sd(a[0]).items.splice(+a[1], 1); changed(); render(true); return; }
+    if (d.imv) {
+      var q = d.imv.split(":"), arr = sd(q[0]).items, x = +q[1], y = x + +q[2], tmp = arr[x]; arr[x] = arr[y]; arr[y] = tmp;
+      changed(); render(true); return;
+    }
+    if (d.step) { step(+d.step); return; }
+    if (d.jump) {
+      var jj = d.jump.split(":");
+      S.stage = "build";
+      S.cur = { sid: jj[0], did: jj[1] || decs(jj[0])[0].id, di: 0 };
+      changed(); render(); if (S.stage !== "build" || window.innerWidth < 860) top(); return;
+    }
+    if ("expand" in d) { expandAll = !expandAll; render(true); return; }
+    if (d.pv) { S.pv = d.pv; changed(); render(true); return; }
+    if ("download" in d) { download(); return; }
+  });
+  main.addEventListener("change", function (e) {
+    var t = e.target, d = t.dataset;
+    if (d.toggle) {
+      if (t.checked) { if (S.order.indexOf(d.toggle) < 0) S.order = insertCanon(d.toggle); }
+      else S.order = S.order.filter(function (x) { return x !== d.toggle; });
+      S.custom = true; changed(); render(true); return;
+    }
+    if ("jumpsel" in d) { S.cur = { sid: t.value, did: decs(t.value)[0].id, di: 0 }; changed(); render(); return; }
+    if (!d.set) return;
+    if (t.type === "checkbox") { setP(d.set, t.checked); changed(); render(true); return; }
+    if (t.tagName === "SELECT") { setP(d.set, t.value); changed(); if (d.set.indexOf("d.") === 0) render(true); else previewSoon(); }
+  });
+  main.addEventListener("input", function (e) {
+    var t = e.target, d = t.dataset;
+    if (!d.set || t.type === "checkbox" || t.tagName === "SELECT") return;
+    setP(d.set, t.value);
+    changed();
+    if (d.set === "d.radius") { var o = $("rad-out"); if (o) o.textContent = t.value + "px"; }
+    previewSoon();
+  });
+  // Insert a newly ticked section where it naturally belongs, keeping the user's own ordering of the rest.
+  function insertCanon(id) {
+    var o = S.order.slice(), ci = CANON.indexOf(id), at = o.length;
+    for (var k = 0; k < o.length; k++) { if (CANON.indexOf(o[k]) > ci) { at = k; break; } }
+    o.splice(at, 0, id);
+    return o;
+  }
+  $("tb").addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (b && b.dataset.stage && !b.disabled) go(b.dataset.stage);
+  });
+
+  /* ---- images: shrink in the browser before storing ---- */
+  $("file").addEventListener("change", function () {
+    var file = this.files[0], tgt = fileTarget;
+    if (!file || !tgt) return;
+    var photo = tgt.kind === "photo", max = photo ? 1600 : 480;
+    var url = URL.createObjectURL(file), im = new Image();
+    im.onload = function () {
+      var k = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight)), cv = document.createElement("canvas");
+      cv.width = Math.max(1, Math.round(im.naturalWidth * k)); cv.height = Math.max(1, Math.round(im.naturalHeight * k));
+      var g = cv.getContext("2d");
+      if (photo) { g.fillStyle = "#ffffff"; g.fillRect(0, 0, cv.width, cv.height); }
+      g.drawImage(im, 0, 0, cv.width, cv.height);
+      setP(tgt.path, photo ? cv.toDataURL("image/jpeg", 0.82) : cv.toDataURL("image/png"));
+      URL.revokeObjectURL(url);
+      changed(); render(true);
+    };
+    im.onerror = function () { URL.revokeObjectURL(url); status("That file couldn't be read as an image. Try a JPG or PNG."); };
+    im.src = url;
+  });
+
+  /* =====================================================================
+     9. OUTPUT: the finished website, and saving this builder
+     ===================================================================== */
+  var END = "<" + "/script>";
+  function siteDoc() {
+    var c = sd("hero"), name = nm(), hl = (c.f.headline || "").trim(), sub = (c.f.sub || "").trim(), f = siteFonts();
+    var title = name && hl ? name + " · " + hl : name || hl || "Home";
+    return '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>' + esc(title) + "</title>\n" +
+      (sub ? '<meta name="description" content="' + esc(sub) + '">\n' : "") +
+      (f ? '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link rel="stylesheet" href="' + esc(f) + '">\n' : "") +
+      "<style>\nhtml{scroll-behavior:smooth}\n" + $("site").textContent + "</style>\n</head>\n" +
+      '<body class="site" id="top" style="' + esc(vars()) + '">\n' + page(false) +
+      '\n<script>document.querySelectorAll(".yr").forEach(function(e){e.textContent=new Date().getFullYear()});' + END + "\n</body>\n</html>\n";
+  }
+  function selfDoc() {
+    var reset = (document.head.querySelector("style") || {}).textContent || "";
+    return '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>' + reset + "</style></head><body>" +
+      "<title>" + TITLE + '</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n' +
+      '<style id="site">' + $("site").textContent + '</style>\n<style id="ui">' + $("ui").textContent + "</style>\n" +
+      '<div id="root"></div>\n<script type="application/json" id="state">' + JSON.stringify(S).replace(/</g, "\\u003c") + END +
+      '\n<script id="main">' + $("main").textContent + END + "\n</body></html>";
+  }
+  saveBtn.addEventListener("click", function () {
+    if (!art || !dirty) return;
+    saveBtn.disabled = true;
+    status("Saving…");
+    var prev = S.rev, id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    S.rev = id;
+    kv.set("pending", { id: id, s: S }).then(function () { return art.publish(selfDoc()); }).then(function () {
+      kv.del("draft");
+    }, function (err) {
+      var code = err && err.code;
+      if (code === "conflict") return;
+      S.rev = prev;
+      kv.del("pending");
+      if (code === "not_writer" || code === "not_granted") {
+        canSave = false; saveBtn.hidden = true;
+        status("You can't save changes to this page. Your work is kept in this browser; use Download website to keep a copy.");
+      } else if (code === "too_large") status("Too large to save. Try removing a few photos.");
+      else if (code === "rate_limited") status("Saving too often. Wait a moment, then press Save again.");
+      else status("Couldn't save. Your work is still here: try Save again.");
+      saveBtn.disabled = false;
+    });
+  });
+  function download() {
+    if (!S.order.length) { status("Choose your sections first."); return; }
+    var html = siteDoc();
+    if (!(window.claude && window.claude.use)) {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+      a.download = "index.html";
+      document.body.appendChild(a); a.click(); a.remove();
+      return;
+    }
+    window.claude.use("downloads").then(function (d) {
+      if (!d) { status("Downloading isn't available in this view."); return; }
+      return d.save({ filename: "index.html", data: html }).then(function () {
+        status("Downloaded index.html: that file is your website.");
+      }, function (err) {
+        if (err && err.code === "declined") return status();
+        status(err && err.code === "rate_limited" ? "A download prompt is already open." : "Couldn't download in this view.");
+      });
+    });
+  }
+  $("dl").addEventListener("click", download);
+
+  /* ---- start ---- */
+  render();
+  Promise.all([kv.get("pending"), kv.get("draft")]).then(function (r) {
+    var pending = r[0], draft = r[1];
+    kv.del("pending");
+    if (pending && pending.id && pending.id !== baseRev) {
+      S = merge(pending.s);
+      notice = "Your last save didn't go through. Your work is still here: press Save again.";
+    } else if (draft && draft.base === baseRev) S = merge(draft.s);
+    else return;
+    dirty = true;
+    render();
+  });
+  if (window.claude && window.claude.use) {
+    window.claude.use("artifact").then(function (a) {
+      if (!a) return;
+      art = a; canSave = true; saveBtn.hidden = false;
+      status(notice);
+    });
+  }
+})();
+</script>
