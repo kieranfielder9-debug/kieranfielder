@@ -752,6 +752,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
              ["demo", "Book a demo", "A walkthrough with your team."], ["appointment", "Book an appointment", "A call or consultation at a set time."],
              ["buy", "Buy", "Pay once, straight away."], ["subscribe", "Subscribe", "Pay monthly or yearly, straight away."],
              ["quote", "Request a quote", "Prices depend on each customer's needs."], ["download", "Download a resource", "A free guide, template or report in return for an email."],
+             ["newsletter", "Newsletter subscribe", "Visitors join your mailing list for updates and content."],
              ["wait", "Join a waitlist", "You haven't launched yet and want to collect interest."], ["sales", "Contact sales", "Larger deals handled by a sales team."]] },
     { k: "aud", q: "Who are you mainly selling to?", why: "Businesses, especially larger ones, expect to see security, integrations and detailed proof. Individuals want it quick and simple.",
       opts: [["consumer", "Individuals", "People buying for themselves."], ["smb", "Small businesses and teams", "Founders, freelancers and small teams."], ["ent", "Larger companies", "Buying involves several people, IT and procurement."]] },
@@ -771,7 +772,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     trial: ["Start free trial", "See how it works"], account: ["Create a free account", "See how it works"], demo: ["Book a demo", "Watch the 2-minute demo"],
     appointment: ["Book an appointment", "See how it works"], buy: ["Buy now", "See what's included"], subscribe: ["Subscribe", "See plans"],
     quote: ["Request a quote", "See how it works"], download: ["Download the free guide", "Learn more"], wait: ["Join the waitlist", "Learn more"],
-    sales: ["Talk to sales", "See how it works"]
+    sales: ["Talk to sales", "See how it works"], newsletter: ["Subscribe to the newsletter", "See past issues"]
   };
   function canon(list) {
     var seen = {};
@@ -789,7 +790,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     add({ trial: { pricing: 5 }, account: { pricing: -5, benefits: 5 }, buy: { pricing: 20, guarantee: 20, faq: 5 }, subscribe: { pricing: 20, guarantee: 15 },
           demo: { pricing: -10, contact: 10, casestudy: 5, showcase: 10 }, appointment: { pricing: -5, contact: 25, how: 10, testimonials: 5 },
           quote: { pricing: -25, contact: 25, how: 10, casestudy: 10 }, wait: { pricing: -40, founder: 25 },
-          download: { pricing: -40, leadmagnet: 75, resources: 25, founder: 5 }, sales: { pricing: -15, contact: 20, casestudy: 10, security: 10 } }[q.goal]);
+          download: { pricing: -40, leadmagnet: 75, resources: 25, founder: 5 }, newsletter: { pricing: -40, leadmagnet: 90, resources: 30, founder: 5, footer: 5 }, sales: { pricing: -15, contact: 20, casestudy: 10, security: 10 } }[q.goal]);
     add({ consumer: { usecases: -15, security: -15, integrations: -10, guarantee: 15, testimonials: 5 },
           ent: { security: 35, casestudy: 15, integrations: 15, usecases: 15, contact: 10, comparison: 5 } }[q.aud]);
     add({ simple: { how: -15, featurerows: -25, showcase: -5, benefits: 10 }, some: { how: 5, showcase: 5 },
@@ -890,7 +891,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     if (id === "pricing" && s.items[1]) s.items[1].pop = true;
     if (id === "hero" || id === "nav" || id === "finalcta") s.f.cta = g[0];
     if (id === "hero" || id === "finalcta") s.f.cta2 = g[1];
-    if (id === "hero" && (S.q.goal === "wait" || S.q.goal === "download")) { s.el.email = true; s.layout = "text"; }
+    if (id === "hero" && (S.q.goal === "wait" || S.q.goal === "download" || S.q.goal === "newsletter")) { s.el.email = true; s.layout = "text"; }
     return s;
   }
   function blankItem(c, i) {
